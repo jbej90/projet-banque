@@ -16,7 +16,7 @@
 
 		<intercept-url pattern="/**" filters="none" />
 
-		<form-login login-page="/login.html" authentication-success-handler-ref="roleAuthenticationHandler" />
+		<form-login login-page="/login.htm" authentication-success-handler-ref="roleAuthenticationHandler" />
 		<logout logout-success-url="/" />
 		
 <!--		<session-management>-->
@@ -52,7 +52,7 @@
 		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<beans:property name="url" value="jdbc:mysql://localhost/banqueBDD" />
 		<beans:property name="username" value="root" />
-		<beans:property name="password" value="toor" />
+		<beans:property name="password" value="root" />
 	</beans:bean>
 	
 	<beans:bean id="roleAuthenticationHandler" class="com.excilys.projet.banque.web.handler.RoleAuthenticationSuccessHandler"></beans:bean>
