@@ -15,16 +15,17 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 public class RoleAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 	private final static String ROLE_ADMIN = "ROLE_ADMIN";
 	private final static String ROLE_USER = "ROLE_USER";
+	private static final String BASE_URL_SUFFIX = ".htm";
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 		Collection<GrantedAuthority> authorities = authentication.getAuthorities();
 		for (GrantedAuthority authority : authorities) {
 			if (authority.getAuthority().equals(ROLE_ADMIN)) {
-				response.sendRedirect(response.encodeRedirectURL("admin/index.html"));
+				response.sendRedirect(response.encodeRedirectURL("admin/index"+BASE_URL_SUFFIX));
 				return;
 			} else if (authority.getAuthority().equals(ROLE_USER)) {
-				response.sendRedirect(response.encodeRedirectURL("private/home.html"));
+				response.sendRedirect(response.encodeRedirectURL("private/home"+BASE_URL_SUFFIX));
 				return;
 			}
 		}

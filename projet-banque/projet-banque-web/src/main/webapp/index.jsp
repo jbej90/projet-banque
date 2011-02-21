@@ -4,6 +4,6 @@
 
 <html>
     <head>
-        <meta http-equiv="refresh" content="0; url='private/home.html'">
+        <meta http-equiv="refresh" content="0; url='private/home.htm'">
     </head>
 </html>

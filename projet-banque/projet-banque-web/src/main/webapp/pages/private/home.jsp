@@ -13,7 +13,7 @@
     <body>
         <h1>Résumé de mes comptes</h1>
         
-        <p>Bienvenue, ${user.username}</p>
+        <p>Bienvenue, ${client.prenom} ${client.nom}</p>
         
         <a href="<c:url value="/j_spring_security_logout"/>">Logout</a>
     </body>

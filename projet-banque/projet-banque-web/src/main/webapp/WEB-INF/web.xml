@@ -32,7 +32,7 @@
 	<!-- Toutes les requêtes se terminant par .html seront servis par la servlet frontal -->
 	<servlet-mapping>
 		<servlet-name>spring-mvc</servlet-name>
-		<url-pattern>*.html</url-pattern>
+		<url-pattern>*.htm</url-pattern>
 	</servlet-mapping>
 
 
