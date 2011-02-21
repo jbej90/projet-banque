@@ -11,12 +11,12 @@
 						http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 
 	<http>
-		<intercept-url pattern="/pages/admin/**" access="ROLE_ADMIN" />
-		<intercept-url pattern="/pages/private/**" access="ROLE_USER" />
+		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+		<intercept-url pattern="/private/**" access="ROLE_USER" />
 
 		<intercept-url pattern="/**" filters="none" />
 
-		<form-login login-page="/pages/login.jsp" default-target-url="/pages/private/resume.jsp" authentication-success-handler-ref="roleAuthenticationHandler" />
+		<form-login login-page="/login.html" authentication-success-handler-ref="roleAuthenticationHandler" />
 		<logout logout-success-url="/" />
 		
 <!--		<session-management>-->

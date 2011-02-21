@@ -21,10 +21,10 @@ public class RoleAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
 		Collection<GrantedAuthority> authorities = authentication.getAuthorities();
 		for (GrantedAuthority authority : authorities) {
 			if (authority.getAuthority().equals(ROLE_ADMIN)) {
-				response.sendRedirect(response.encodeRedirectURL("pages/admin/admin.jsp"));
+				response.sendRedirect(response.encodeRedirectURL("admin/index.html"));
 				return;
 			} else if (authority.getAuthority().equals(ROLE_USER)) {
-				response.sendRedirect(response.encodeRedirectURL("pages/private/home.jsp"));
+				response.sendRedirect(response.encodeRedirectURL("private/home.html"));
 				return;
 			}
 		}

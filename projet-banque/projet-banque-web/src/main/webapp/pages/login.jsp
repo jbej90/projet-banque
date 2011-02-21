@@ -7,9 +7,6 @@
 	</head>
 	
 	<body>
-		${test}
-		<a href="${pageContext.request.contextPath}/test.html?test=plop">Cliquez pour un test</a>
-		
 		<form method="post" action="${pageContext.request.contextPath}/j_spring_security_check">
 			Identifiant  :<input name="j_username" value="" type="text" />
 			Mot de passe :<input name="j_password" type="password" />
