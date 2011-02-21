@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.excilys.projet.banque.model">
+	<class name="Compte" table="compte">
+		<meta attribute="sync-DAO">false</meta>
+		<id name="Id" type="integer" column="id">
+			<generator class="increment" />
+		</id>
+
+		<property name="Libelle" column="libelle" type="string"
+			not-null="true" />
+
+		<many-to-one name="Client" column="client_fk" class="Client" not-null="true" />
+
+	</class>
+</hibernate-mapping>
