@@ -16,7 +16,7 @@
 			<groupId>com.excilys.projet.banque</groupId>
 			<artifactId>projet-banque-model</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
