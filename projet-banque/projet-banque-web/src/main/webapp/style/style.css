@@ -1,9 +1,110 @@
 body {
 	padding: 0;
 	margin: 0;
+	font-family: Verdana;
+	font-size: 14px;
 }
 
-#container {
-	width: 1000px;
+
+/******************/
+/**** GENERICS ****/
+/******************/
+
+/* Links */
+a {
+	text-decoration: none;
+	color: #444;
+	font-weight: bold;
+}
+
+/* Utils */
+.clearer {
+	clear: both;
+}
+
+/* Forms */
+form {
+	background: #eee;
+	padding: 10px;
 	margin: 0 auto;
+	width: 500px;
+}
+form .row {
+	clear: both;
+	margin: 3px 0;
+}
+form label {
+	float: left;
+	width: 150px;
+	color: #444;
+}
+form input.input {
+	width: 200px;
+	background: #ffffbf;
+	color: #444;
+}
+form .buttons {
+	text-align: center;
+}
+
+
+/*******************/
+/**** CONTAINER ****/
+/*******************/
+#container {
+	width: 100%;
+}
+
+
+/****************/
+/**** HEADER ****/
+/****************/
+#header #logo {
+	float: left;
+	margin: 2px;
+}
+#header #title {
+	font-size: 20px;
+	text-align: center;
+	padding: 12px 0 0 0;
+}
+
+
+/********************/
+/**** SUB HEADER ****/
+/********************/
+#sub-header {
+	padding: 3px 5px;
+	border-top: 1px #ccc solid;
+	border-bottom: 1px #ccc solid;
+	text-align: right;
+	background: #def;
+	color: #777;
+	font-size: 13px;
+}
+
+
+/**************/
+/**** BODY ****/
+/**************/
+#body {
+	margin: 10px 0 0 0;
+}
+#body #content {
+	padding: 0 10px;
+}
+
+
+/****************/
+/**** FOOTER ****/
+/****************/
+#footer {
+	margin: 10px 0 0 0;
+	padding: 3px 5px;
+	border-top: 1px #ccc solid;
+	border-bottom: 1px #ccc solid;
+	text-align: center;
+	background: #def;
+	color: #777;
+	font-size: 11px;
 }

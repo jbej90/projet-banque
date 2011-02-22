@@ -15,7 +15,7 @@
 		<intercept-url pattern="/private/**" access="ROLE_USER" />
 
 		<intercept-url pattern="/**" filters="none" />
-
+		
 		<form-login login-page="/login.htm" authentication-success-handler-ref="roleAuthenticationHandler" />
 		<logout logout-success-url="/" />
 		
@@ -56,4 +56,10 @@
 	</beans:bean>
 	
 	<beans:bean id="roleAuthenticationHandler" class="com.excilys.projet.banque.web.handler.RoleAuthenticationSuccessHandler"></beans:bean>
+<!--	<beans:bean id="myAuthenticationFilter" class="com.excilys.projet.banque.web.CustomUsernamePasswordAuthenticationFilter"></beans:bean>-->
+<!--	<beans:bean id="authenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">-->
+<!--		<beans:property name="UsernameParameter" value="username"></beans:property>-->
+<!--		<beans:property name="PasswordParameter" value="password"></beans:property>-->
+<!--		<beans:property name="FilterProcessesUrl" value="/login.form"></beans:property>-->
+<!--	</beans:bean>-->
 </beans:beans>

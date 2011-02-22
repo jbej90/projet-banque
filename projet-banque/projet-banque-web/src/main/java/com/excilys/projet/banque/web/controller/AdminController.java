@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AdminController {
-	private static final String BASE_DIR = "pages/admin/";
-	private static final String BASE_URL_PREFIX = "/pages/admin/";
+	private static final String BASE_DIR = "admin/";
+	private static final String BASE_URL_PREFIX = "/admin/";
 	private static final String BASE_URL_SUFFIX = ".htm";
 	
 //	@RequestMapping("/private/home.html")

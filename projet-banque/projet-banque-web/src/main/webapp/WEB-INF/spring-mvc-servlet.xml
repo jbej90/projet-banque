@@ -29,6 +29,6 @@
 		on utilisera le fichier /foo/bar/hello.jsp pour constuire la vue. -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-		p:prefix="/" p:suffix=".jsp" />
+		p:prefix="/WEB-INF/pages/" p:suffix=".jsp" />
 
 </beans>
