@@ -8,6 +8,8 @@ import java.util.Date;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.projet.banque.dao.api.exceptions.UnknownCompteException;
 import com.excilys.projet.banque.model.Client;
@@ -20,13 +22,8 @@ public class CompteDAOImplTest {
 
 	@BeforeClass
 	public static void setUp() {
-		compteDAOImpl = new CompteDAOImpl();
-		clientDAOImpl = new ClientDAOImpl();
-	}
-
-	@Test(expected = UnknownCompteException.class)
-	public void findByIdTest() throws UnknownCompteException {
-		compteDAOImpl.findById(-1);
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/context/applicationContext-dao-impl.xml");
+		compteDAOImpl = applicationContext.getBean("comptedao", CompteDAOImpl.class);
 	}
 
 	// TODO : optimiser le test!!!!
@@ -38,6 +35,7 @@ public class CompteDAOImplTest {
 		client.setAdresse("test");
 		client.setDateLastConnection(new Date());
 		clientDAOImpl.save(client);
+
 		Compte compte = new Compte();
 		compte.setLibelle("test");
 		compte.setClient(client);
@@ -78,7 +76,6 @@ public class CompteDAOImplTest {
 		compte.setLibelle("compte");
 		compte.setSolde(100);
 		compteDAOImpl.save(compte);
-		// clientDAOImpl.f
 
 		assertEquals(100, compteDAOImpl.findAllByClient(client).get(0).getSolde());
 

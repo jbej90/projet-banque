@@ -1,8 +1,7 @@
 package com.excilys.projet.banque.dao.api.exceptions;
 
+@SuppressWarnings("serial")
 public class UnknownCompteException extends Exception {
-
-	private static final long serialVersionUID = 3280912954772819299L;
 
 	@Override
 	public String getMessage() {

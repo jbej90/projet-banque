@@ -2,7 +2,6 @@ package com.excilys.projet.banque.service.impl;
 
 import java.util.List;
 
-import com.excilys.projet.banque.dao.api.exceptions.UnknownClientException;
 import com.excilys.projet.banque.dao.impl.ClientDAOImpl;
 import com.excilys.projet.banque.dao.impl.CompteDAOImpl;
 import com.excilys.projet.banque.model.Client;
@@ -29,15 +28,17 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public Client recupererClient(int username) throws ServiceException {
-		try {
-			return clientDao.findById(username);
-		} catch (UnknownClientException e) {
-			throw new ServiceException("", e);
-		}
+		Client client = clientDao.findById(username);
+		if (client == null)
+			throw new ServiceException("Le client n'existe pas.");
+		return client;
 	}
 
 	@Override
-	public List<Client> recupererClients() {
+	public List<Client> recupererClients() throws ServiceException {
+		List<Client> clients = clientDao.findAll();
+		if (clients.isEmpty())
+			throw new ServiceException("Aucun client.");
 		return clientDao.findAll();
 	}
 
