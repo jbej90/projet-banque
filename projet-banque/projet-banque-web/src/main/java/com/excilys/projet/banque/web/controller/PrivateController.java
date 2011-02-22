@@ -12,7 +12,7 @@ import com.excilys.projet.banque.service.impl.ClientServiceImpl;
 
 @Controller
 public class PrivateController {
-	private static final String BASE_DIR = "pages/private/";
+	private static final String BASE_DIR = "private/";
 	private static final String BASE_URL_PREFIX = "/private/";
 	private static final String BASE_URL_SUFFIX = ".htm";
 	
