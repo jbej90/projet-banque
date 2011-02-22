@@ -9,7 +9,6 @@ import java.util.Date;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.excilys.projet.banque.dao.api.exceptions.EmptyClientsException;
 import com.excilys.projet.banque.dao.api.exceptions.UnknownClientException;
 import com.excilys.projet.banque.model.Client;
 
@@ -40,7 +39,7 @@ public class ClientDAOImplTest {
 	}
 
 	@Test
-	public void findAllTest() throws EmptyClientsException {
+	public void findAllTest() {
 
 		Client client = new Client();
 		client.setNom("test");
@@ -50,6 +49,18 @@ public class ClientDAOImplTest {
 		int currentSize = clientDAOImpl.findAll().size();
 		clientDAOImpl.save(client);
 		assertTrue(clientDAOImpl.findAll().size() == currentSize + 1);
+
+	}
+
+	@Test
+	public void findByNom() {
+		Client client = new Client();
+		client.setNom("Dupuis");
+		client.setPrenom("Jean");
+		client.setAdresse("Paris");
+		client.setDateLastConnection(new Date());
+
+		assertEquals("Jean", clientDAOImpl.findByNom("Dupuis").get(0).getPrenom().toString());
 
 	}
 

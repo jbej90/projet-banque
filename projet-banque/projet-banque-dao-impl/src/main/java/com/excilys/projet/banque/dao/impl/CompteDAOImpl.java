@@ -19,7 +19,9 @@ public class CompteDAOImpl implements CompteDAO {
 
 	@Override
 	public List<Compte> findAll() {
-		return null;
+		session = (Session) HibernateUtil.currentSession();
+		Query query = session.createQuery("From Compte");
+		return query.list();
 	}
 
 	@Override
@@ -34,7 +36,7 @@ public class CompteDAOImpl implements CompteDAO {
 
 	@Override
 	public void save(Compte compte) {
-		Session session = (Session) HibernateUtil.currentSession();
+		session = (Session) HibernateUtil.currentSession();
 		tx = session.beginTransaction();
 		session.save(compte);
 		tx.commit();
@@ -43,7 +45,10 @@ public class CompteDAOImpl implements CompteDAO {
 
 	@Override
 	public List<Compte> findAllByClient(Client client) {
-		return null;
+		session = (Session) HibernateUtil.currentSession();
+		Query query = session.createQuery("From Compte where client.id=:id");
+		query.setInteger("id", client.getId());
+		return query.list();
 	}
 
 }
