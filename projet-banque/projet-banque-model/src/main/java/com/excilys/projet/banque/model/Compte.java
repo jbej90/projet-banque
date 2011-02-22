@@ -5,7 +5,7 @@ public class Compte {
 	private int id;
 	private String libelle;
 	private Client client;
-	private long solde;
+	private float solde;
 
 	public int getId() {
 		return id;
@@ -31,11 +31,11 @@ public class Compte {
 		this.client = client;
 	}
 
-	public long getSolde() {
+	public float getSolde() {
 		return solde;
 	}
 
-	public void setSolde(long solde) {
+	public void setSolde(float solde) {
 		this.solde = solde;
 	}
 

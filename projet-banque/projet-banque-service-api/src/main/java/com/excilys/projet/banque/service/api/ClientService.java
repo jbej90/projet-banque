@@ -10,7 +10,7 @@ public interface ClientService {
 
 	Client recupererClient(int username) throws ServiceException;
 
-	List<Client> recupererClients();
+	List<Client> recupererClients() throws ServiceException;
 
 	List<Compte> recupererListeComptes(Client client);
 }
