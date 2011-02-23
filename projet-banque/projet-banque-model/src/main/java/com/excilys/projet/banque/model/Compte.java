@@ -7,6 +7,16 @@ public class Compte implements Comparable<Compte> {
 	private float solde;
 	
 	
+	public Compte() {}
+	public Compte(int id, String libelle, Client client, float solde) {
+		super();
+		this.id = id;
+		this.libelle = libelle;
+		this.client = client;
+		this.solde = solde;
+	}
+
+
 	@Override
 	public int compareTo(Compte o) {
 		return libelle.compareTo(o.getLibelle());

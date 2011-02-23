@@ -54,6 +54,28 @@ a {
 	color: #e00;
 }
 
+/* Messages */
+ul#messages {
+	margin: 3px 0;
+	padding: 0;
+	list-style-type: none;	
+}
+ul#messages li.error {
+	color: #e00;
+	background: url('../images/error.png') left center no-repeat;
+	padding: 0 0 0 20px;
+}
+ul#messages li.warning {
+	color: #FFAD1F;
+	background: url('../images/warning.png') left center no-repeat;
+	padding: 0 0 0 20px;
+}
+ul#messages li.ok {
+	color: #0e0;
+	background: url('../images/ok.png') left center no-repeat;
+	padding: 0 0 0 20px;
+}
+
 
 /* Forms */
 form .row {
