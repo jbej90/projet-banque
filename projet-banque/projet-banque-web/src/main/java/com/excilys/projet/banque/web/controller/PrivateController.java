@@ -39,7 +39,7 @@ public class PrivateController {
 		
 		Client client = null;
 		try {
-			client = clientService.recupererClient(Integer.valueOf(user.getUsername()));
+			client = clientService.recupererClient(user.getUsername());
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (ServiceException e) {

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.excilys.projet.banque.model">
+	<class name="Auth" table="auth">
+		<meta attribute="sync-DAO">false</meta>
+
+		<id name="id" type="integer" column="id_fk">
+			<generator class="increment" />
+		</id>
+
+		<property name="login" column="login" type="string" not-null="true" length="10" />
+	</class>
+</hibernate-mapping>

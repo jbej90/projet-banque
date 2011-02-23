@@ -27,8 +27,16 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public Client recupererClient(int username) throws ServiceException {
-		Client client = clientDao.findById(username);
+	public Client recupererClient(int idClient) throws ServiceException {
+		Client client = clientDao.findById(idClient);
+		if (client == null)
+			throw new ServiceException("Le client n'existe pas.");
+		return client;
+	}
+
+	@Override
+	public Client recupererClient(String username) throws ServiceException {
+		Client client = clientDao.findByUsername(username);
 		if (client == null)
 			throw new ServiceException("Le client n'existe pas.");
 		return client;

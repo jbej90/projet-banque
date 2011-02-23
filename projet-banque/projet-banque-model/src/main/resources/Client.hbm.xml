@@ -8,7 +8,9 @@
 		<meta attribute="sync-DAO">false</meta>
 
 		<id name="id" type="integer" column="id">
-			<generator class="increment" />
+			<generator class="foreign">
+				<param name="property">auth</param>
+			</generator>
 		</id>
 
 		<property name="nom" column="nom" type="string" not-null="true"
@@ -20,6 +22,8 @@
 		<property name="totalSoldeComptes"
 			formula="(SELECT SUM(c.solde_courant) FROM compte AS c WHERE c.client_fk = id)"
 			type="float" />
+			
+		<one-to-one name="auth" constrained="true"></one-to-one>
 
 		<set name="comptes" table="compte_client" inverse="true" sort="natural">
 			<key column="client_fk" not-null="true" />

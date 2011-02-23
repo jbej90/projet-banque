@@ -32,8 +32,8 @@
 			<password-encoder hash="sha" />
 			
 			<jdbc-user-service id="auth" data-source-ref="dataSource" 
-						users-by-username-query="SELECT login AS username, password, enabled FROM auth WHERE login = ?" 
-						authorities-by-username-query="SELECT login AS username, 'USER' AS authority FROM auth WHERE login = ?" 
+						users-by-username-query="SELECT id_fk AS username, password, true AS enabled FROM auth WHERE id_fk = ?" 
+						authorities-by-username-query="SELECT id_fk AS username, 'USER' AS authority FROM auth WHERE id_fk = ?" 
 						role-prefix="ROLE_" />
 		</authentication-provider>
 		

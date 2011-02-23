@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -17,9 +18,13 @@ public class FailureLoginHandler implements AuthenticationFailureHandler {
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 		if (exception instanceof BadCredentialsException) {
 			MessageStack.getInstance(request).addError("Login ou mot de passe erroné");
+		} else if (exception instanceof DisabledException) {
+			MessageStack.getInstance(request).addError("Ce compte n'est pas activé");
 		} else {
 			MessageStack.getInstance(request).addError("Connexion échouée");
 		}
+		
+		exception.printStackTrace();
 		
 		response.sendRedirect(response.encodeRedirectURL("login.htm"));
 	}

@@ -42,13 +42,13 @@ public class ClientServiceImplTest {
 	public void recupererClientTest() {
 		Client client = null;
 		try {
-			client = clientService.recupererClient(1);
+			client = clientService.recupererClient("test1");
 		} catch (ServiceException e) {}
 		assertNotNull(client);
 		
 		client = null;
 		try {
-			client = clientService.recupererClient(-1);
+			client = clientService.recupererClient("aaa");
 		} catch (ServiceException e) {}
 		assertNull(client);
 	}
