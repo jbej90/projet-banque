@@ -4,13 +4,27 @@ import java.util.Date;
 import java.util.Set;
 
 public class Client {
-
 	private Integer id;
 	private String nom;
 	private String prenom;
 	private String adresse;
 	private Date dateLastConnection;
 	private Set<Compte> comptes;
+	private float totalSoldeCompte = 0;
+
+	@Override
+	public String toString() {
+		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", adresse=" + adresse + ", dateLastConnection=" + dateLastConnection + ", comptes=" + comptes + "]";
+	}
+	
+	public float getTotalSoldeComptes() {
+		if (totalSoldeCompte == 0) {
+			for (Compte compte : comptes) {
+				totalSoldeCompte += compte.getSolde();
+			}
+		}
+		return totalSoldeCompte;
+	}
 
 	public Integer getId() {
 		return id;
@@ -59,10 +73,4 @@ public class Client {
 	public void setComptes(Set<Compte> comptes) {
 		this.comptes = comptes;
 	}
-
-	@Override
-	public String toString() {
-		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", adresse=" + adresse + ", dateLastConnection=" + dateLastConnection + ", comptes=" + comptes + "]";
-	}
-
 }

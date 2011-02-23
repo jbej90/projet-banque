@@ -11,6 +11,7 @@
 						http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 
 	<http>
+<!--	<custom-filter ref="myAuthenticationFilter" position="FORM_LOGIN_FILTER"/>-->
 		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
 		<intercept-url pattern="/private/**" access="ROLE_USER" />
 
@@ -28,7 +29,7 @@
 	<authentication-manager>
 		<!-- Connexion utilisateur -->
 		<authentication-provider>
-			<password-encoder hash="plaintext" />
+			<password-encoder hash="sha" />
 			
 			<jdbc-user-service id="auth" data-source-ref="dataSource" 
 						users-by-username-query="SELECT id_fk AS username, password, true AS enabled FROM auth WHERE id_fk = ?" 
@@ -38,7 +39,7 @@
 		
 		<!-- Connexion administrateur -->
 		<authentication-provider>
-			<password-encoder hash="plaintext" />
+			<password-encoder hash="sha" />
 			
 			<jdbc-user-service id="admin" data-source-ref="dataSource" 
 						users-by-username-query="SELECT login AS username, password, true AS enabled FROM admin WHERE login = ?" 
@@ -48,15 +49,18 @@
 	</authentication-manager>
 	
 
+<!-- TODO : A déplacer dans un projet "env" -->
 	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<beans:property name="url" value="jdbc:mysql://localhost/banqueBDD" />
-		<beans:property name="username" value="root" />
-		<beans:property name="password" value="root" />
+		<beans:property name="driverClassName" value="${datasource.classname}" />
+		<beans:property name="url" value="${datasource.url}" />
+		<beans:property name="username" value="${datasource.username}" />
+		<beans:property name="password" value="${datasource.password}" />
 	</beans:bean>
 	
 	<beans:bean id="roleAuthenticationHandler" class="com.excilys.projet.banque.web.handler.RoleAuthenticationSuccessHandler"></beans:bean>
+	
 <!--	<beans:bean id="myAuthenticationFilter" class="com.excilys.projet.banque.web.CustomUsernamePasswordAuthenticationFilter"></beans:bean>-->
+
 <!--	<beans:bean id="authenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">-->
 <!--		<beans:property name="UsernameParameter" value="username"></beans:property>-->
 <!--		<beans:property name="PasswordParameter" value="password"></beans:property>-->

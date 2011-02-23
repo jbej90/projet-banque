@@ -6,7 +6,5 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-	<import resource="applicationContext-dao-impl-hibernate.xml"/>
-
-
+	<import resource="classpath:/context/applicationContext-dao-impl-hibernate.xml"/>
 </beans>

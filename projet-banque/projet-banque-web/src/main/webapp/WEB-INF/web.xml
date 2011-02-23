@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_4.xsd">
 	<display-name>web</display-name>
 
 	<session-config>
@@ -15,8 +15,9 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
+<!--		<param-value>classpath*:/context/applicationContext.xml</param-value>-->
 		<param-value>
-			/WEB-INF/applicationContext.xml
+			classpath*:/context/applicationContext.xml
 			/WEB-INF/spring-security.xml
 		</param-value>
 	</context-param>
@@ -36,7 +37,6 @@
 	</servlet-mapping>
 
 
-
 	<!-- Spring-security -->
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
@@ -54,13 +54,13 @@
 
 
 	<!-- Pages d'erreurs -->
-	<error-page>
-		<error-code>404</error-code>
-		<location>/WEB-INF/pages/error/404.jsp</location>
-	</error-page>
-
-	<error-page>
-		<error-code>403</error-code>
-		<location>/WEB-INF/pages/error/403.jsp</location>
-	</error-page>
+<!--	<error-page>-->
+<!--		<error-code>404</error-code>-->
+<!--		<location>/WEB-INF/pages/error/404.jsp</location>-->
+<!--	</error-page>-->
+<!---->
+<!--	<error-page>-->
+<!--		<error-code>403</error-code>-->
+<!--		<location>/WEB-INF/pages/error/403.jsp</location>-->
+<!--	</error-page>-->
 </web-app>

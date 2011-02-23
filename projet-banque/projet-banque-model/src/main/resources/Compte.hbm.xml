@@ -6,14 +6,16 @@
 <hibernate-mapping package="com.excilys.projet.banque.model">
 	<class name="Compte" table="compte">
 		<meta attribute="sync-DAO">false</meta>
-		<id name="Id" type="integer" column="id">
+		<id name="id" type="integer" column="id">
 			<generator class="increment" />
 		</id>
 
-		<property name="Libelle" column="libelle" type="string"
+		<property name="libelle" column="libelle" type="string"
+			not-null="true" />
+			
+		<property name="solde" column="solde_courant" type="float"
 			not-null="true" />
 
-		<many-to-one name="Client" column="client_fk" class="Client" not-null="true" />
-
+		<many-to-one name="client" column="client_fk" class="Client" not-null="true" />
 	</class>
 </hibernate-mapping>

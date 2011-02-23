@@ -41,13 +41,11 @@
 		<property name="sessionFactory" ref="banqueSessionFactory" />
 	</bean>
 
-	<bean id="clientdao" class="com.excilys.projet.banque.dao.impl.ClientDAOImpl">
+	<bean id="clientDao" class="com.excilys.projet.banque.dao.impl.ClientDAOImpl">
 		<property name="hibernateTemplate" ref="banqueHibernateTemplate" />
 	</bean>
 
-
-	<bean id="comptedao" class="com.excilys.projet.banque.dao.impl.CompteDAOImpl">
+	<bean id="compteDao" class="com.excilys.projet.banque.dao.impl.CompteDAOImpl">
 		<property name="hibernateTemplate" ref="banqueHibernateTemplate" />
 	</bean>
-
 </beans>

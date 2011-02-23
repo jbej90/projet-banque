@@ -16,7 +16,7 @@ public class ClientDAOImpl extends HibernateDaoSupport implements ClientDAO {
 
 	@Override
 	public Client findById(int idClient) {
-		return (Client) getHibernateTemplate().find("From Client where id=?", idClient).get(0);
+		return (Client) getHibernateTemplate().find("From Client c left join fetch c.comptes where c.id=?", idClient).get(0);
 	}
 
 	@Override
