@@ -10,20 +10,11 @@ public class Client {
 	private String adresse;
 	private Date dateLastConnection;
 	private Set<Compte> comptes;
-	private float totalSoldeCompte = 0;
+	private float totalSoldeComptes = 0;
 
 	@Override
 	public String toString() {
 		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", adresse=" + adresse + ", dateLastConnection=" + dateLastConnection + ", comptes=" + comptes + "]";
-	}
-	
-	public float getTotalSoldeComptes() {
-		if (totalSoldeCompte == 0) {
-			for (Compte compte : comptes) {
-				totalSoldeCompte += compte.getSolde();
-			}
-		}
-		return totalSoldeCompte;
 	}
 
 	public Integer getId() {
@@ -72,5 +63,13 @@ public class Client {
 
 	public void setComptes(Set<Compte> comptes) {
 		this.comptes = comptes;
+	}
+
+	public float getTotalSoldeComptes() {
+		return totalSoldeComptes;
+	}
+	
+	public void setTotalSoldeComptes(float totalSoldeCompte) {
+		this.totalSoldeComptes = totalSoldeCompte;
 	}
 }

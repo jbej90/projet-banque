@@ -29,8 +29,7 @@
 		
 			<div id="body">
 				<div id="content">
-					<p>Compte numéro ${compte.id}</p>
-					
+					<p>Compte numéro ${compte_id}</p>
 				</div>
 			</div>
 			

@@ -6,6 +6,7 @@
 <hibernate-mapping package="com.excilys.projet.banque.model">
 	<class name="Client" table="client">
 		<meta attribute="sync-DAO">false</meta>
+
 		<id name="id" type="integer" column="id">
 			<generator class="increment" />
 		</id>
@@ -14,13 +15,15 @@
 			length="30" />
 		<property name="adresse" column="adresse" type="string"
 			not-null="false" length="50" />
-		<property name="DateLastConnection" column="date_last_con" type="date"
-			not-null="false" />
+		<property name="DateLastConnection" column="date_last_con"
+			type="date" not-null="false" />
+		<property name="totalSoldeComptes"
+			formula="(SELECT SUM(c.solde_courant) FROM compte AS c WHERE c.client_fk = id)"
+			type="float" />
 
-		<set name="comptes" table="compte_client" inverse="true">
-			<key column="client_fk" not-null="true"/>
+		<set name="comptes" table="compte_client" inverse="true" sort="natural">
+			<key column="client_fk" not-null="true" />
 			<one-to-many class="Compte" />
 		</set>
-
 	</class>
 </hibernate-mapping>
