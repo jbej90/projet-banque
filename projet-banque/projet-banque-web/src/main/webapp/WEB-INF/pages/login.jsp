@@ -34,7 +34,10 @@
 		<!--			Mot de passe :<input class="input" name="password" type="password" />-->
 		<!--			<input value="Valider" type="submit" />-->
 		<!--		</form>-->
+		
 					<form method="post" action="<c:url value="/j_spring_security_check"/>" class="box">
+						<jsp:include page="messages.jsp" />
+						
 						<div class="row">
 							<label for="username">Identifiant :</label>
 							<input class="input" id="username" name="j_username" value="" type="text" />

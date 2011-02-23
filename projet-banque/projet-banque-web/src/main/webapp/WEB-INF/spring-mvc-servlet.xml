@@ -31,5 +31,4 @@
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
 		p:prefix="/WEB-INF/pages/" p:suffix=".jsp" />
-
 </beans>

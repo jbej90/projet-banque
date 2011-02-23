@@ -12,6 +12,20 @@ public class Client {
 	private Set<Compte> comptes;
 	private float totalSoldeComptes = 0;
 
+
+	public Client() {}
+	public Client(Integer id, String nom, String prenom, String adresse, Date dateLastConnection, Set<Compte> comptes, float totalSoldeComptes) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.adresse = adresse;
+		this.dateLastConnection = dateLastConnection;
+		this.comptes = comptes;
+		this.totalSoldeComptes = totalSoldeComptes;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", adresse=" + adresse + ", dateLastConnection=" + dateLastConnection + ", comptes=" + comptes + "]";
@@ -68,7 +82,7 @@ public class Client {
 	public float getTotalSoldeComptes() {
 		return totalSoldeComptes;
 	}
-	
+
 	public void setTotalSoldeComptes(float totalSoldeCompte) {
 		this.totalSoldeComptes = totalSoldeCompte;
 	}

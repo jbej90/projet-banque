@@ -17,7 +17,7 @@
 
 		<intercept-url pattern="/**" filters="none" />
 		
-		<form-login login-page="/login.htm" authentication-success-handler-ref="roleAuthenticationHandler" />
+		<form-login login-page="/login.htm" authentication-success-handler-ref="roleAuthenticationHandler" authentication-failure-handler-ref="failureLoginHandler" />
 		<logout logout-success-url="/" />
 		
 <!--		<session-management>-->
@@ -58,6 +58,7 @@
 	</beans:bean>
 	
 	<beans:bean id="roleAuthenticationHandler" class="com.excilys.projet.banque.web.handler.RoleAuthenticationSuccessHandler"></beans:bean>
+	<beans:bean id="failureLoginHandler" class="com.excilys.projet.banque.web.handler.FailureLoginHandler"></beans:bean>
 	
 <!--	<beans:bean id="myAuthenticationFilter" class="com.excilys.projet.banque.web.CustomUsernamePasswordAuthenticationFilter"></beans:bean>-->
 
