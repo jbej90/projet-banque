@@ -6,6 +6,7 @@
 <hibernate-mapping package="com.excilys.projet.banque.model">
 	<class name="Compte" table="compte">
 		<meta attribute="sync-DAO">false</meta>
+		
 		<id name="id" type="integer" column="id">
 			<generator class="increment" />
 		</id>

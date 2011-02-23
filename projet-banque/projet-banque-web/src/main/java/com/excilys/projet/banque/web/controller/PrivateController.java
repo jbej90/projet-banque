@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.excilys.projet.banque.model.Client;
@@ -36,7 +37,6 @@ public class PrivateController {
 		
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		
 		Client client = null;
 		try {
 			client = clientService.recupererClient(Integer.valueOf(user.getUsername()));
@@ -47,17 +47,17 @@ public class PrivateController {
 		}
 		
 		model.addAttribute("client", client);
-		
-		List<Compte> comptes = new ArrayList<Compte>(client.getComptes());
-		Collections.sort(comptes);
-		model.addAttribute("comptes", comptes);
+		model.addAttribute("comptes", client.getComptes());
 		
 		return BASE_DIR+"home";
 	}
 	
 
-	@RequestMapping(BASE_URL_PREFIX+"compte-*"+BASE_URL_SUFFIX)
-	public String showCompte(ModelMap model) {
+	@RequestMapping(BASE_URL_PREFIX+"compte-{id}"+BASE_URL_SUFFIX)
+	public String showCompte(@PathVariable long id, ModelMap model) {
+
+		model.addAttribute("compte_id", id);
+		
 		return BASE_DIR+"compte";
 	}
 	
