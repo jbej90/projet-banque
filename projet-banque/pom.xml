@@ -12,9 +12,9 @@
 
 	<repositories>
 		<repository>
-			<url>http://download.java.net/maven/glassfish</url>
-			<name>Glassfish</name>
 			<id>glassfish</id>
+			<name>Glassfish</name>
+			<url>http://download.java.net/maven/glassfish</url>
 		</repository>
 		<repository>
 			<id>jboss-nexus</id>
@@ -41,6 +41,12 @@
 		<mysql-connector.version>5.1.14</mysql-connector.version>
 		<javassist.version>3.12.1.GA</javassist.version>
 		<javax-transaction.version>1.1</javax-transaction.version>
+		<jcl-over-slf4j.version>1.6.1</jcl-over-slf4j.version>
+		
+		<servlet-api.version>2.5</servlet-api.version>
+		<jsp-api.version>2.1</jsp-api.version>
+		<el-api.version>2.2</el-api.version>
+		<jstl-impl.version>1.2</jstl-impl.version>
 	</properties>
 
 	<dependencyManagement>
@@ -181,7 +187,7 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jcl-over-slf4j</artifactId>
-				<version>1.6.1</version>
+				<version>${jcl-over-slf4j.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -192,14 +198,10 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
-		
-		
-		
 	</dependencies>
 
 	<build>
