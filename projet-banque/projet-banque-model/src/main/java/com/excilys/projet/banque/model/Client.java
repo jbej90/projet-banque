@@ -10,6 +10,7 @@ public class Client {
 	private String adresse;
 	private Date dateLastConnection;
 	private Set<Compte> comptes;
+	private Auth auth;
 	private float totalSoldeComptes = 0;
 
 
@@ -78,7 +79,15 @@ public class Client {
 	public void setComptes(Set<Compte> comptes) {
 		this.comptes = comptes;
 	}
+	
+	public Auth getAuth() {
+		return auth;
+	}
 
+	public void setAuth(Auth auth) {
+		this.auth = auth;
+	}
+	
 	public float getTotalSoldeComptes() {
 		return totalSoldeComptes;
 	}

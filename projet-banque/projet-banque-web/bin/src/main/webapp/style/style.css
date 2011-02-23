@@ -1,0 +1,194 @@
+body {
+	padding: 0;
+	margin: 0;
+	font-family: Verdana;
+	font-size: 14px;
+}
+
+
+/******************/
+/**** GENERICS ****/
+/******************/
+
+/* Texts */
+p {
+	margin: 5px;
+}
+
+/* Images */
+img {
+	border: none;
+}
+
+/* Links */
+a {
+	text-decoration: none;
+	color: #444;
+	font-weight: bold;
+}
+
+/* Utils */
+.clearer {
+	clear: both;
+}
+.box {
+	background: #fff;
+	border: 1px #ccc solid;
+	padding: 10px;
+	margin: 0 auto;
+	width: 500px;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+.width-25 {
+	width: 25%:	
+}
+.width-50 {
+	width: 50%:	
+}
+.width-75 {
+	width: 75%:	
+}
+.decouvert {
+	color: #e00;
+}
+
+/* Messages */
+ul#messages {
+	margin: 0 0 6px 0;
+	padding: 0;
+	list-style-type: none;	
+}
+ul#messages li.error {
+	color: #e00;
+	background: url('../images/error.png') left center no-repeat;
+	padding: 0 0 0 20px;
+}
+ul#messages li.warning {
+	color: #FFAD1F;
+	background: url('../images/warning.png') left center no-repeat;
+	padding: 0 0 0 20px;
+}
+ul#messages li.ok {
+	color: #0F8F08;
+	background: url('../images/ok.png') left center no-repeat;
+	padding: 0 0 0 20px;
+}
+
+
+/* Forms */
+form .row {
+	clear: both;
+	margin: 3px 0;
+}
+form label {
+	float: left;
+	width: 150px;
+	color: #444;
+}
+form input.input {
+	width: 200px;
+	background: #ffffbf;
+	color: #444;
+}
+form .buttons {
+	text-align: center;
+}
+
+/* Tables */
+table {
+	border-spacing: 1px;
+	background: #e7e7e7;
+	width: 100%;
+}
+table tr { 
+	height: 24px;
+}
+
+table thead tr {
+	background: #f0f0f0;
+	border-top: 1px #999 solid;
+	border-bottom: 1px #fff solid;
+	color: #666;
+}
+
+table tbody td {
+	padding: 2px;
+}
+table tbody tr.line0 {
+	background: #f9f9f9;
+}
+table tbody tr.line1 {
+	background: #fff;
+	border-top: 1px #fff solid;
+}
+
+table tfoot tr td {
+	border-top: 1px #bbb solid;
+}
+
+/*******************/
+/**** CONTAINER ****/
+/*******************/
+#container {
+	width: 100%;
+}
+
+
+/****************/
+/**** HEADER ****/
+/****************/
+#header #logo {
+	float: left;
+	margin: 2px;
+}
+#header #title {
+	font-size: 20px;
+	text-align: center;
+	padding: 12px 0 0 0;
+}
+
+
+/********************/
+/**** SUB HEADER ****/
+/********************/
+#sub-header {
+	padding: 3px 5px;
+	border-top: 1px #ccc solid;
+	border-bottom: 1px #ccc solid;
+	text-align: right;
+	background: #def;
+	color: #777;
+	font-size: 13px;
+}
+
+
+/**************/
+/**** BODY ****/
+/**************/
+#body {
+	padding: 10px 0 10px 0;
+	background: #eff7ff;
+}
+#body #content {
+	padding: 0 10px;
+}
+
+
+/****************/
+/**** FOOTER ****/
+/****************/
+#footer {
+	padding: 3px 5px;
+	border-top: 1px #ccc solid;
+	border-bottom: 1px #ccc solid;
+	text-align: center;
+	background: #def;
+	color: #777;
+	font-size: 11px;
+}
+#footer #w3c {
+	margin: 3px 0 0 0;
+	text-align: center;
+}

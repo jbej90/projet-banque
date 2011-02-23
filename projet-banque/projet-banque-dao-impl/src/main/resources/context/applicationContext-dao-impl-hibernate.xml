@@ -26,6 +26,7 @@
 			<list>
 				<value>Compte.hbm.xml</value>
 				<value>Client.hbm.xml</value>
+				<value>Auth.hbm.xml</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

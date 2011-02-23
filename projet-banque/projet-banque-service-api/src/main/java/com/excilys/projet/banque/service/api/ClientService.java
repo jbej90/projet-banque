@@ -8,7 +8,9 @@ import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 
 public interface ClientService {
 
-	Client recupererClient(int username) throws ServiceException;
+	Client recupererClient(int idClient) throws ServiceException;
+
+	Client recupererClient(String username) throws ServiceException;
 
 	List<Client> recupererClients() throws ServiceException;
 
