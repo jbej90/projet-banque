@@ -56,7 +56,7 @@ a {
 
 /* Messages */
 ul#messages {
-	margin: 3px 0;
+	margin: 0 0 6px 0;
 	padding: 0;
 	list-style-type: none;	
 }
@@ -71,7 +71,7 @@ ul#messages li.warning {
 	padding: 0 0 0 20px;
 }
 ul#messages li.ok {
-	color: #0e0;
+	color: #0F8F08;
 	background: url('../images/ok.png') left center no-repeat;
 	padding: 0 0 0 20px;
 }
