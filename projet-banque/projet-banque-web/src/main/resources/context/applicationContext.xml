@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<bean id="propertyPlaceHolder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:/context/projet-banque-web.properties" />
+	</bean>
+	
+	
+	<bean id="privateController" class="com.excilys.projet.banque.web.controller.PrivateController">
+		<property name="clientService" ref="clientService" />
+	</bean>
+	
+<!--	<import resource="spring-mvc-servlet.xml"/>-->
+<!--	<import resource="spring-security.xml"/>-->
+<!--	<import resource="log4j.xml"/>-->
+	
+<!--	<import resource="projet-banque-web*"/>-->
+<!--	projet-banque-web-->
+</beans>

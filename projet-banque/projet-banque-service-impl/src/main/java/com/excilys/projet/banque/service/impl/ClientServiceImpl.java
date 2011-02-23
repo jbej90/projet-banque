@@ -42,4 +42,11 @@ public class ClientServiceImpl implements ClientService {
 		return clientDao.findAll();
 	}
 
+	public void setCompteDao(CompteDAOImpl compteDao) {
+		this.compteDao = compteDao;
+	}
+
+	public void setClientDao(ClientDAOImpl clientDao) {
+		this.clientDao = clientDao;
+	}
 }

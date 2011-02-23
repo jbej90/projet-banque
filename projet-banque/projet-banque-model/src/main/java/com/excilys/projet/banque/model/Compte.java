@@ -1,11 +1,17 @@
 package com.excilys.projet.banque.model;
 
-public class Compte {
-
+public class Compte implements Comparable<Compte> {
 	private int id;
 	private String libelle;
 	private Client client;
 	private float solde;
+	
+	
+	@Override
+	public int compareTo(Compte o) {
+		return libelle.compareTo(o.getLibelle());
+	}
+	
 
 	public int getId() {
 		return id;

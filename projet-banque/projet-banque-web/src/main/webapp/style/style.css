@@ -10,6 +10,16 @@ body {
 /**** GENERICS ****/
 /******************/
 
+/* Texts */
+p {
+	margin: 5px;
+}
+
+/* Images */
+img {
+	border: none;
+}
+
 /* Links */
 a {
 	text-decoration: none;
@@ -21,14 +31,31 @@ a {
 .clearer {
 	clear: both;
 }
-
-/* Forms */
-form {
-	background: #eee;
+.box {
+	background: #fff;
+	border: 1px #ccc solid;
 	padding: 10px;
 	margin: 0 auto;
 	width: 500px;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
 }
+.width-25 {
+	width: 25%:	
+}
+.width-50 {
+	width: 50%:	
+}
+.width-75 {
+	width: 75%:	
+}
+.decouvert {
+	color: #e00;
+}
+
+
+/* Forms */
 form .row {
 	clear: both;
 	margin: 3px 0;
@@ -47,6 +74,37 @@ form .buttons {
 	text-align: center;
 }
 
+/* Tables */
+table {
+	border-spacing: 1px;
+	background: #e7e7e7;
+	width: 100%;
+}
+table tr { 
+	height: 24px;
+}
+
+table thead tr {
+	background: #f0f0f0;
+	border-top: 1px #999 solid;
+	border-bottom: 1px #fff solid;
+	color: #666;
+}
+
+table tbody td {
+	padding: 2px;
+}
+table tbody tr.line0 {
+	background: #f9f9f9;
+}
+table tbody tr.line1 {
+	background: #fff;
+	border-top: 1px #fff solid;
+}
+
+table tfoot tr td {
+	border-top: 1px #bbb solid;
+}
 
 /*******************/
 /**** CONTAINER ****/
@@ -88,7 +146,8 @@ form .buttons {
 /**** BODY ****/
 /**************/
 #body {
-	margin: 10px 0 0 0;
+	padding: 10px 0 10px 0;
+	background: #eff7ff;
 }
 #body #content {
 	padding: 0 10px;
@@ -99,7 +158,6 @@ form .buttons {
 /**** FOOTER ****/
 /****************/
 #footer {
-	margin: 10px 0 0 0;
 	padding: 3px 5px;
 	border-top: 1px #ccc solid;
 	border-bottom: 1px #ccc solid;
@@ -107,4 +165,8 @@ form .buttons {
 	background: #def;
 	color: #777;
 	font-size: 11px;
+}
+#footer #w3c {
+	margin: 3px 0 0 0;
+	text-align: center;
 }

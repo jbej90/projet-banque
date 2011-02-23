@@ -1,15 +1,15 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr" dir="ltr">
 	<head>
 		<title>Projet banque</title>
 		
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		
 		<link rel="icon" type="image/png" href="<c:url value="/images/favicon.png"/>" />
-		<link rel=stylesheet type="text/css" href="<c:url value="/style/style.css"/>" />
+		<link rel="stylesheet" type="text/css" href="<c:url value="/style/style.css"/>" />
 	</head>
 	
 	<body>
@@ -34,7 +34,7 @@
 		<!--			Mot de passe :<input class="input" name="password" type="password" />-->
 		<!--			<input value="Valider" type="submit" />-->
 		<!--		</form>-->
-					<form method="post" action="<c:url value="/j_spring_security_check"/>">
+					<form method="post" action="<c:url value="/j_spring_security_check"/>" class="box">
 						<div class="row">
 							<label for="username">Identifiant :</label>
 							<input class="input" id="username" name="j_username" value="" type="text" />
@@ -53,6 +53,11 @@
 			
 			<div id="footer">
 				Projet banque version 0.0.1-SNAPSHOT
+				<div id="w3c">
+					<a href="http://validator.w3.org/check?uri=referer">
+						<img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Transitional" height="31" width="88" />
+					</a>
+				</div>
 			</div>
 		</div>
 	</body>

@@ -11,6 +11,8 @@ public class LoginController {
 
 	@RequestMapping(BASE_URL_PREFIX+"login"+BASE_URL_SUFFIX)
 	public String showLogin() {
+		System.out.println("coucou");
 		return BASE_DIR+"login";
+		
 	}
 }
