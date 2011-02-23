@@ -9,6 +9,21 @@
 
 	<name>projet-banque</name>
 	<url>http://maven.apache.org</url>
+	
+	<developers>
+		<developer>
+			<name>Alexandre Thomas</name>
+		</developer>
+		<developer>
+			<name>Damien Villeneuve</name>
+		</developer>
+		<developer>
+			<name>Julien Pladeau </name>
+		</developer>
+		<developer>
+			<name>Meriem El Aaboudi</name>
+		</developer>
+	</developers>
 
 	<repositories>
 		<repository>
