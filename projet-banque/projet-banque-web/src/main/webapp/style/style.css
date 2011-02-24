@@ -27,53 +27,23 @@ a {
 	font-weight: bold;
 }
 
-/* Utils */
-.clearer {
-	clear: both;
-}
-.box {
-	background: #fff;
-	border: 1px #ccc solid;
-	padding: 10px;
-	margin: 0 auto;
-	width: 500px;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-}
-.width-25 {
-	width: 25%:	
-}
-.width-50 {
-	width: 50%:	
-}
-.width-75 {
-	width: 75%:	
-}
-.decouvert {
-	color: #e00;
-}
-
 /* Messages */
 ul#messages {
 	margin: 0 0 6px 0;
 	padding: 0;
 	list-style-type: none;	
 }
-ul#messages li.error {
-	color: #e00;
-	background: url('../images/error.png') left center no-repeat;
+ul#messages li {
 	padding: 0 0 0 20px;
+}
+ul#messages li.error {
+	background: url('../images/error.png') left center no-repeat;
 }
 ul#messages li.warning {
-	color: #FFAD1F;
 	background: url('../images/warning.png') left center no-repeat;
-	padding: 0 0 0 20px;
 }
 ul#messages li.ok {
-	color: #0F8F08;
 	background: url('../images/ok.png') left center no-repeat;
-	padding: 0 0 0 20px;
 }
 
 
@@ -127,6 +97,43 @@ table tbody tr.line1 {
 table tfoot tr td {
 	border-top: 1px #bbb solid;
 }
+
+/* Utils */
+.clearer {
+	clear: both;
+}
+.box {
+	background: #fff;
+	border: 1px #ccc solid;
+	padding: 10px;
+	margin: 0 auto;
+	width: 500px;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+.width-25 {
+	width: 25%:	
+}
+.width-50 {
+	width: 50%:	
+}
+.width-75 {
+	width: 75%:	
+}
+.decouvert {
+	color: #e00;
+}
+.error {
+	color: #e00;
+}
+.warning {
+	color: #FFAD1F;
+}
+.ok {
+	color: #0F8F08;
+}
+
 
 /*******************/
 /**** CONTAINER ****/
