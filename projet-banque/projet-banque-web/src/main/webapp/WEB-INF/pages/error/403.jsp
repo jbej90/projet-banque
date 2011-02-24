@@ -29,7 +29,9 @@
 		
 			<div id="body">
 				<div id="content">
-			        <p>Accès interdit.</p>
+					<ul id="messages">
+			        	<li class="error">Accès interdit.</li>
+			        </ul>
     			</div>
 			</div>
 			

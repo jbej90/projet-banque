@@ -42,8 +42,8 @@
 			<password-encoder hash="sha" />
 			
 			<jdbc-user-service id="admin" data-source-ref="dataSource" 
-						users-by-username-query="SELECT login AS username, password, true AS enabled FROM admin WHERE login = ?" 
-						authorities-by-username-query="SELECT login AS username, 'ADMIN' AS authority FROM admin WHERE login = ?" 
+						users-by-username-query="SELECT login AS username, password, enabled FROM admin WHERE login = ?" 
+						authorities-by-username-query="SELECT login AS username, role AS authority FROM admin WHERE login = ?" 
 						role-prefix="ROLE_" />
 		</authentication-provider>
 	</authentication-manager>

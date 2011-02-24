@@ -29,7 +29,9 @@
 		
 			<div id="body">
 				<div id="content">
-			        <p>Page introuvable.</p>
+					<ul id="messages">
+			        	<li class="error">Page introuvable.</li>
+			        </ul>
     			</div>
 			</div>
 			
