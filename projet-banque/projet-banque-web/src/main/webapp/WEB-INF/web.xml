@@ -9,7 +9,7 @@
 	</session-config>
 
 	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.htm</welcome-file>
 	</welcome-file-list>
 
 
@@ -55,12 +55,12 @@
 
 	<!-- Pages d'erreurs -->
 	<error-page>
-		<error-code>404</error-code>private/home.htm
-		<location>/WEB-INF/pages/error/404.jsp</location>
+		<error-code>404</error-code>
+		<location>/error/404.htm</location>
 	</error-page>
 
 	<error-page>
 		<error-code>403</error-code>
-		<location>/WEB-INF/pages/error/403.jsp</location>
+		<location>/error/403.htm</location>
 	</error-page>
 </web-app>
