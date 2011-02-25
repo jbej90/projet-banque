@@ -25,7 +25,9 @@
 			</div>
 			
 			<div id="sub-header">
-				<a href="<c:url value="/"/>">Retour à l'accueil</a>
+				<div id="home">
+					<a href="<c:url value="/"/>">Retour à l'accueil</a>
+				</div>
 			</div>
 		
 			<div id="body">

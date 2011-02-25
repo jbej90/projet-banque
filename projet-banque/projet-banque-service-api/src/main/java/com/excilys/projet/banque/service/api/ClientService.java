@@ -10,9 +10,12 @@ public interface ClientService {
 
 	Client recupererClient(int idClient) throws ServiceException;
 
-	Client recupererClient(String username) throws ServiceException;
+	int recupererClientId(String username) throws ServiceException;
 
 	List<Client> recupererClients() throws ServiceException;
 
+	List<Compte> recupererListeComptes(int idClient);
+	
 	List<Compte> recupererListeComptes(Client client);
+	
 }
