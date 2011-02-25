@@ -26,7 +26,10 @@
 			
 			<div id="sub-header">
 				<tiles:insertAttribute name="menu" />
-				<tiles:insertAttribute name="sub-header" />
+				<div id="home">
+					<tiles:insertAttribute name="sub-header" />
+				</div>
+				<div class="clearer"></div>
 			</div>
 		
 			<div id="body">

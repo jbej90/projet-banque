@@ -3,6 +3,7 @@ package com.excilys.projet.banque.service.impl;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -40,17 +41,17 @@ public class ClientServiceImplTest {
 
 	@Test
 	public void recupererClientTest() {
-		Client client = null;
+		int client = 0;
 		try {
-			client = clientService.recupererClient("test1");
+			client = clientService.recupererClientId("test1");
 		} catch (ServiceException e) {}
-		assertNotNull(client);
+		assertTrue(client == 0);
 		
-		client = null;
+		client = 0;
 		try {
-			client = clientService.recupererClient("aaa");
+			client = clientService.recupererClientId("aaa");
 		} catch (ServiceException e) {}
-		assertNull(client);
+		assertTrue(client != 0);
 	}
 
 	@Test
