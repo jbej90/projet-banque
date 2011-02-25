@@ -10,8 +10,6 @@ public interface ClientDAO {
 
 	Client findById(int idClient);
 
-	Client findByUsername(String username);
-
 	void save(Client client);
 
 	List<Client> findByNom(String nom);
