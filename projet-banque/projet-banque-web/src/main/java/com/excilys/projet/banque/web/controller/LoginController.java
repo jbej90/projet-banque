@@ -1,6 +1,7 @@
 package com.excilys.projet.banque.web.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -10,7 +11,9 @@ public class LoginController {
 	private static final String BASE_URL_SUFFIX = ".htm";
 
 	@RequestMapping("login"+BASE_URL_SUFFIX)
-	public String showLogin() {
+	public String showLogin(ModelMap model) {
+		model.addAttribute("content", "/WEB-INF/pages/login.jsp");
+		
 		return BASE_DIR+"login";
 	}
 }

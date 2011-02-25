@@ -21,14 +21,24 @@
 		- prennent en charge une requête Post ou une requête Get - @RequestMapping(method 
 		= RequestMethod.GET) - Ou alors au niveau de chaque méthode -->
 
-	<bean
-		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
 	<!-- Ceci est le view resolver, il permet de définir la technologie de vue 
 		utilisée et comment sélectionner une vue. Ici on prendra la solution la plus 
 		simple, elle permet de mapper le nom de la vue retournée avec la sélection 
 		d'une jsp. Exemple si le nom de la vue retournée est "foo/bar/hello" alors 
 		on utilisera le fichier /foo/bar/hello.jsp pour constuire la vue. -->
-	<bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-		p:prefix="/WEB-INF/pages/" p:suffix=".jsp" />
+		
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.tiles2.TilesViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView" />
+	</bean>
+	
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/template/template.xml</value>
+				<value>/WEB-INF/template/template-error.xml</value>
+			</list>
+		</property>
+	</bean>
 </beans>
