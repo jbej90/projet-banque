@@ -17,7 +17,7 @@ public class ErrorController {
 	private static final String BASE_URL_SUFFIX = ".htm";
 	
 	/**
-	 * Map l'url de type /admin/index.htm
+	 * Map l'url de type /error/{code}.htm
 	 */
 	@RequestMapping(value="{code}"+BASE_URL_SUFFIX, method=RequestMethod.GET)
 	public String showError(@PathVariable int code, final HttpServletRequest request, final HttpServletResponse response, ModelMap model) {
@@ -30,6 +30,9 @@ public class ErrorController {
 				break;
 			case 404:
 				MessageStack.getInstance(request).addError("Page introuvable");
+				break;
+			case 500:
+				MessageStack.getInstance(request).addError("Erreur interne");
 				break;
 		}
 		

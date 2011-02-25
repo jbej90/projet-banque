@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN" "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<!-- 
+		Template pour les pages d'erreurs
+	 -->
+	<definition name="utils/error" template="/WEB-INF/template/layout-error.jsp">
+		<put-attribute name="sub-header" value="/WEB-INF/template/sub-header.jsp" />
+	</definition>
+</tiles-definitions>

@@ -34,12 +34,6 @@ public class PrivateController {
 	 */
 	@RequestMapping(value="home"+BASE_URL_SUFFIX, method=RequestMethod.GET)
 	public String showHome(ModelMap model) {
-//	public String showHome(final HttpServletRequest request, final HttpServletResponse response, ModelMap model) {
-//		System.out.println(request.getSession().getAttribute("SPRING_SECURITY_CONTEXT"));
-//		System.out.println(request.getParameter("test"));
-//		System.out.println(response);
-		
-		
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		Client client = null;
