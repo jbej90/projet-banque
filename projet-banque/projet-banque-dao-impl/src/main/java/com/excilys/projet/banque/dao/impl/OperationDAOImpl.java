@@ -2,9 +2,7 @@ package com.excilys.projet.banque.dao.impl;
 
 import java.util.List;
 
-
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.stereotype.Repository;
 
 import com.excilys.projet.banque.dao.api.OperationDAO;
 import com.excilys.projet.banque.model.Carte;
@@ -12,7 +10,6 @@ import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.model.Type;
 
-@Repository("operationDao")
 public class OperationDAOImpl extends HibernateDaoSupport implements OperationDAO {
 
 	@Override
@@ -37,7 +34,7 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 
 	@Override
 	public Operation findById(int idOperation) {
-		return (Operation)getHibernateTemplate().find("From Operation o left join fetch o.compte left join fetch o.carte where o.id=?", idOperation).get(0);
+		return (Operation) getHibernateTemplate().find("From Operation o left join fetch o.compte left join fetch o.carte where o.id=?", idOperation).get(0);
 	}
 
 	@Override

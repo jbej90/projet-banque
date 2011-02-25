@@ -20,7 +20,7 @@ public class ClientDAOImplTest {
 	@BeforeClass
 	public static void setUp() {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/context/applicationContext-dao-impl-hibernate.xml");
-		clientDAOImpl = applicationContext.getBean("clientdao", ClientDAOImpl.class);
+		clientDAOImpl = applicationContext.getBean("clientDao", ClientDAOImpl.class);
 	}
 
 	@Test

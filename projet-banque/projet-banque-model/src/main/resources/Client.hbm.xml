@@ -8,9 +8,10 @@
 		<meta attribute="sync-DAO">false</meta>
 
 		<id name="id" type="integer" column="id">
-			<generator class="foreign">
-				<param name="property">auth</param>
-			</generator>
+<!--			<generator class="foreign">-->
+<!--				<param name="property">auth</param>-->
+<!--			</generator>-->
+			<generator class="increment"/>
 		</id>
 
 		<property name="nom" column="nom" type="string" not-null="true"
@@ -19,15 +20,18 @@
 			not-null="false" length="50" />
 		<property name="DateLastConnection" column="date_last_con"
 			type="date" not-null="false" />
-		<property name="totalSoldeComptes"
-			formula="(SELECT SUM(c.solde_courant) FROM compte AS c WHERE c.client_fk = id)"
-			type="float" />
+<!--		<property name="totalSoldeComptes"-->
+<!--			formula="(SELECT SUM(c.solde_courant) FROM compte AS c WHERE c.client_fk = id)"-->
+<!--			type="float" />-->
 			
-		<one-to-one name="auth" constrained="true"></one-to-one>
+<!--		<one-to-one name="auth" class="Auth" constrained="true" fetch="join"/>-->
 
 		<set name="comptes" table="compte_client" inverse="true" sort="natural">
 			<key column="client_fk" not-null="true" />
 			<one-to-many class="Compte" />
 		</set>
+		
+<!--		<many-to-one name="auth" class="Auth" column="id" not-null="true" cascade="all" unique="true"/>-->
+		
 	</class>
 </hibernate-mapping>
