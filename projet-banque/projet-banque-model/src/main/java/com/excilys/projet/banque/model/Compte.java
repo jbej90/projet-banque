@@ -1,5 +1,17 @@
 package com.excilys.projet.banque.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="compte")
 public class Compte implements Comparable<Compte> {
 	private int id;
 	private String libelle;
@@ -23,6 +35,9 @@ public class Compte implements Comparable<Compte> {
 	}
 	
 
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id", nullable=false, unique=true)
 	public int getId() {
 		return id;
 	}
@@ -31,6 +46,7 @@ public class Compte implements Comparable<Compte> {
 		this.id = id;
 	}
 
+	@Column(name="libelle", nullable=false, length=100)
 	public String getLibelle() {
 		return libelle;
 	}
@@ -39,6 +55,8 @@ public class Compte implements Comparable<Compte> {
 		this.libelle = libelle;
 	}
 
+	@ManyToOne(targetEntity=Client.class)
+	@JoinColumn(name="client_fk")
 	public Client getClient() {
 		return client;
 	}
@@ -47,6 +65,7 @@ public class Compte implements Comparable<Compte> {
 		this.client = client;
 	}
 
+	@Column(name="solde_courant", precision=10, scale=5)
 	public float getSolde() {
 		return solde;
 	}

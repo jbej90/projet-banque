@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="com.excilys.projet.banque.model">
+	<class name="Operation" table="operation">
+		<meta attribute="sync-DAO">false</meta>
+		
+		<id name="id" type="integer" column="id">
+			<generator class="increment" />
+		</id>
+
+		<property name="libelle" column="libelle" type="string"	not-null="true" />			
+		<property name="etat" column="etat" type="String" not-null="true" />
+		<property name="montant" column="montant" type="float" not-null="true" />
+		<property name="dateOp" column="date_op" type="float" not-null="true" />
+		
+		
+		<many-to-one name="type" column="type_fk" class="Type" not-null="true" />
+		<many-to-one name="compte" column="compte_fk" class="Compte" not-null="true" />
+		<many-to-one name="carte" column="carte_fk" class="Carte" not-null="false" />
+		
+	</class>
+</hibernate-mapping>
