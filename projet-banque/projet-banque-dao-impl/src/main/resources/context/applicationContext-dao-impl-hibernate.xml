@@ -49,4 +49,8 @@
 	<bean id="compteDao" class="com.excilys.projet.banque.dao.impl.CompteDAOImpl">
 		<property name="hibernateTemplate" ref="banqueHibernateTemplate" />
 	</bean>
+	
+	<bean id="authDao" class="com.excilys.projet.banque.dao.impl.AuthDAOImpl">
+		<property name="hibernateTemplate" ref="banqueHibernateTemplate" />
+	</bean>
 </beans>

@@ -15,7 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="carte")
+@Table(name = "carte")
 public class Carte {
 	private int id;
 	private Compte compte;
@@ -24,8 +24,8 @@ public class Carte {
 	private TypeCarte type;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id", nullable=false, unique=true)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false, unique = true)
 	public int getId() {
 		return id;
 	}
@@ -34,17 +34,17 @@ public class Carte {
 		this.id = id;
 	}
 
-	@Column(name="compte_fk")
-	@OneToOne(targetEntity=Compte.class)
+	@Column(name = "compte_fk")
+	@OneToOne(targetEntity = Compte.class)
 	public Compte getCompte() {
 		return compte;
 	}
-	
+
 	public void setCompte(Compte compte) {
 		this.compte = compte;
 	}
 
-	@Column(name="num_carte", nullable=false, unique=true, length=16)
+	@Column(name = "num_carte", nullable = false, unique = true, length = 16)
 	public String getNumCarte() {
 		return numCarte;
 	}
@@ -53,7 +53,7 @@ public class Carte {
 		this.numCarte = numCarte;
 	}
 
-	@Column(name="date_lim", nullable=false)
+	@Column(name = "date_lim", nullable = false)
 	@Temporal(TemporalType.DATE)
 	public Date getDateLim() {
 		return dateLim;

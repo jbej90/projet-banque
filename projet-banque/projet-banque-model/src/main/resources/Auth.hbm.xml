@@ -12,5 +12,12 @@
 		</id>
 
 		<property name="login" column="login" type="string" not-null="true" length="10" />
+		
+		<property name="password" column="password" type="string" not-null="true" length="40" />
+		
+		<property name="enabled" column="enabled" type="int" not-null="true" />
+		
+		<one-to-one name="client" class="Client" constrained="true" fetch="join"/>		 
+		 
 	</class>
 </hibernate-mapping>

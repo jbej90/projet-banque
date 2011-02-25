@@ -10,11 +10,12 @@ public class Client {
 	private String adresse;
 	private Date dateLastConnection;
 	private Set<Compte> comptes;
-	private Auth auth;
+	// private Auth auth;
 	private float totalSoldeComptes = 0;
 
+	public Client() {
+	}
 
-	public Client() {}
 	public Client(Integer id, String nom, String prenom, String adresse, Date dateLastConnection, Set<Compte> comptes, float totalSoldeComptes) {
 		super();
 		this.id = id;
@@ -24,12 +25,13 @@ public class Client {
 		this.dateLastConnection = dateLastConnection;
 		this.comptes = comptes;
 		this.totalSoldeComptes = totalSoldeComptes;
+		// this.auth = auth;
 	}
-
 
 	@Override
 	public String toString() {
-		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", adresse=" + adresse + ", dateLastConnection=" + dateLastConnection + ", comptes=" + comptes + "]";
+		return "Client [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", adresse=" + adresse + ", dateLastConnection=" + dateLastConnection + ", comptes=" + comptes
+				+ ", totalSoldeComptes=" + totalSoldeComptes + "]";
 	}
 
 	public Integer getId() {
@@ -79,15 +81,7 @@ public class Client {
 	public void setComptes(Set<Compte> comptes) {
 		this.comptes = comptes;
 	}
-	
-	public Auth getAuth() {
-		return auth;
-	}
 
-	public void setAuth(Auth auth) {
-		this.auth = auth;
-	}
-	
 	public float getTotalSoldeComptes() {
 		return totalSoldeComptes;
 	}

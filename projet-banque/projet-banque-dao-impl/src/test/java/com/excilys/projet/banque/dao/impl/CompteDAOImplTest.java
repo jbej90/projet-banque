@@ -22,8 +22,9 @@ public class CompteDAOImplTest {
 
 	@BeforeClass
 	public static void setUp() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/context/applicationContext-dao-impl.xml");
-		compteDAOImpl = applicationContext.getBean("comptedao", CompteDAOImpl.class);
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/context/applicationContext-dao-impl-hibernate.xml");
+		compteDAOImpl = applicationContext.getBean("compteDao", CompteDAOImpl.class);
+		clientDAOImpl = applicationContext.getBean("clientDao", ClientDAOImpl.class);
 	}
 
 	// TODO : optimiser le test!!!!
@@ -77,7 +78,7 @@ public class CompteDAOImplTest {
 		compte.setSolde(100);
 		compteDAOImpl.save(compte);
 
-		assertEquals(100, compteDAOImpl.findAllByClient(client).get(0).getSolde());
+		assertEquals(100f, compteDAOImpl.findAllByClient(client).get(0).getSolde());
 
 	}
 }
