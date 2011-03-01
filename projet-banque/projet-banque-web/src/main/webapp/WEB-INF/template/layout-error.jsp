@@ -19,7 +19,7 @@
 				<div id="logo">
 					<img src="<c:url value="/images/login.gif"/>" alt="login" title="login" />
 				</div>
-				<div id="title">Erreur ${code}</div>
+				<h1>Erreur ${code}</h1>
 				
 				<div class="clearer"></div>
 			</div>
@@ -37,7 +37,7 @@
 			</div>
 			
 			<div id="footer">
-				<jsp:include page="footer.jsp" />
+				<jsp:include page="part-footer.jsp" />
 			</div>
 		</div>
 	</body>

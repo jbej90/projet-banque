@@ -6,8 +6,8 @@
 	 -->
 	<definition name="banqueTemplate" template="/WEB-INF/template/layout.jsp">
 		<put-attribute name="title" value="" />
-		<put-attribute name="sub-header" value="/WEB-INF/template/sub-header.jsp" />
-		<put-attribute name="menu" value="/WEB-INF/template/menu.jsp" />
+		<put-attribute name="sub-header" value="/WEB-INF/template/part-sub-header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/template/part-menu.jsp" />
 		<put-attribute name="content" value="" />
 	</definition>
 	
@@ -27,7 +27,7 @@
 		Pages de la partie utilisateur
 	 -->
 	<definition name="private/home" extends="banqueTemplate">
-		<put-attribute name="title" value="Mon résumé" />
+		<put-attribute name="title" value="Résumé de mes comptes" />
 		<put-attribute name="content" value="/WEB-INF/pages/private/home.jsp" />
 	</definition>
 	

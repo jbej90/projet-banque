@@ -5,6 +5,6 @@
 		Template pour les pages d'erreurs
 	 -->
 	<definition name="utils/error" template="/WEB-INF/template/layout-error.jsp">
-		<put-attribute name="sub-header" value="/WEB-INF/template/sub-header.jsp" />
+		<put-attribute name="sub-header" value="/WEB-INF/template/part-sub-header.jsp" />
 	</definition>
 </tiles-definitions>
