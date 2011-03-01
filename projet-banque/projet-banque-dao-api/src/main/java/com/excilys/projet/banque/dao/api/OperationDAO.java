@@ -1,5 +1,6 @@
 package com.excilys.projet.banque.dao.api;
 
+import java.util.Date;
 import java.util.List;
 
 import com.excilys.projet.banque.model.Carte;
@@ -12,13 +13,15 @@ public interface OperationDAO {
 	List<Operation> findAll();
 
 	List<Operation> findAllByType(Type type);
-	
+
 	List<Operation> findAllByCompte(Compte compte);
-	
+
 	List<Operation> findAllByCarte(Carte carte);
-	
+
 	Operation findById(int idOperation);
 
 	void save(Operation operation);
-	
+
+	List<Operation> findAllByMoisByCompte(Date date, Compte compte);
+
 }
