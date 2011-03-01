@@ -7,7 +7,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -114,6 +116,49 @@ public class OperationDAOImplTest {
 		}
 		assertFalse(operationDAOImpl.findAllByMoisByCompte(date, compte).isEmpty());
 		assertTrue(operationDAOImpl.findAllByMoisByCompte(date, compte).size() == 1);
+
+	}
+
+	@Test
+	public void findByAllByMoisByCompteByTypeTest() {
+
+		Operation operation = operationDAOImpl.findById(1);
+		Compte compte = operation.getCompte();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		Date date = null;
+		try {
+			date = sdf.parse("2011-01-05");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertFalse(operationDAOImpl.findAllByMoisByCompteAndByType(date, compte, Type.OP_CARTE_IMM).isEmpty());
+		assertTrue(operationDAOImpl.findAllByMoisByCompteAndByType(date, compte, Type.OP_CARTE_IMM).size() == 1);
+
+	}
+
+	@Test
+	public void findByAllByMoisByCompteByTypesTest() {
+
+		Operation operation = operationDAOImpl.findById(1);
+		Compte compte = operation.getCompte();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		Date date = null;
+		try {
+			date = sdf.parse("2011-01-05");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		List<Type> types = new ArrayList<Type>();
+		types.add(Type.OP_CARTE_IMM);
+		types.add(Type.OP_CARTE_DIFF);
+
+		assertFalse(operationDAOImpl.findAllByMoisByCompteAndByTypes(date, compte, types).isEmpty());
+		assertTrue(operationDAOImpl.findAllByMoisByCompteAndByTypes(date, compte, types).size() == 1);
 
 	}
 }
