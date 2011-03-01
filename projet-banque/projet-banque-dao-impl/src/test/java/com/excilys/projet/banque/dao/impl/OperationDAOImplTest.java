@@ -5,6 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.annotation.Resource;
@@ -94,5 +96,24 @@ public class OperationDAOImplTest {
 	@Test
 	public void findByIdTest() {
 		assertNotNull(operationDAOImpl.findById(0));
+	}
+
+	@Test
+	public void findByAllByMoisTest() {
+
+		Operation operation = operationDAOImpl.findById(1);
+		Compte compte = operation.getCompte();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		Date date = null;
+		try {
+			date = sdf.parse("2011-01-05");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		assertFalse(operationDAOImpl.findAllByMoisByCompte(date, compte).isEmpty());
+		assertTrue(operationDAOImpl.findAllByMoisByCompte(date, compte).size() == 1);
+
 	}
 }
