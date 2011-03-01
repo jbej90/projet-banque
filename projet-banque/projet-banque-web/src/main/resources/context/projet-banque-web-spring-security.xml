@@ -59,12 +59,5 @@
 	
 	<beans:bean id="roleAuthenticationHandler" class="com.excilys.projet.banque.web.handler.RoleAuthenticationSuccessHandler"></beans:bean>
 	<beans:bean id="failureLoginHandler" class="com.excilys.projet.banque.web.handler.FailureLoginHandler"></beans:bean>
-	
-<!--	<beans:bean id="myAuthenticationFilter" class="com.excilys.projet.banque.web.CustomUsernamePasswordAuthenticationFilter"></beans:bean>-->
-
-<!--	<beans:bean id="authenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">-->
-<!--		<beans:property name="UsernameParameter" value="username"></beans:property>-->
-<!--		<beans:property name="PasswordParameter" value="password"></beans:property>-->
-<!--		<beans:property name="FilterProcessesUrl" value="/login.form"></beans:property>-->
-<!--	</beans:bean>-->
+<!--	<beans:bean id="authenticationFilter" class="com.excilys.projet.banque.web.CustomUsernamePasswordAuthenticationFilter"></beans:bean>-->
 </beans:beans>

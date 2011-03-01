@@ -10,6 +10,17 @@ body {
 /**** GENERICS ****/
 /******************/
 
+/* Titles */
+h1 {
+	font-size: 20px;
+	text-align: center;
+	padding: 12px 0 0 0;	
+}
+h2 {
+	font-size: 16px;
+	padding: 0;
+}
+
 /* Texts */
 p {
 	margin: 5px;
@@ -17,7 +28,7 @@ p {
 
 /* Images */
 img {
-	border: none;
+	border: none;auto
 }
 
 /* Links */
@@ -75,7 +86,7 @@ table tr {
 	height: 24px;
 }
 
-table thead tr {
+table thead tr {l
 	background: #f0f0f0;
 	border-top: 1px #999 solid;
 	border-bottom: 1px #fff solid;
@@ -83,7 +94,7 @@ table thead tr {
 }
 
 table tbody td {
-	padding: 2px;
+	padding: 4px;
 }
 table tbody tr.line0 {
 	background: #f9f9f9;
@@ -106,7 +117,7 @@ table tfoot tr td {
 	border: 1px #ccc solid;
 	padding: 10px;
 	margin: 0 auto;
-	width: 500px;
+	width: auto;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
@@ -119,6 +130,18 @@ table tfoot tr td {
 }
 .width-75 {
 	width: 75%:	
+}
+.width-300 {
+	width: 300px;
+}
+.width-400 {
+	width: 400px;
+}
+.width-500 {
+	width: 500px;
+}
+.width-600 {
+	width: 600px;
 }
 .decouvert {
 	color: #e00;
@@ -149,12 +172,6 @@ table tfoot tr td {
 	float: left;
 	margin: 2px;
 }
-#header #title {
-	font-size: 20px;
-	text-align: center;
-	padding: 12px 0 0 0;
-}
-
 
 /********************/
 /**** SUB HEADER ****/
