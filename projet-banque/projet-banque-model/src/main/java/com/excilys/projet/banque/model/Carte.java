@@ -1,5 +1,6 @@
 package com.excilys.projet.banque.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,15 +10,18 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+@SuppressWarnings("serial")
 @Entity
-@Table(name = "carte")
-public class Carte {
-	private int id;
+@Table(name = "CARTE")
+public class Carte implements Serializable {
+
+	private Integer id;
 	private Compte compte;
 	private String numCarte;
 	private Date dateLim;
@@ -25,17 +29,17 @@ public class Carte {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false, unique = true)
-	public int getId() {
+	@Column(name = "ID", nullable = false, unique = true)
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	@Column(name = "compte_fk")
-	@OneToOne(targetEntity = Compte.class)
+	@ManyToOne(targetEntity = Compte.class)
+	@JoinColumn(name = "COMPTE_FK")
 	public Compte getCompte() {
 		return compte;
 	}
@@ -44,7 +48,7 @@ public class Carte {
 		this.compte = compte;
 	}
 
-	@Column(name = "num_carte", nullable = false, unique = true, length = 16)
+	@Column(name = "NUM_CARTE", nullable = false, unique = true, length = 16)
 	public String getNumCarte() {
 		return numCarte;
 	}
@@ -53,7 +57,7 @@ public class Carte {
 		this.numCarte = numCarte;
 	}
 
-	@Column(name = "date_lim", nullable = false)
+	@Column(name = "DATE_LIM", nullable = false)
 	@Temporal(TemporalType.DATE)
 	public Date getDateLim() {
 		return dateLim;

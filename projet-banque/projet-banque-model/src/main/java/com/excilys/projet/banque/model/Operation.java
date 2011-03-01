@@ -1,5 +1,6 @@
 package com.excilys.projet.banque.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,10 +16,13 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.sun.istack.internal.NotNull;
+
+@SuppressWarnings("serial")
 @Entity
-@Table(name="operation")
-public class Operation {
-	private int id;
+@Table(name = "OPERATION")
+public class Operation implements Serializable {
+	private Integer id;
 	private Type type;
 	private Compte compte;
 	private Carte carte;
@@ -27,89 +31,87 @@ public class Operation {
 	private float montant;
 	private Date dateOp;
 
-	public int getId() {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
+	public Integer getId() {
 		return id;
 	}
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id", unique=true, nullable=false)
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Type getType() {
-		return type;
-	}
-
-	//TODO Vérifier que @Column sert à qqch
-	@Column(name="type_fk", unique=false, nullable=false)
-	@ManyToOne(targetEntity=Type.class)
-	@JoinColumn(name="type_fk")
-	public void setType(Type type) {
-		this.type = type;
-	}
-
+	@Column(name = "LIBELLE", unique = false, nullable = false, length = 30)
 	public String getLibelle() {
 		return libelle;
 	}
 
-	@Column(name="libelle", unique=false, nullable=false)
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
 	}
 
+	@Column(name = "ETAT")
+	@NotNull
+	@Enumerated(EnumType.STRING)
 	public EtatOperation getEtat() {
 		return etat;
 	}
 
-	@Column(name="etat", unique=false, nullable=false)
-	@Enumerated(EnumType.STRING)
 	public void setEtat(EtatOperation etat) {
 		this.etat = etat;
 	}
 
+	@Column(name = "MONTANT")
+	@NotNull
 	public float getMontant() {
 		return montant;
 	}
 
-	@Column(name="montant", unique=false, nullable=false)
 	public void setMontant(float montant) {
 		this.montant = montant;
 	}
 
+	@Temporal(TemporalType.DATE)
+	@Column(name = "DATE_OP")
 	public Date getDateOp() {
 		return dateOp;
 	}
 
-	@Column(name="date_op", unique=false, nullable=false)
-	@Temporal(TemporalType.TIME)
 	public void setDateOp(Date dateOp) {
 		this.dateOp = dateOp;
 	}
 
-	//TODO Vérifier que @Column sert à qqch
-	@Column(name="compte_fk", unique=false, nullable=false)
-	@ManyToOne(targetEntity=Compte.class)
-	@JoinColumn(name="compte_fk")
 	public void setCompte(Compte compte) {
 		this.compte = compte;
 	}
 
+	// @Column(name = "COMPTE_FK", unique = false, nullable = false)
+	@ManyToOne(targetEntity = Compte.class)
+	@JoinColumn(name = "COMPTE_FK")
 	public Compte getCompte() {
 		return compte;
 	}
 
-	//TODO Vérifier que @Column sert à qqch
-	@Column(name="carte_fk", unique=false, nullable=false)
-	@ManyToOne(targetEntity=Carte.class)
-	@JoinColumn(name="carte_fk")
 	public void setCarte(Carte carte) {
 		this.carte = carte;
 	}
 
+	@ManyToOne(targetEntity = Carte.class, optional = true)
+	@JoinColumn(name = "CARTE_FK")
 	public Carte getCarte() {
 		return carte;
+	}
+
+	@Column(name = "TYPE")
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 }
