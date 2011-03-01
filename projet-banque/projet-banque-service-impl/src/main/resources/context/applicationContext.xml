@@ -9,11 +9,6 @@
 	<context:annotation-config />
 	<context:component-scan base-package="com.excilys.projet.banque.service.impl" />
 	
-	
-	
-	
-	
-
 	<bean id="clientService"
 		class="com.excilys.projet.banque.service.impl.ClientServiceImpl">
 		<property name="clientDao" ref="clientDao" />
@@ -26,8 +21,8 @@
 		<property name="compteDao" ref="compteDao" />
 	</bean>
 
-<!--	<bean id="operationService"-->
-<!--		class="com.excilys.projet.banque.service.impl.OperationServiceImpl">-->
-<!--		<property name="operationDao" ref="operationDao" />-->
-<!--	</bean>-->
+	<bean id="operationService"
+		class="com.excilys.projet.banque.service.impl.OperationServiceImpl">
+		<property name="operationDao" ref="operationDao" />
+	</bean>
 </beans>

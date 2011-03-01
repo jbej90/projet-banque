@@ -85,17 +85,21 @@ table {
 table tr { 
 	height: 24px;
 }
+table td {
+	padding: 4px;
+}
+table td.empty {
+	text-align: center;
+	color: #666;
+}
 
-table thead tr {l
+table thead tr {
 	background: #f0f0f0;
 	border-top: 1px #999 solid;
 	border-bottom: 1px #fff solid;
 	color: #666;
 }
 
-table tbody td {
-	padding: 4px;
-}
 table tbody tr.line0 {
 	background: #f9f9f9;
 }
@@ -117,19 +121,23 @@ table tfoot tr td {
 	border: 1px #ccc solid;
 	padding: 10px;
 	margin: 0 auto;
-	width: auto;
+	width: 600px;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 }
+.separator {
+	display: block;
+	height: 10px;
+}
 .width-25 {
-	width: 25%:	
+	width: 25%;
 }
 .width-50 {
-	width: 50%:	
+	width: 50%;	
 }
 .width-75 {
-	width: 75%:	
+	width: 75%;	
 }
 .width-300 {
 	width: 300px;
@@ -143,6 +151,15 @@ table tfoot tr td {
 .width-600 {
 	width: 600px;
 }
+.width-700 {
+	width: 700px;
+}
+.width-800 {
+	width: 800px;
+}
+.width-auto {
+	width: auto;
+}
 .decouvert {
 	color: #e00;
 }
@@ -152,7 +169,7 @@ table tfoot tr td {
 .warning {
 	color: #FFAD1F;
 }
-.ok {
+.info {
 	color: #0F8F08;
 }
 
@@ -203,7 +220,7 @@ table tfoot tr td {
 #menu .item {
 	float: left;
 	display: block;
-	font-size: 1.1em;
+	font-size: 1.05em;
 	text-align: center;
 	border-right: 1px solid #ccc;
 }
@@ -217,7 +234,7 @@ table tfoot tr td {
 }
 #menu .item a {
 	display: block;
-	width: 110px;
+	width: 130px;
 	height: 28px;
 	line-height: 28px;
 	margin: 0;
