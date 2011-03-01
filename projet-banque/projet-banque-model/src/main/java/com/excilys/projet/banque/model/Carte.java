@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "CARTE")
+@Table(name = "carte")
 public class Carte implements Serializable {
 
 	private Integer id;
@@ -39,7 +39,7 @@ public class Carte implements Serializable {
 	}
 
 	@ManyToOne(targetEntity = Compte.class)
-	@JoinColumn(name = "COMPTE_FK")
+	@JoinColumn(name = "compte_fk")
 	public Compte getCompte() {
 		return compte;
 	}
@@ -48,7 +48,7 @@ public class Carte implements Serializable {
 		this.compte = compte;
 	}
 
-	@Column(name = "NUM_CARTE", nullable = false, unique = true, length = 16)
+	@Column(name = "num_carte", nullable = false, unique = true, length = 16)
 	public String getNumCarte() {
 		return numCarte;
 	}
@@ -57,7 +57,7 @@ public class Carte implements Serializable {
 		this.numCarte = numCarte;
 	}
 
-	@Column(name = "DATE_LIM", nullable = false)
+	@Column(name = "date_lim", nullable = false)
 	@Temporal(TemporalType.DATE)
 	public Date getDateLim() {
 		return dateLim;
@@ -67,6 +67,7 @@ public class Carte implements Serializable {
 		this.dateLim = dateLim;
 	}
 
+	@Column(name = "type")
 	@Enumerated(EnumType.STRING)
 	public TypeCarte getType() {
 		return type;

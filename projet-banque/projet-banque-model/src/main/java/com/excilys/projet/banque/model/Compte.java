@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "COMPTE")
+@Table(name = "compte")
 public class Compte implements Comparable<Compte>, Serializable {
 	private int id;
 	private String libelle;
@@ -60,7 +60,7 @@ public class Compte implements Comparable<Compte>, Serializable {
 	}
 
 	@ManyToOne(targetEntity = Client.class)
-	@JoinColumn(name = "CLIENT_FK")
+	@JoinColumn(name = "client_fk")
 	public Client getClient() {
 		return client;
 	}
@@ -79,7 +79,7 @@ public class Compte implements Comparable<Compte>, Serializable {
 	}
 
 	@OneToMany
-	@JoinColumn(name = "COMPTE_FK")
+	@JoinColumn(name = "compte_fk")
 	public Set<Carte> getCarte() {
 		return carte;
 	}
