@@ -1,27 +1,35 @@
 package com.excilys.projet.banque.dao.impl;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
-import org.junit.BeforeClass;
+import javax.annotation.Resource;
+
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.excilys.projet.banque.dao.utils.DataSet;
+import com.excilys.projet.banque.dao.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Auth;
 import com.excilys.projet.banque.model.Client;
 
+@DataSet("classpath:context/dataSet.xml")
+@ContextConfiguration({ "classpath:context/applicationContext.xml" })
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class, DataSetTestExecutionListener.class })
+@Transactional
 public class AuthDAOImplTest {
 
-	private static AuthDAOImpl authDAOImpl;
-	private static ClientDAOImpl clientDAOImpl;
-
-	@BeforeClass
-	public static void setUp() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/context/applicationContext-dao-impl-hibernate.xml");
-		authDAOImpl = applicationContext.getBean("authDao", AuthDAOImpl.class);
-		clientDAOImpl = applicationContext.getBean("clientDao", ClientDAOImpl.class);
-	}
+	@Resource(name = "authDao")
+	private AuthDAOImpl authDAOImpl;
+	@Resource(name = "clientDao")
+	private ClientDAOImpl clientDAOImpl;
 
 	@Test
 	public void findAllTest() {
@@ -30,12 +38,11 @@ public class AuthDAOImplTest {
 
 	@Test
 	public void saveTest() {
-		int rand = (int) (Math.random() * 1000);
 		Auth auth = new Auth();
-		auth.setLogin("login" + rand);
+		auth.setLogin("login");
 		auth.setPassword("test");
 		auth.setEnabled(1);
-		Client client = clientDAOImpl.findById(13);
+		Client client = clientDAOImpl.findById(2);
 		auth.setClient(client);
 		int currentSize = authDAOImpl.findAll().size();
 		authDAOImpl.save(auth);
@@ -45,47 +52,40 @@ public class AuthDAOImplTest {
 
 	@Test
 	public void findByIdTest() {
-		int rand = (int) (Math.random() * 1000);
 		Auth auth = new Auth();
-		auth.setLogin("login" + rand);
+		auth.setLogin("login");
 		auth.setPassword("fraise");
 		auth.setEnabled(1);
-		int currentSize = authDAOImpl.findAll().size();
-		Client client = clientDAOImpl.findById(currentSize + 1);
+		Client client = clientDAOImpl.findById(1);
 		auth.setClient(client);
 		authDAOImpl.save(auth);
-		assertTrue("Echec du equals", auth.equals(authDAOImpl.findById(currentSize + 1)));
+		assertTrue("Echec du equals", auth.equals(authDAOImpl.findById(3)));
 	}
 
 	@Test
 	public void findByLoginTest() {
-		int rand = (int) (Math.random() * 1000);
 		Auth auth = new Auth();
-		auth.setLogin("login" + rand);
+		auth.setLogin("loginSimple");
 		auth.setPassword("fraise");
 		auth.setEnabled(1);
-		int currentSize = authDAOImpl.findAll().size();
-		Client client = clientDAOImpl.findById(currentSize + 1);
+		Client client = clientDAOImpl.findById(0);
 		auth.setClient(client);
 		authDAOImpl.save(auth);
-		Auth authRecup = authDAOImpl.findByLogin("login" + rand);
+		Auth authRecup = authDAOImpl.findByLogin("loginSimple");
 		assertTrue("Echec du equals", auth.equals(authRecup));
 	}
 
 	@Test
 	public void findAuthByClientTest() {
-		int rand = (int) (Math.random() * 1000);
 		Auth auth = new Auth();
-		auth.setLogin("login" + rand);
+		auth.setLogin("login");
 		auth.setPassword("fraise");
 		auth.setEnabled(1);
-		int currentSize = authDAOImpl.findAll().size();
-		Client client = clientDAOImpl.findById(currentSize + 1);
+		Client client = clientDAOImpl.findById(2);
 		auth.setClient(client);
 		authDAOImpl.save(auth);
-		System.out.println(auth);
 		Auth authRecup = authDAOImpl.findAuthByIdClient(client.getId());
-		System.out.println(authRecup);
 		assertTrue("Echec du equals", auth.equals(authRecup));
+
 	}
 }
