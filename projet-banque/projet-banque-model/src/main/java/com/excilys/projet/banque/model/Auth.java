@@ -1,16 +1,39 @@
 package com.excilys.projet.banque.model;
 
-public class Auth {
-	private int id;
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import com.sun.istack.internal.NotNull;
+
+@SuppressWarnings("serial")
+@Entity
+@Table(name = "AUTH")
+public class Auth implements Serializable {
+	private Integer id;
 	private String login;
 	private String password;
 	private int enabled;
 	private Client client;
 
-	public int getId() {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
+	@NotNull
+	public Integer getId() {
 		return id;
 	}
 
+	@OneToOne(optional = true, cascade = CascadeType.ALL)
+	@JoinColumn(name = "FK_CLIENT")
 	public Client getClient() {
 		return client;
 	}
@@ -19,10 +42,12 @@ public class Auth {
 		this.client = client;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
+	@Column(name = "LOGIN", unique = true, length = 10)
+	@NotNull
 	public String getLogin() {
 		return login;
 	}
@@ -31,6 +56,8 @@ public class Auth {
 		this.login = login;
 	}
 
+	@Column(name = "PASSWORD", length = 40)
+	@NotNull
 	public String getPassword() {
 		return password;
 	}
@@ -39,6 +66,8 @@ public class Auth {
 		this.password = password;
 	}
 
+	@Column(name = "ENABLED")
+	@NotNull
 	public int getEnabled() {
 		return enabled;
 	}

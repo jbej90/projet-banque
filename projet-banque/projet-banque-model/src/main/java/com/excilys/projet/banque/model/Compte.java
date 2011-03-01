@@ -1,6 +1,8 @@
 package com.excilys.projet.banque.model;
 
-import javax.persistence.CascadeType;
+import java.io.Serializable;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,18 +10,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+@SuppressWarnings("serial")
 @Entity
-@Table(name="compte")
-public class Compte implements Comparable<Compte> {
+@Table(name = "COMPTE")
+public class Compte implements Comparable<Compte>, Serializable {
 	private int id;
 	private String libelle;
 	private Client client;
 	private float solde;
-	
-	
-	public Compte() {}
+	private Set<Carte> carte;
+
+	public Compte() {
+	}
+
 	public Compte(int id, String libelle, Client client, float solde) {
 		super();
 		this.id = id;
@@ -28,16 +34,14 @@ public class Compte implements Comparable<Compte> {
 		this.solde = solde;
 	}
 
-
 	@Override
 	public int compareTo(Compte o) {
 		return libelle.compareTo(o.getLibelle());
 	}
-	
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id", nullable=false, unique=true)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false, unique = true)
 	public int getId() {
 		return id;
 	}
@@ -46,7 +50,7 @@ public class Compte implements Comparable<Compte> {
 		this.id = id;
 	}
 
-	@Column(name="libelle", nullable=false, length=100)
+	@Column(name = "libelle", nullable = false, length = 100)
 	public String getLibelle() {
 		return libelle;
 	}
@@ -55,8 +59,8 @@ public class Compte implements Comparable<Compte> {
 		this.libelle = libelle;
 	}
 
-	@ManyToOne(targetEntity=Client.class)
-	@JoinColumn(name="client_fk")
+	@ManyToOne(targetEntity = Client.class)
+	@JoinColumn(name = "CLIENT_FK")
 	public Client getClient() {
 		return client;
 	}
@@ -65,13 +69,23 @@ public class Compte implements Comparable<Compte> {
 		this.client = client;
 	}
 
-	@Column(name="solde_courant", precision=10, scale=5)
+	@Column(name = "solde_courant", precision = 10, scale = 5)
 	public float getSolde() {
 		return solde;
 	}
 
 	public void setSolde(float solde) {
 		this.solde = solde;
+	}
+
+	@OneToMany
+	@JoinColumn(name = "COMPTE_FK")
+	public Set<Carte> getCarte() {
+		return carte;
+	}
+
+	public void setCarte(Set<Carte> carte) {
+		this.carte = carte;
 	}
 
 }
