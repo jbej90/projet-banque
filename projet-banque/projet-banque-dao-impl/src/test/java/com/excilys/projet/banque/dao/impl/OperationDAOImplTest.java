@@ -161,4 +161,28 @@ public class OperationDAOImplTest {
 		assertTrue(operationDAOImpl.findAllByMoisByCompteAndByTypes(date, compte, types).size() == 1);
 
 	}
+
+	@Test
+	public void findByAllByMoisByCompteByNotInTypesTest() {
+
+		Operation operation = operationDAOImpl.findById(1);
+		Compte compte = operation.getCompte();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		Date date = null;
+		try {
+			date = sdf.parse("2011-01-05");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		List<Type> types = new ArrayList<Type>();
+		types.add(Type.OP_CARTE_IMM);
+
+		assertTrue(operationDAOImpl.findAllByMoisByCompteAndNotInTypes(date, compte, types).isEmpty());
+		// assertTrue(operationDAOImpl.findAllByMoisByCompteAndByTypes(date,
+		// compte, types).size() == 0);
+
+	}
 }

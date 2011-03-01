@@ -156,4 +156,42 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 
 		return getHibernateTemplate().find(req, dateDeb, dateFin, compte.getId());
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Operation> findAllByMoisByCompteAndNotInTypes(Date date, Compte compte, List<Type> types) {
+		DateTime dt = new DateTime(date);
+		int premierJour = dt.dayOfMonth().withMinimumValue().getDayOfMonth();
+		int dernierJour = dt.dayOfMonth().withMaximumValue().getDayOfMonth();
+		int moisCourant = dt.getMonthOfYear();
+		int anneeCourante = dt.getYear();
+		String dateChaineDeb = anneeCourante + "-" + moisCourant + "-" + premierJour;
+		String dateChaineFin = anneeCourante + "-" + moisCourant + "-" + dernierJour;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		Date dateFin = null, dateDeb = null;
+		try {
+			dateDeb = sdf.parse(dateChaineDeb);
+			dateFin = sdf.parse(dateChaineFin);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		String lesTypesEnString = "";
+		if (types.size() != 0) {
+			lesTypesEnString = "and type not in (";
+			int compteur = 0;
+			for (Type unType : types) {
+
+				lesTypesEnString += "'" + unType + "'";
+				if (types.size() - 1 != compteur) {
+					lesTypesEnString += ",";
+				}
+				compteur++;
+			}
+			lesTypesEnString += ")";
+		}
+		String req = "From Operation o where DATE_OP between ? and ? and compte_fk = ?  " + lesTypesEnString;
+		System.out.println(req);
+
+		return getHibernateTemplate().find(req, dateDeb, dateFin, compte.getId());
+	}
 }

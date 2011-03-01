@@ -28,4 +28,6 @@ public interface OperationDAO {
 
 	List<Operation> findAllByMoisByCompteAndByTypes(Date date, Compte compte, List<Type> types);
 
+	List<Operation> findAllByMoisByCompteAndNotInTypes(Date date, Compte compte, List<Type> types);
+
 }
