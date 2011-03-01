@@ -1,33 +1,39 @@
 package com.excilys.projet.banque.dao.impl;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.junit.BeforeClass;
+import javax.annotation.Resource;
+
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.projet.banque.dao.api.exceptions.UnknownCompteException;
+import com.excilys.projet.banque.dao.utils.DataSet;
+import com.excilys.projet.banque.dao.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 
+@DataSet("classpath:context/dataSet.xml")
+@ContextConfiguration({ "classpath:context/applicationContext.xml" })
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class, DataSetTestExecutionListener.class })
+@Transactional
 public class CompteDAOImplTest {
 
-	private static CompteDAOImpl compteDAOImpl;
-	private static ClientDAOImpl clientDAOImpl;
+	@Resource(name = "compteDao")
+	private CompteDAOImpl compteDAOImpl;
+	@Resource(name = "clientDao")
+	private ClientDAOImpl clientDAOImpl;
 
-	@BeforeClass
-	public static void setUp() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/context/applicationContext-dao-impl-hibernate.xml");
-		compteDAOImpl = applicationContext.getBean("compteDao", CompteDAOImpl.class);
-		clientDAOImpl = applicationContext.getBean("clientDao", ClientDAOImpl.class);
-	}
-
-	// TODO : optimiser le test!!!!
 	@Test
 	public void saveTest() throws UnknownCompteException {
 		Client client = new Client();
@@ -78,7 +84,7 @@ public class CompteDAOImplTest {
 		compte.setSolde(100);
 		compteDAOImpl.save(compte);
 
-		assertEquals(100f, compteDAOImpl.findAllByClient(client).get(0).getSolde());
+		assertTrue(100f == compteDAOImpl.findAllByClient(client).get(0).getSolde());
 
 	}
 }

@@ -1,83 +1,98 @@
 package com.excilys.projet.banque.dao.impl;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import javax.annotation.Resource;
 
-import com.excilys.projet.banque.model.Client;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.excilys.projet.banque.dao.utils.DataSet;
+import com.excilys.projet.banque.dao.utils.DataSetTestExecutionListener;
+import com.excilys.projet.banque.model.Carte;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.EtatOperation;
 import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.model.Type;
 
-
+@DataSet("classpath:context/dataSet.xml")
+@ContextConfiguration({ "classpath:context/applicationContext.xml" })
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class, DataSetTestExecutionListener.class })
+@Transactional
 public class OperationDAOImplTest {
 
-	private static OperationDAOImpl operationDAOImpl;
-
-	@BeforeClass
-	public static void setUp() {
-		ApplicationContext appContext = new ClassPathXmlApplicationContext("/context/applicationContext-dao-impl-hibernate.xml");
-		operationDAOImpl = appContext.getBean("operationDao", OperationDAOImpl.class);
-	}
+	@Resource(name = "operationDao")
+	private OperationDAOImpl operationDAOImpl;
+	@Resource(name = "compteDao")
+	private CompteDAOImpl compteDAOImpl;
+	@Resource(name = "carteDao")
+	private CarteDAOImpl carteDAOImpl;
 
 	@Test
 	public void saveTest() {
-		Client client = new Client();
-        client.setNom("test");
-        client.setPrenom("test");
-        client.setAdresse("test");
-        client.setDateLastConnection(new Date());
-		
-		Compte compte = new Compte();
-		compte.setLibelle("compte");
-		compte.setSolde(10);
-		compte.setClient(client);
-		
-		Type type = new Type();
-		type.setLibelle("retrait");
-		
+
+		Compte compte = compteDAOImpl.findById(1);
+		Carte carte = carteDAOImpl.findById(1);
+
 		Operation operation = new Operation();
 		operation.setLibelle("operation");
-		operation.setType(type);
+		operation.setType(Type.RETRAIT);
 		operation.setDateOp(new Date());
 		operation.setEtat(EtatOperation.EFFECTUE);
 		operation.setMontant(10);
 		operation.setCompte(compte);
+		operation.setCarte(carte);
 
 		operationDAOImpl.save(operation);
 		assertNotNull(operationDAOImpl.findById(operation.getId()));
-		assertEquals(operation.getId(), operationDAOImpl.findById(operation.getId()).getId());
+		assertTrue(operation.getId().equals(operationDAOImpl.findById(operation.getId()).getId()));
 	}
 
 	@Test
 	public void findAllTest() {
-		
+		assertFalse(operationDAOImpl.findAll().isEmpty());
+		assertTrue(operationDAOImpl.findAll().size() == 2);
 	}
 
 	@Test
 	public void findAllByTypeTest() {
-		
+		Operation operation = operationDAOImpl.findById(0);
+		assertTrue(operationDAOImpl.findAllByType(operation.getType()).get(0).getId() == 0);
 	}
 
 	@Test
 	public void findAllByCompteTest() {
-		
+		Operation operation = operationDAOImpl.findById(0);
+		Compte compte = operation.getCompte();
+		assertNotNull(compte);
+		assertTrue(compte.getId() == 1);
+		assertTrue(operationDAOImpl.findAllByCompte(compte).size() == 1);
 	}
 
 	@Test
 	public void findAllByCarteTest() {
-		
+		Carte carte = operationDAOImpl.findById(1).getCarte();
+		assertNull(carte);
+		Operation operation = operationDAOImpl.findById(0);
+		Carte carte2 = operation.getCarte();
+		assertTrue(carte2.getId() == 1);
+		assertTrue(operationDAOImpl.findAllByCarte(carte2).size() == 1);
 	}
 
 	@Test
 	public void findByIdTest() {
-		
+		assertNotNull(operationDAOImpl.findById(0));
 	}
 }

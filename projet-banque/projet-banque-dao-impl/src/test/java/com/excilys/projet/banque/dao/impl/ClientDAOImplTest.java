@@ -6,22 +6,30 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import javax.annotation.Resource;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.excilys.projet.banque.dao.utils.DataSet;
+import com.excilys.projet.banque.dao.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Client;
 
+@DataSet("classpath:context/dataSet.xml")
+@ContextConfiguration({ "classpath:context/applicationContext.xml" })
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class, DataSetTestExecutionListener.class })
+@Transactional
 public class ClientDAOImplTest {
 
-	private static ClientDAOImpl clientDAOImpl;
-
-	@BeforeClass
-	public static void setUp() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/context/applicationContext-dao-impl-hibernate.xml");
-		clientDAOImpl = applicationContext.getBean("clientDao", ClientDAOImpl.class);
-	}
+	@Resource(name = "clientDao")
+	private ClientDAOImpl clientDAOImpl;
 
 	@Test
 	public void saveTest() {
@@ -30,7 +38,6 @@ public class ClientDAOImplTest {
 		client.setPrenom("test");
 		client.setAdresse("test");
 		client.setDateLastConnection(new Date());
-		System.out.println(client);
 		clientDAOImpl.save(client);
 		assertNotNull(clientDAOImpl.findById(client.getId()));
 		assertEquals(client.getId(), clientDAOImpl.findById(client.getId()).getId());

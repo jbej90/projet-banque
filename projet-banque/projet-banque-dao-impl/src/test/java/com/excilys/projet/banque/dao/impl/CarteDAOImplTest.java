@@ -6,76 +6,68 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import javax.annotation.Resource;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.excilys.projet.banque.dao.utils.DataSet;
+import com.excilys.projet.banque.dao.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Carte;
-import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.TypeCarte;
 
+@DataSet("classpath:context/dataSet.xml")
+@ContextConfiguration({ "classpath:context/applicationContext.xml" })
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class, DataSetTestExecutionListener.class })
+@Transactional
 public class CarteDAOImplTest {
 
-	private static CarteDAOImpl	carteDAOImpl;
-	private static Logger logger = LoggerFactory.getLogger(CarteDAOImpl.class);
-
-	@BeforeClass
-	public static void setUp() {
-		ApplicationContext appContext = new ClassPathXmlApplicationContext("/context/applicationContext-dao-impl-hibernate.xml");
-		carteDAOImpl = appContext.getBean("carteDao", CarteDAOImpl.class);
-		
-		logger.debug("plop");
-	}
+	@Resource(name = "carteDao")
+	private CarteDAOImpl carteDAOImpl;
+	@Resource(name = "compteDao")
+	private CompteDAOImpl compteDAOImpl;
 
 	@Test
 	public void saveTest() {
-		logger.debug("plop test");
-		
 		Carte carte = new Carte();
 		carte.setNumCarte("4444111122223333");
 		carte.setType(TypeCarte.IMMEDIAT);
 		carte.setDateLim(new Date());
-		
+
 		carteDAOImpl.save(carte);
 		assertNotNull(carteDAOImpl.findById(carte.getId()));
 		assertEquals(carte.getId(), carteDAOImpl.findById(carte.getId()).getId());
 	}
-	
+
 	@Test
 	public void findAll() {
 		Carte carte = new Carte();
 		carte.setNumCarte("4445511122223333");
 		carte.setType(TypeCarte.IMMEDIAT);
 		carte.setDateLim(new Date());
-		
+
 		int currentSize = carteDAOImpl.findAll().size();
+
 		carteDAOImpl.save(carte);
 		assertTrue(carteDAOImpl.findAll().size() == currentSize + 1);
 	}
 
 	@Test
 	public void findAllByCompte() {
-		Client client = new Client();
-        client.setNom("test");
-        client.setPrenom("test");
-        client.setAdresse("test");
-        client.setDateLastConnection(new Date());
-		
-		Compte compte = new Compte();
-		compte.setLibelle("compte");
-		compte.setSolde(10);
-		compte.setClient(client);
-		
+		Compte compte = compteDAOImpl.findById(1);
 		Carte carte = new Carte();
 		carte.setNumCarte("4444111155223333");
 		carte.setType(TypeCarte.IMMEDIAT);
 		carte.setDateLim(new Date());
 		carte.setCompte(compte);
-		
 		int currentSize = carteDAOImpl.findAllByCompte(compte).size();
 		carteDAOImpl.save(carte);
 		assertTrue(carteDAOImpl.findAllByCompte(compte).size() == currentSize + 1);
@@ -87,7 +79,7 @@ public class CarteDAOImplTest {
 		carte.setNumCarte("4444111122223533");
 		carte.setType(TypeCarte.IMMEDIAT);
 		carte.setDateLim(new Date());
-		
+
 		int currentSize = carteDAOImpl.findAllByType(TypeCarte.IMMEDIAT).size();
 		carteDAOImpl.save(carte);
 		assertTrue(carteDAOImpl.findAllByType(TypeCarte.IMMEDIAT).size() == currentSize + 1);
@@ -96,13 +88,13 @@ public class CarteDAOImplTest {
 	@Test
 	public void findById() {
 		Carte carte = new Carte();
-		carte.setId(10);
+		carte.setId(1);
 		carte.setNumCarte("4444331122223333");
 		carte.setType(TypeCarte.IMMEDIAT);
 		carte.setDateLim(new Date());
-		
+
 		carteDAOImpl.save(carte);
-		carteDAOImpl.findById(10).equals(carte);
+		carteDAOImpl.findById(1).equals(carte);
 	}
 
 }

@@ -2,13 +2,22 @@ package com.excilys.projet.banque.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.projet.banque.dao.api.AuthDAO;
 import com.excilys.projet.banque.model.Auth;
 
+@Repository("authDao")
 public class AuthDAOImpl extends HibernateDaoSupport implements AuthDAO {
+
+	@Autowired
+	public AuthDAOImpl(SessionFactory sessionFactory) {
+		setSessionFactory(sessionFactory);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
