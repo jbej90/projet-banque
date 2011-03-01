@@ -30,6 +30,7 @@ public class ClientDAOImplTest {
 		client.setPrenom("test");
 		client.setAdresse("test");
 		client.setDateLastConnection(new Date());
+		System.out.println(client);
 		clientDAOImpl.save(client);
 		assertNotNull(clientDAOImpl.findById(client.getId()));
 		assertEquals(client.getId(), clientDAOImpl.findById(client.getId()).getId());
