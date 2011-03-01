@@ -12,9 +12,9 @@
 		</id>
 
 		<property name="libelle" column="libelle" type="string"	not-null="true" />			
-		<property name="etat" column="etat" type="String" not-null="true" />
+		<property name="etat" column="etat" type="string" not-null="true" />
 		<property name="montant" column="montant" type="float" not-null="true" />
-		<property name="dateOp" column="date_op" type="float" not-null="true" />
+		<property name="dateOp" column="date_op" type="date" not-null="true" />
 		
 		
 		<many-to-one name="type" column="type_fk" class="Type" not-null="true" />

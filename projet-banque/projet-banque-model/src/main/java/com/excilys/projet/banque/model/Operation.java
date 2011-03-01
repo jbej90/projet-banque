@@ -20,7 +20,7 @@ import com.sun.istack.internal.NotNull;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "OPERATION")
+@Table(name = "operation")
 public class Operation implements Serializable {
 	private Integer id;
 	private Type type;
@@ -33,7 +33,7 @@ public class Operation implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
+	@Column(name = "id")
 	public Integer getId() {
 		return id;
 	}
@@ -42,7 +42,7 @@ public class Operation implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "LIBELLE", unique = false, nullable = false, length = 30)
+	@Column(name = "libelle", unique = false, nullable = false, length = 30)
 	public String getLibelle() {
 		return libelle;
 	}
@@ -51,7 +51,7 @@ public class Operation implements Serializable {
 		this.libelle = libelle;
 	}
 
-	@Column(name = "ETAT")
+	@Column(name = "etat")
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	public EtatOperation getEtat() {
@@ -62,7 +62,7 @@ public class Operation implements Serializable {
 		this.etat = etat;
 	}
 
-	@Column(name = "MONTANT")
+	@Column(name = "montant")
 	@NotNull
 	public float getMontant() {
 		return montant;
@@ -73,7 +73,7 @@ public class Operation implements Serializable {
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "DATE_OP")
+	@Column(name = "date_op")
 	public Date getDateOp() {
 		return dateOp;
 	}
@@ -86,9 +86,8 @@ public class Operation implements Serializable {
 		this.compte = compte;
 	}
 
-	// @Column(name = "COMPTE_FK", unique = false, nullable = false)
 	@ManyToOne(targetEntity = Compte.class)
-	@JoinColumn(name = "COMPTE_FK")
+	@JoinColumn(name = "compte_fk")
 	public Compte getCompte() {
 		return compte;
 	}
@@ -98,12 +97,12 @@ public class Operation implements Serializable {
 	}
 
 	@ManyToOne(targetEntity = Carte.class, optional = true)
-	@JoinColumn(name = "CARTE_FK")
+	@JoinColumn(name = "carte_fk")
 	public Carte getCarte() {
 		return carte;
 	}
 
-	@Column(name = "TYPE")
+	@Column(name = "type")
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	public Type getType() {

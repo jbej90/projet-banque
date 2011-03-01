@@ -16,7 +16,7 @@ import com.sun.istack.internal.NotNull;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "AUTH")
+@Table(name = "auth")
 public class Auth implements Serializable {
 	private Integer id;
 	private String login;
@@ -26,14 +26,14 @@ public class Auth implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
+	@Column(name = "id")
 	@NotNull
 	public Integer getId() {
 		return id;
 	}
 
 	@OneToOne(optional = true, cascade = CascadeType.ALL)
-	@JoinColumn(name = "FK_CLIENT")
+	@JoinColumn(name = "fk_client")
 	public Client getClient() {
 		return client;
 	}
@@ -46,7 +46,7 @@ public class Auth implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "LOGIN", unique = true, length = 10)
+	@Column(name = "login", unique = true, length = 10)
 	@NotNull
 	public String getLogin() {
 		return login;
@@ -56,7 +56,7 @@ public class Auth implements Serializable {
 		this.login = login;
 	}
 
-	@Column(name = "PASSWORD", length = 40)
+	@Column(name = "password", length = 40)
 	@NotNull
 	public String getPassword() {
 		return password;
@@ -66,7 +66,7 @@ public class Auth implements Serializable {
 		this.password = password;
 	}
 
-	@Column(name = "ENABLED")
+	@Column(name = "enabled")
 	@NotNull
 	public int getEnabled() {
 		return enabled;

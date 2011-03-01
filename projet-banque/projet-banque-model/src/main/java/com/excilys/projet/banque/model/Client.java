@@ -13,15 +13,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.springframework.core.annotation.Order;
 
 import com.sun.istack.internal.NotNull;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "CLIENT")
+@Table(name = "client")
 public class Client implements Serializable {
 
 	private Integer id;
@@ -57,7 +61,7 @@ public class Client implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@NotNull
-	@Column(name = "ID")
+	@Column(name = "id")
 	public Integer getId() {
 		return id;
 	}
@@ -66,7 +70,7 @@ public class Client implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "NOM", length = 30)
+	@Column(name = "nom", length = 30)
 	@NotNull
 	public String getNom() {
 		return nom;
@@ -76,7 +80,7 @@ public class Client implements Serializable {
 		this.nom = nom;
 	}
 
-	@Column(name = "PRENOM", length = 40)
+	@Column(name = "prenom", length = 40)
 	@NotNull
 	public String getPrenom() {
 		return prenom;
@@ -86,7 +90,7 @@ public class Client implements Serializable {
 		this.prenom = prenom;
 	}
 
-	@Column(name = "ADRESSE", length = 100)
+	@Column(name = "adresse", length = 100)
 	@NotNull
 	public String getAdresse() {
 		return adresse;
@@ -97,7 +101,7 @@ public class Client implements Serializable {
 	}
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "DATE_LAST_CON")
+	@Column(name = "date_last_con")
 	@NotNull
 	public Date getDateLastConnection() {
 		return dateLastConnection;
@@ -108,7 +112,8 @@ public class Client implements Serializable {
 	}
 
 	@OneToMany
-	@JoinColumn(name = "CLIENT_FK")
+	@JoinColumn(name = "client_fk")
+	@OrderBy("libelle")
 	public Set<Compte> getComptes() {
 		return comptes;
 	}
