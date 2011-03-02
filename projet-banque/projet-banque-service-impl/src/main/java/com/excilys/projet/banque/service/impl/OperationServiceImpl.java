@@ -41,6 +41,9 @@ public class OperationServiceImpl implements OperationService {
 
 	@Override
 	public List<Operation> recupererOperations(Compte compte, Date date) throws ServiceException {
+		
+		System.out.println("recup operations");
+		
 		List<Operation> ops = operationDao.findAllByMoisByCompte(date, compte);
 		if (ops.size() == 0) {
 			throw new ServiceException("Aucune opération.");
