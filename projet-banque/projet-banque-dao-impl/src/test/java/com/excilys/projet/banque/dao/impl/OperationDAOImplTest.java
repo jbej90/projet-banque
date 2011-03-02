@@ -101,7 +101,7 @@ public class OperationDAOImplTest {
 	}
 
 	@Test
-	public void findByAllByMoisTest() {
+	public void findByAllByMoisByCompteTest() {
 
 		Operation operation = operationDAOImpl.findById(1);
 		Compte compte = operation.getCompte();
@@ -173,7 +173,6 @@ public class OperationDAOImplTest {
 		try {
 			date = sdf.parse("2011-01-05");
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -181,8 +180,6 @@ public class OperationDAOImplTest {
 		types.add(Type.OP_CARTE_IMM);
 
 		assertTrue(operationDAOImpl.findAllByMoisByCompteAndNotInTypes(date, compte, types).isEmpty());
-		// assertTrue(operationDAOImpl.findAllByMoisByCompteAndByTypes(date,
-		// compte, types).size() == 0);
 
 	}
 }
