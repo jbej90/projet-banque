@@ -1,15 +1,25 @@
 package com.excilys.projet.banque.web.controller;
 
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.text.spi.DateFormatSymbolsProvider;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -158,6 +168,10 @@ public class PrivateController {
 				model.addAttribute("soustotal", total);
 				model.addAttribute("soustotalCarte", totalCarte);
 				model.addAttribute("total", total+totalCarte);
+				
+				// TODO : Trouver une alternative... Cette méthode ajotue uen 13eme entrée vide
+				model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
+				model.addAttribute("anneecourante", Calendar.getInstance().get(Calendar.YEAR));
 			}
 		}
 
@@ -169,7 +183,7 @@ public class PrivateController {
 		menu.setItemSelected(0);
 		model.addAttribute("menu", menu);
 		// TODO EOF : Refactorer la gestion des menus
-
+		
 		return BASE_DIR + "compte";
 	}
 
