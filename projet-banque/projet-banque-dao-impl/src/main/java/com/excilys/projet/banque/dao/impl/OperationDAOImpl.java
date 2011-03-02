@@ -1,7 +1,5 @@
 package com.excilys.projet.banque.dao.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +10,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.projet.banque.dao.api.OperationDAO;
+import com.excilys.projet.banque.dao.utils.CalculDateMois;
 import com.excilys.projet.banque.model.Carte;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.Operation;
@@ -60,76 +59,29 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 		getHibernateTemplate().save(operation);
 	}
 
-	// public String dateToString(Date date) {
-	//
-	// DateTime dt = new DateTime(date);
-	// int premierJour = dt.dayOfMonth().withMinimumValue().getDayOfMonth();
-	// int dernierJour = dt.dayOfMonth().withMaximumValue().getDayOfMonth();
-	// int moisCourant = dt.getMonthOfYear();
-	// int anneeCourante = dt.getYear();
-	// String dateChaineDeb = premierJour + "-" + moisCourant + "-" +
-	// anneeCourante + " , " + moisCourant);
-	//
-	//
-	//
-	// return anneeCourante+"-"+der
-	// }
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Operation> findAllByMoisByCompte(Date date, Compte compte) {
-		DateTime dt = new DateTime(date);
-		int premierJour = dt.dayOfMonth().withMinimumValue().getDayOfMonth();
-		int dernierJour = dt.dayOfMonth().withMaximumValue().getDayOfMonth();
-		int moisCourant = dt.getMonthOfYear();
-		int anneeCourante = dt.getYear();
-		
-		DateTime dateDebut2 = new DateTime(anneeCourante, moisCourant, premierJour, 0, 0, 0, 0);
-		DateTime dateFin2 = new DateTime(anneeCourante, moisCourant, dernierJour, 0, 0, 0, 0);
-
-		return getHibernateTemplate().find("From Operation o where DATE_OP between ? and ? and compte_fk = ?", dateDebut2.toDate(), dateFin2.toDate(), compte.getId());
+		DateTime dateDebut = CalculDateMois.calculDateTimeDebutMois(date);
+		DateTime dateFin = CalculDateMois.calculDateTimeFinMois(date);
+		return getHibernateTemplate().find("From Operation o where DATE_OP between ? and ? and compte_fk = ?", dateDebut.toDate(), dateFin.toDate(), compte.getId());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Operation> findAllByMoisByCompteAndByType(Date date, Compte compte, Type type) {
-		DateTime dt = new DateTime(date);
-		int premierJour = dt.dayOfMonth().withMinimumValue().getDayOfMonth();
-		int dernierJour = dt.dayOfMonth().withMaximumValue().getDayOfMonth();
-		int moisCourant = dt.getMonthOfYear();
-		int anneeCourante = dt.getYear();
-		String dateChaineDeb = anneeCourante + "-" + moisCourant + "-" + premierJour;
-		String dateChaineFin = anneeCourante + "-" + moisCourant + "-" + dernierJour;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		Date dateFin = null, dateDeb = null;
-		try {
-			dateDeb = sdf.parse(dateChaineDeb);
-			dateFin = sdf.parse(dateChaineFin);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		return getHibernateTemplate().find("From Operation o where DATE_OP between ? and ? and compte_fk = ? and type=?", dateDeb, dateFin, compte.getId(), type);
+		DateTime dateDebut = CalculDateMois.calculDateTimeDebutMois(date);
+		DateTime dateFin = CalculDateMois.calculDateTimeFinMois(date);
+		return getHibernateTemplate().find("From Operation o where DATE_OP between ? and ? and compte_fk = ? and type=?", dateDebut.toDate(), dateFin.toDate(), compte.getId(),
+				type);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Operation> findAllByMoisByCompteAndByTypes(Date date, Compte compte, List<Type> types) {
-		DateTime dt = new DateTime(date);
-		int premierJour = dt.dayOfMonth().withMinimumValue().getDayOfMonth();
-		int dernierJour = dt.dayOfMonth().withMaximumValue().getDayOfMonth();
-		int moisCourant = dt.getMonthOfYear();
-		int anneeCourante = dt.getYear();
-		String dateChaineDeb = anneeCourante + "-" + moisCourant + "-" + premierJour;
-		String dateChaineFin = anneeCourante + "-" + moisCourant + "-" + dernierJour;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		Date dateFin = null, dateDeb = null;
-		try {
-			dateDeb = sdf.parse(dateChaineDeb);
-			dateFin = sdf.parse(dateChaineFin);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		DateTime dateDebut = CalculDateMois.calculDateTimeDebutMois(date);
+		DateTime dateFin = CalculDateMois.calculDateTimeFinMois(date);
+
 		String lesTypesEnString = "";
 		if (types.size() != 0) {
 			lesTypesEnString = "and type in (";
@@ -147,27 +99,15 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 		String req = "From Operation o where DATE_OP between ? and ? and compte_fk = ?  " + lesTypesEnString;
 		System.out.println(req);
 
-		return getHibernateTemplate().find(req, dateDeb, dateFin, compte.getId());
+		return getHibernateTemplate().find(req, dateDebut.toDate(), dateFin.toDate(), compte.getId());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Operation> findAllByMoisByCompteAndNotInTypes(Date date, Compte compte, List<Type> types) {
-		DateTime dt = new DateTime(date);
-		int premierJour = dt.dayOfMonth().withMinimumValue().getDayOfMonth();
-		int dernierJour = dt.dayOfMonth().withMaximumValue().getDayOfMonth();
-		int moisCourant = dt.getMonthOfYear();
-		int anneeCourante = dt.getYear();
-		String dateChaineDeb = anneeCourante + "-" + moisCourant + "-" + premierJour;
-		String dateChaineFin = anneeCourante + "-" + moisCourant + "-" + dernierJour;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		Date dateFin = null, dateDeb = null;
-		try {
-			dateDeb = sdf.parse(dateChaineDeb);
-			dateFin = sdf.parse(dateChaineFin);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		DateTime dateDebut = CalculDateMois.calculDateTimeDebutMois(date);
+		DateTime dateFin = CalculDateMois.calculDateTimeFinMois(date);
+
 		String lesTypesEnString = "";
 		if (types.size() != 0) {
 			lesTypesEnString = "and type not in (";
@@ -185,6 +125,6 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 		String req = "From Operation o where DATE_OP between ? and ? and compte_fk = ?  " + lesTypesEnString;
 		System.out.println(req);
 
-		return getHibernateTemplate().find(req, dateDeb, dateFin, compte.getId());
+		return getHibernateTemplate().find(req, dateDebut.toDate(), dateFin.toDate(), compte.getId());
 	}
 }
