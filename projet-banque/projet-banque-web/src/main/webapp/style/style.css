@@ -19,6 +19,12 @@ h1 {
 h2 {
 	font-size: 16px;
 	padding: 0;
+	margin: 4px;
+}
+h3 {
+	font-size: 14px;
+	padding: 0;
+	margin: 4px 0;
 }
 
 /* Texts */

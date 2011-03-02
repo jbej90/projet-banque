@@ -19,7 +19,7 @@
 				<div id="logo">
 					<img src="<c:url value="/images/login.gif"/>" alt="login" title="login" />
 				</div>
-				<h1>Erreur ${code}</h1>
+				<h1>${title}</h1>
 				
 				<div class="clearer"></div>
 			</div>
