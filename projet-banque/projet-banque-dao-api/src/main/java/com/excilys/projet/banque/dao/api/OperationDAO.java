@@ -10,6 +10,10 @@ import com.excilys.projet.banque.model.Type;
 
 public interface OperationDAO {
 
+	Operation findById(int idOperation);
+
+	void save(Operation operation);
+
 	List<Operation> findAll();
 
 	List<Operation> findAllByType(Type type);
@@ -17,10 +21,6 @@ public interface OperationDAO {
 	List<Operation> findAllByCompte(Compte compte);
 
 	List<Operation> findAllByCarte(Carte carte);
-
-	Operation findById(int idOperation);
-
-	void save(Operation operation);
 
 	List<Operation> findAllByMoisByCompte(Date date, Compte compte);
 

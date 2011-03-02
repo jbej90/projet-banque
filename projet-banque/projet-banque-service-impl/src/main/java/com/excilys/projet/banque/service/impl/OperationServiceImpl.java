@@ -6,6 +6,7 @@ import java.util.List;
 import com.excilys.projet.banque.dao.api.OperationDAO;
 import com.excilys.projet.banque.model.Carte;
 import com.excilys.projet.banque.model.Compte;
+import com.excilys.projet.banque.model.EtatOperation;
 import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.model.Type;
 import com.excilys.projet.banque.service.api.OperationService;
@@ -13,9 +14,9 @@ import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 
 public class OperationServiceImpl implements OperationService {
 
-	private final static Date	DEFAULT_DATE	= new Date();
+//	private final static Date DEFAULT_DATE = new Date();
 
-	private OperationDAO		operationDao;
+	private OperationDAO operationDao;
 
 	public OperationServiceImpl() {
 	}
@@ -35,15 +36,15 @@ public class OperationServiceImpl implements OperationService {
 
 	@Override
 	public List<Operation> recupererOperations(Compte compte) throws ServiceException {
-		return recupererOperations(compte, DEFAULT_DATE);
+		return recupererOperations(compte, new Date());
 
 	}
 
 	@Override
 	public List<Operation> recupererOperations(Compte compte, Date date) throws ServiceException {
-		
+
 		System.out.println("recup operations");
-		
+
 		List<Operation> ops = operationDao.findAllByMoisByCompte(date, compte);
 		if (ops.size() == 0) {
 			throw new ServiceException("Aucune opération.");
@@ -77,11 +78,10 @@ public class OperationServiceImpl implements OperationService {
 		}
 		return ops;
 	}
-	
 
 	@Override
 	public List<Operation> recupererOperations(Carte carte) throws ServiceException {
-		return recupererOperations(carte, DEFAULT_DATE);
+		return recupererOperations(carte, new Date());
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class OperationServiceImpl implements OperationService {
 
 	@Override
 	public List<Operation> recupererOperations(Type type) throws ServiceException {
-		return recupererOperations(type, DEFAULT_DATE);
+		return recupererOperations(type, new Date());
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class OperationServiceImpl implements OperationService {
 	@Override
 	public float totalOperations(List<Operation> operations) throws ServiceException {
 		if (operations == null)
-			throw new ServiceException("Liste d'opérations inexistante.");
+			throw new ServiceException("Liste d'opérationtypes inexistante.");
 		float somme = 0;
 		for (Operation o : operations)
 			somme += o.getMontant();
@@ -119,5 +119,26 @@ public class OperationServiceImpl implements OperationService {
 
 	public void setOperationDao(OperationDAO operationDao) {
 		this.operationDao = operationDao;
+	}
+
+	@Override
+	public void effectuerVirementInterne(Compte compteEmetteur, Compte compteDestinataire, float montant) throws ServiceException {
+
+		Operation operationSource = new Operation();
+		operationSource.setCompte(compteEmetteur);
+		operationSource.setMontant(-montant);
+		operationSource.setType(Type.VIREMENT_INT);
+		operationSource.setDateOp(new Date());
+		operationSource.setEtat(EtatOperation.EN_COURS);
+
+		Operation operationDest = new Operation();
+		operationDest.setCompte(compteDestinataire);
+		operationDest.setMontant(montant);
+		operationDest.setType(Type.VIREMENT_INT);
+		operationDest.setDateOp(new Date());
+		operationDest.setEtat(EtatOperation.EN_COURS);
+
+		operationDao.save(operationSource);
+		operationDao.save(operationDest);
 	}
 }

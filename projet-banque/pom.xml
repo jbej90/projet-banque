@@ -54,6 +54,7 @@
 		<spring-security.version>3.0.5.RELEASE</spring-security.version>
 		<hibernate.version>3.6.1.Final</hibernate.version>
 		<hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
+		<hibernate-validator.version>4.1.0.Final</hibernate-validator.version>
 		<mysql-connector.version>5.1.14</mysql-connector.version>
 		<javassist.version>3.12.1.GA</javassist.version>
 		<javax-transaction.version>1.1</javax-transaction.version>
@@ -64,6 +65,8 @@
 		<jsp-api.version>2.1</jsp-api.version>
 		<el-api.version>2.2</el-api.version>
 		<jstl-impl.version>1.2</jstl-impl.version>
+		<joda-time.version>1.6.2</joda-time.version>
+		
 		<selenium.version>1.0.1</selenium.version>
 	</properties>
 
@@ -213,6 +216,16 @@
 				<artifactId>jcl-over-slf4j</artifactId>
 				<version>${jcl-over-slf4j.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate-validator.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>${joda-time.version}</version>
+			</dependency>
 
 			<dependency>
 				<groupId>org.seleniumhq.selenium.client-drivers</groupId>
@@ -245,6 +258,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -285,24 +299,6 @@
 						</execution>
 					</executions>
 				</plugin>
-<!--				<plugin>-->
-<!--					<groupId>org.apache.maven.plugins</groupId>-->
-<!--					<artifactId>maven-surefire-plugin</artifactId>-->
-<!--					<configuration>-->
-<!--						<skip>true</skip>-->
-<!--					</configuration>-->
-<!--					<executions>-->
-<!--						<execution>-->
-<!--							<phase>integration-test</phase>-->
-<!--							<goals>-->
-<!--								<goal>test</goal>-->
-<!--							</goals>-->
-<!--							<configuration>-->
-<!--								<skip>false</skip>-->
-<!--							</configuration>-->
-<!--						</execution>-->
-<!--					</executions>-->
-<!--				</plugin>-->
 			</plugins>
 		</pluginManagement>
 	</build>
