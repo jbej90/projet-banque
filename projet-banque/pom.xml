@@ -58,11 +58,13 @@
 		<javassist.version>3.12.1.GA</javassist.version>
 		<javax-transaction.version>1.1</javax-transaction.version>
 		<jcl-over-slf4j.version>1.6.1</jcl-over-slf4j.version>
+		<slf4j.version>1.6.1</slf4j.version>
 
 		<servlet-api.version>2.5</servlet-api.version>
 		<jsp-api.version>2.1</jsp-api.version>
 		<el-api.version>2.2</el-api.version>
 		<jstl-impl.version>1.2</jstl-impl.version>
+		<selenium.version>1.0.1</selenium.version>
 	</properties>
 
 	<dependencyManagement>
@@ -108,7 +110,7 @@
 				<artifactId>hibernate-core</artifactId>
 				<version>${hibernate.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.hibernate.javax.persistence</groupId>
 				<artifactId>hibernate-jpa-2.0-api</artifactId>
@@ -211,6 +213,20 @@
 				<artifactId>jcl-over-slf4j</artifactId>
 				<version>${jcl-over-slf4j.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.seleniumhq.selenium.client-drivers</groupId>
+				<artifactId>selenium-java-client-driver</artifactId>
+				<version>${selenium.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -220,6 +236,11 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
@@ -248,6 +269,40 @@
 						<downloadSources>true</downloadSources>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>selenium-maven-plugin</artifactId>
+					<version>1.1</version>
+					<executions>
+						<execution>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>start-server</goal>
+							</goals>
+							<configuration>
+								<background>true</background>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+<!--				<plugin>-->
+<!--					<groupId>org.apache.maven.plugins</groupId>-->
+<!--					<artifactId>maven-surefire-plugin</artifactId>-->
+<!--					<configuration>-->
+<!--						<skip>true</skip>-->
+<!--					</configuration>-->
+<!--					<executions>-->
+<!--						<execution>-->
+<!--							<phase>integration-test</phase>-->
+<!--							<goals>-->
+<!--								<goal>test</goal>-->
+<!--							</goals>-->
+<!--							<configuration>-->
+<!--								<skip>false</skip>-->
+<!--							</configuration>-->
+<!--						</execution>-->
+<!--					</executions>-->
+<!--				</plugin>-->
 			</plugins>
 		</pluginManagement>
 	</build>
