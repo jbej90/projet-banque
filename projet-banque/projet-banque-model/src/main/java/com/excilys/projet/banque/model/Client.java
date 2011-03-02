@@ -14,14 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.springframework.core.annotation.Order;
-
-import com.sun.istack.internal.NotNull;
+import javax.validation.constraints.NotNull;
 
 @SuppressWarnings("serial")
 @Entity
@@ -60,7 +56,6 @@ public class Client implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@NotNull
 	@Column(name = "id")
 	public Integer getId() {
 		return id;
