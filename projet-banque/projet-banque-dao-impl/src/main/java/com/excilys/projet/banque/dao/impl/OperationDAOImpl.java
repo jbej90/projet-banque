@@ -83,18 +83,11 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 		int dernierJour = dt.dayOfMonth().withMaximumValue().getDayOfMonth();
 		int moisCourant = dt.getMonthOfYear();
 		int anneeCourante = dt.getYear();
-		String dateChaineDeb = anneeCourante + "-" + moisCourant + "-" + premierJour;
-		String dateChaineFin = anneeCourante + "-" + moisCourant + "-" + dernierJour;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		Date dateFin = null, dateDeb = null;
-		try {
-			dateDeb = sdf.parse(dateChaineDeb);
-			dateFin = sdf.parse(dateChaineFin);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		
+		DateTime dateDebut2 = new DateTime(anneeCourante, moisCourant, premierJour, 0, 0, 0, 0);
+		DateTime dateFin2 = new DateTime(anneeCourante, moisCourant, dernierJour, 0, 0, 0, 0);
 
-		return getHibernateTemplate().find("From Operation o where DATE_OP between ? and ? and compte_fk = ?", dateDeb, dateFin, compte.getId());
+		return getHibernateTemplate().find("From Operation o where DATE_OP between ? and ? and compte_fk = ?", dateDebut2.toDate(), dateFin2.toDate(), compte.getId());
 	}
 
 	@SuppressWarnings("unchecked")
