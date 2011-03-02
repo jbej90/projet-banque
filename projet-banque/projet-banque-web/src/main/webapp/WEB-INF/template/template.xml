@@ -36,6 +36,11 @@
 		<put-attribute name="content" value="/WEB-INF/pages/private/compte.jsp" />
 	</definition>
 	
+	<definition name="private/compte-carte" extends="banqueTemplate">
+		<put-attribute name="title" value="Détail des opérations par carte de mon compte" />
+		<put-attribute name="content" value="/WEB-INF/pages/private/compte-carte.jsp" />
+	</definition>
+	
 	<definition name="private/virement" extends="banqueTemplate">
 		<put-attribute name="title" value="Virement entre mes comptes" />
 		<put-attribute name="content" value="/WEB-INF/pages/private/virement.jsp" />

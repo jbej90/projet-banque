@@ -1,9 +1,9 @@
 package com.excilys.projet.banque.web.controller;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import sun.print.resources.serviceui;
-
 import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.Operation;
+import com.excilys.projet.banque.model.Type;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
@@ -46,12 +45,12 @@ public class PrivateController {
 	@Autowired
 	private OperationService	operationService;
 
-	// ~ Mapping Methods GET ==============================================================================================
+	// ~ Mapping show Methods ==============================================================================================
 
 	/**
 	 * Map l'url de type /private/home.htm
 	 */
-	@RequestMapping(value = "home" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	@RequestMapping(value = "home" + BASE_URL_SUFFIX)
 	public String showHome(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 
@@ -92,7 +91,7 @@ public class PrivateController {
 	/**
 	 * Map l'url de type /private/compte-{id}.htm
 	 */
-	@RequestMapping(value = "compte-{id}" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	@RequestMapping(value = "compte-{id}" + BASE_URL_SUFFIX)
 	public String showCompte(@PathVariable long id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
@@ -113,14 +112,14 @@ public class PrivateController {
 			date = new Date();
 		}
 		
-		System.out.println(date);
-
 		// Si l'instance est nulle, le client est introuvable
 		if (client == null) {
 			MessageStack.getInstance(request).addError("Client introuvable");
+			return "redirect:/error/error.htm";
 		}
 		else {
-			// Vérifie que le client est bien le propriétaire du compte
+			// TODO: A optimiser
+			// Vérifie que le client est bien le propriétaioperation0_.date_op as date2_4re du compte
 			Set<Compte> comptes = client.getComptes();
 			for (Compte compte : comptes) {
 				if (compte.getId() == id) {
@@ -128,25 +127,38 @@ public class PrivateController {
 					break;
 				}
 			}
-
+			
 			if (selectedCompte == null) {
-				MessageStack.getInstance(request).addError("Ce compte ne vous appartient pas");
+				MessageStack.getInstance(request).addError("Compte non valide");
+				return "redirect:/error/error.htm";
+			} else {
+				// Récupère les opérations de ce compte
+				List<Operation> operations 		= new LinkedList<Operation>();
+				List<Operation> operationsCarte = new LinkedList<Operation>();
+				float total 		= 0;
+				float totalCarte 	= 0;
+				try {
+					List<Type> listTypeCarte = new LinkedList<Type>();
+					listTypeCarte.add(Type.OP_CARTE_DIFF);
+					listTypeCarte.add(Type.OP_CARTE_IMM);
+					
+					operations 		= operationService.recupererOperationsSansType(selectedCompte, date, listTypeCarte);
+					operationsCarte = operationService.recupererOperations(selectedCompte, date, listTypeCarte);
+					total 			= operationService.totalOperations(operations);
+					totalCarte 		= operationService.totalOperations(operationsCarte);
+				}
+				catch (ServiceException e) {
+					e.printStackTrace();
+				}
+	
+				model.addAttribute("compte", selectedCompte);
+				model.addAttribute("operations", operations);
+				model.addAttribute("operationsCarte", operationsCarte);
+				model.addAttribute("operationsCarteCount", operationsCarte.size());
+				model.addAttribute("soustotal", total);
+				model.addAttribute("soustotalCarte", totalCarte);
+				model.addAttribute("total", total+totalCarte);
 			}
-
-			// Récupère les opérations de ce compte
-			List<Operation> operations = null;
-			float total = 0;
-			try {
-				operations = operationService.recupererOperations(selectedCompte, date);
-				total = operationService.totalOperations(operations);
-			}
-			catch (ServiceException e) {
-				e.printStackTrace();
-			}
-
-			model.addAttribute("compte", selectedCompte);
-			model.addAttribute("operations", operations);
-			model.addAttribute("total", total);
 		}
 
 		// TODO : Refactorer la gestion des menus
@@ -162,14 +174,92 @@ public class PrivateController {
 	}
 
 	/**
+	 * Map l'url de type /private/compte-carte-{id}.htm
+	 */
+	@RequestMapping(value = "compte-carte-{id}" + BASE_URL_SUFFIX)
+	public String showCompteCarte(@PathVariable long id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+		Client client = getActualClient(request);
+		Compte selectedCompte = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		Date date = null;
+
+		// Essaye de parser la date pour le filtre d'opérations
+		if (request.getParameterMap().containsKey("filter_date")) {
+			try {
+				date = sdf.parse(request.getParameter("filter_month"));
+			} catch (ParseException e) {
+				MessageStack.getInstance(request).addError("Format de date incorrect");
+			}
+		}
+
+		// Si la date est nulle (parsing incorrect ou valeur par défaut), on prend la date par défaut
+		if (date == null) {
+			date = new Date();
+		}
+		
+		// Si l'instance est nulle, le client est introuvable
+		if (client == null) {
+			MessageStack.getInstance(request).addError("Client introuvable");
+			return "redirect:/error/error.htm";
+		}
+		else {
+			// TODO: A optimiser
+			// Vérifie que le client est bien le propriétaire du compte
+			Set<Compte> comptes = client.getComptes();
+			for (Compte compte : comptes) {
+				if (compte.getId() == id) {
+					selectedCompte = compte;
+					break;
+				}
+			}
+			
+			if (selectedCompte == null) {
+				MessageStack.getInstance(request).addError("Compte non valide");
+				return "redirect:/error/error.htm";
+			} else {
+				// Récupère les opérations de ce compte
+				List<Operation> operationsCarte = null;
+				float totalCarte = 0;
+				try {
+					List<Type> listTypeCarte = new LinkedList<Type>();
+					listTypeCarte.add(Type.OP_CARTE_DIFF);
+					listTypeCarte.add(Type.OP_CARTE_IMM);
+					
+					operationsCarte = operationService.recupererOperations(selectedCompte, date, listTypeCarte);
+					totalCarte 		= operationService.totalOperations(operationsCarte);
+				}
+				catch (ServiceException e) {
+					e.printStackTrace();
+				}
+	
+				model.addAttribute("compte", selectedCompte);
+				model.addAttribute("operationsCarte", operationsCarte);
+				model.addAttribute("totalCarte", totalCarte);
+			}
+		}
+
+		// TODO : Refactorer la gestion des menus
+		int menuid = 0;
+		Menu menu = new Menu();
+		menu.addItem(new MenuItem(menuid++, "Mon résumé", "private/home.htm"));
+		menu.addItem(new MenuItem(menuid++, "Mes virements", "private/virement-"+selectedCompte.getId()+".htm"));
+		menu.setItemSelected(0);
+		model.addAttribute("menu", menu);
+		// TODO EOF : Refactorer la gestion des menus
+
+		return BASE_DIR + "compte-carte";
+	}
+
+	/**
 	 * Map l'url de type /private/virement.htm
 	 */
-	@RequestMapping(value = "virement" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	@RequestMapping(value = "virement" + BASE_URL_SUFFIX)
 	public String showVirementHome(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 
 		model.addAttribute("comptes", client.getComptes());
 
+		// TODO : A implémenter
 		// model.addAttribute("virements", );
 
 		// TODO : Refactorer la gestion des menus
@@ -187,20 +277,25 @@ public class PrivateController {
 	/**
 	 * Map l'url de type /private/virement-{srcId}.htm
 	 */
-	@RequestMapping(value = "virement-{srcId}" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	@RequestMapping(value = "virement-{srcId}" + BASE_URL_SUFFIX)
 	public String showVirementHome(@PathVariable int srcId, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		model.addAttribute("compte_src", srcId);
-
+		
 		return showVirementHome(request, response, model);
 	}
 
-	// ~ Mapping Methods POST =============================================================================================
+	// ~ Mapping action Methods =============================================================================================
 
 	/**
-	 * Map l'url d'action de type /private/virement.do
+	 * Map l'url d'action de type POST /private/virement.do
 	 */
-	@RequestMapping(value = "virement.do", method = RequestMethod.POST)
-	public String doVirement(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+	@RequestMapping(value = "virement.do")
+	public String doVirement(HttpServletRequest request, HttpServletResponse response, RequestMethod method, ModelMap model) {
+		// Opération de controle sur le type de requete demandé
+//		if (method != RequestMethod.POST) {
+//			return "redirect:/error/405.htm";
+//		}
+		
 		int compte_src_id = 0;
 		int compte_dest_id = 0;
 		float montant = 0;

@@ -3,10 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<h2>Compte n°${compte.id}: ${compte.libelle} (solde: <span<c:if test="${compte.solde < 0}"> class="decouvert"</c:if>>${compte.solde}</span>)</h2>
+<h2>Opération par carte du compte n°${compte.id}: ${compte.libelle} </h2>
 
 <div class="box width-800">
-	<h3>Opérations du mois en cours</h3>
 	<table>
 		<thead>
 			<tr>
@@ -20,9 +19,9 @@
 	
 		<tbody>
 			<c:choose>
-				<c:when test="${fn:length(operations) > 0}">
+				<c:when test="${fn:length(operationsCarte) > 0}">
 					<% int i = 0; %>
-					<c:forEach items="${operations}" var="operation">
+					<c:forEach items="${operationsCarte}" var="operation">
 						<tr class="line<%=i++ % 2%>">
 							<td><fmt:formatDate value="${operation.dateOp}" type="date" /></td>
 							<td>${operation.libelle}</td>
@@ -47,20 +46,9 @@
 	
 		<tfoot>
 			<tr>
-				<td colspan="3">Opérations</td>
-				<td align="right" class="decouvert"><c:if test="${soustotal < 0}" >${soustotal}€</c:if></td>
-				<td align="right" ><c:if test="${soustotal >= 0}">${soustotal}€</c:if></td>
-			</tr>
-			<tr>
-				<td colspan="3"><a href="<c:url value="/private/compte-carte-${compte.id}.htm"/>">Opérations par carte</a></td>
-				<td align="right" class="decouvert"><c:if test="${soustotalCarte < 0}">${soustotalCarte}€</c:if></td>
-				<td align="right"><c:if test="${soustotalCarte >= 0}">${soustotalCarte}€</c:if></td>
-			</tr>
-			<tr>
 				<td colspan="3">Total des opérations</td>
-				<td align="right" class="decouvert"><c:if test="${total<0}" ><fmt:formatNumber maxFractionDigits="2">${total}</fmt:formatNumber>€</c:if></td>
-				<td align="right" ><c:if test="${total>=0}"><fmt:formatNumber maxFractionDigits="2">${total}</fmt:formatNumber>€</c:if></td>
-				
+				<td align="right" class="decouvert"><c:if test="${totalCarte<0}" >${totalCarte}€</c:if></td>
+				<td align="right" ><c:if test="${totalCarte>=0}">${totalCarte}€</c:if></td>
 			</tr>
 		</tfoot>
 	</table>

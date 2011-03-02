@@ -1,6 +1,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <div class="box">
 	<form method="post" action="<c:url value="/private/virement.do"/>">
@@ -46,11 +47,9 @@
 		</thead>
 	
 		<tbody>
-			<%
-				int i = 0;
-			%>
 			<c:choose>
-				<c:when test="${virements.length}">
+				<c:when test="${fn:length(virements) > 0}">
+					<% int i = 0; %>
 					<c:forEach items="${virements}" var="operation">
 						<tr class="line<%=i++ % 2%>">
 							<td><fmt:formatDate value="${operation.dateOp}" type="both" /></td>
@@ -61,7 +60,7 @@
 				</c:when>
 					
 				<c:otherwise>
-					<tr class="line<%=i++ % 2%>">
+					<tr class="line0">
 						<td colspan="3" class="empty">Aucun historique</td>
 					</tr>
 				</c:otherwise>
