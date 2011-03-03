@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<!-- Chargement du bean de gestion et configuration du menu de l'application 
+	Le constructeur de ce bean prend en argument un liste de map.
+	Chaque map correspond à un item et doit avoir 3 entrées :
+		* title : Titre ou libellé de l'item
+		* url : lien de l'item
+		* pattern : pattern devant correspondre avec l'url pour que ce menu soit marqué comme étant sélectionné
+	-->
+	<bean id="menuManager" class="com.excilys.projet.banque.web.utils.MenuManager">
+		<constructor-arg name="items">
+			<list>
+				<map>
+					<entry key="title" value="Mes résumés" />
+					<entry key="url" value="/private/home.htm" />
+					<entry key="pattern" value="/private/home.htm;/private/compte*.htm" />
+				</map>
+				
+				<map>
+					<entry key="title" value="Mes virements" />
+					<entry key="url" value="/private/virement.htm" />
+					<entry key="pattern" value="/private/virement*.htm" />
+				</map>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<!-- Chargement du bean de mappage de l'item courant -->
+	<bean id="menuFilter" class="com.excilys.projet.banque.web.MenuFilter" />
+</beans>

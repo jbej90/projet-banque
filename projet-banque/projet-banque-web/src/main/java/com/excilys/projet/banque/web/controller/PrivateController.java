@@ -3,7 +3,6 @@ package com.excilys.projet.banque.web.controller;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.text.spi.DateFormatSymbolsProvider;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -15,11 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Months;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.DateTimeFormatterBuilder;
+import org.joda.time.tz.DateTimeZoneBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,8 +35,8 @@ import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
-import com.excilys.projet.banque.web.utils.Menu;
 import com.excilys.projet.banque.web.utils.MenuItem;
+import com.excilys.projet.banque.web.utils.MenuManager;
 import com.excilys.projet.banque.web.utils.MessageStack;
 
 @Controller
@@ -67,7 +67,6 @@ public class PrivateController {
 		// Si l'instance est nulle, le client est introuvable
 		if (client == null) {
 			MessageStack.getInstance(request).addError("Client introuvable");
-
 		}
 		// Sinon on stock les données dans le modele
 		else {
@@ -84,42 +83,32 @@ public class PrivateController {
 			model.addAttribute("client", client);
 			model.addAttribute("comptes", client.getComptes());
 			model.addAttribute("total", total);
-
-			// TODO : Refactorer la gestion des menus
-			int menuid = 0;
-			Menu menu = new Menu();
-			menu.addItem(new MenuItem(menuid++, "Mon résumé", "private/home.htm"));
-			menu.addItem(new MenuItem(menuid++, "Mes virements", "private/virement.htm"));
-			menu.setItemSelected(0);
-			model.addAttribute("menu", menu);
-			// TODO EOF : Refactorer la gestion des menus
 		}
 
 		return BASE_DIR + "home";
 	}
 
 	/**
-	 * Map l'url de type /private/compte-{id}.htm
+	 * Map l'url de type /private/compte/{id}/operations.htm
 	 */
-	@RequestMapping(value = "compte-{id}" + BASE_URL_SUFFIX)
+	@RequestMapping(value = "compte/{id}" + BASE_URL_SUFFIX)
 	public String showCompte(@PathVariable long id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		Date date = null;
+		Calendar cal = Calendar.getInstance();
 
 		// Essaye de parser la date pour le filtre d'opérations
-		if (request.getParameterMap().containsKey("filter_date")) {
+		if (request.getParameterMap().containsKey("filter_month") && request.getParameterMap().containsKey("filter_year")) {
 			try {
-				date = sdf.parse(request.getParameter("filter_month"));
-			} catch (ParseException e) {
+				int month = Integer.parseInt(request.getParameter("filter_month"));
+				int year = Integer.parseInt(request.getParameter("filter_year"));
+				
+				cal.set(Calendar.DATE, 1);
+				cal.set(Calendar.MONTH, month);
+				cal.set(Calendar.YEAR, year);
+			} catch (NumberFormatException e) {
 				MessageStack.getInstance(request).addError("Format de date incorrect");
 			}
-		}
-
-		// Si la date est nulle (parsing incorrect ou valeur par défaut), on prend la date par défaut
-		if (date == null) {
-			date = new Date();
 		}
 		
 		// Si l'instance est nulle, le client est introuvable
@@ -129,7 +118,7 @@ public class PrivateController {
 		}
 		else {
 			// TODO: A optimiser
-			// Vérifie que le client est bien le propriétaioperation0_.date_op as date2_4re du compte
+			// Vérifie que le client est bien le propriétaire du compte
 			Set<Compte> comptes = client.getComptes();
 			for (Compte compte : comptes) {
 				if (compte.getId() == id) {
@@ -152,8 +141,8 @@ public class PrivateController {
 					listTypeCarte.add(Type.OP_CARTE_DIFF);
 					listTypeCarte.add(Type.OP_CARTE_IMM);
 					
-					operations 		= operationService.recupererOperationsSansType(selectedCompte, date, listTypeCarte);
-					operationsCarte = operationService.recupererOperations(selectedCompte, date, listTypeCarte);
+					operations 		= operationService.recupererOperationsSansType(selectedCompte, cal.getTime(), listTypeCarte);
+					operationsCarte = operationService.recupererOperations(selectedCompte, cal.getTime(), listTypeCarte);
 					total 			= operationService.totalOperations(operations);
 					totalCarte 		= operationService.totalOperations(operationsCarte);
 				}
@@ -168,49 +157,38 @@ public class PrivateController {
 				model.addAttribute("soustotal", total);
 				model.addAttribute("soustotalCarte", totalCarte);
 				model.addAttribute("total", total+totalCarte);
-				
-				// TODO : Trouver une alternative... Cette méthode ajotue uen 13eme entrée vide
 				model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
-				model.addAttribute("anneecourante", Calendar.getInstance().get(Calendar.YEAR));
+				model.addAttribute("moiscourant", cal.get(Calendar.MONTH));
+				model.addAttribute("anneecourante", cal.get(Calendar.YEAR));
 			}
 		}
-
-		// TODO : Refactorer la gestion des menus
-		int menuid = 0;
-		Menu menu = new Menu();
-		menu.addItem(new MenuItem(menuid++, "Mon résumé", "private/home.htm"));
-		menu.addItem(new MenuItem(menuid++, "Mes virements", "private/virement-"+selectedCompte.getId()+".htm"));
-		menu.setItemSelected(0);
-		model.addAttribute("menu", menu);
-		// TODO EOF : Refactorer la gestion des menus
 		
 		return BASE_DIR + "compte";
 	}
 
 	/**
-	 * Map l'url de type /private/compte-carte-{id}.htm
+	 * Map l'url de type /private/compte/{id}/operations/carte.htm
 	 */
-	@RequestMapping(value = "compte-carte-{id}" + BASE_URL_SUFFIX)
+	@RequestMapping(value = "compte/{id}/operations/carte" + BASE_URL_SUFFIX)
 	public String showCompteCarte(@PathVariable long id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		Date date = null;
-
+		
+		Calendar cal = Calendar.getInstance();
+		
 		// Essaye de parser la date pour le filtre d'opérations
-		if (request.getParameterMap().containsKey("filter_date")) {
+		if (request.getParameterMap().containsKey("filter_month") && request.getParameterMap().containsKey("filter_year")) {
 			try {
-				date = sdf.parse(request.getParameter("filter_month"));
-			} catch (ParseException e) {
+				int annee =Integer.parseInt(request.getParameter("filter_year"));
+				int mois =Integer.parseInt(request.getParameter("filter_month"));
+				cal.set(Calendar.YEAR,annee);
+				cal.set(Calendar.MONTH,mois);
+				cal.set(Calendar.DATE,1);
+			} catch (NumberFormatException e) {
 				MessageStack.getInstance(request).addError("Format de date incorrect");
 			}
 		}
 
-		// Si la date est nulle (parsing incorrect ou valeur par défaut), on prend la date par défaut
-		if (date == null) {
-			date = new Date();
-		}
-		
 		// Si l'instance est nulle, le client est introuvable
 		if (client == null) {
 			MessageStack.getInstance(request).addError("Client introuvable");
@@ -239,7 +217,7 @@ public class PrivateController {
 					listTypeCarte.add(Type.OP_CARTE_DIFF);
 					listTypeCarte.add(Type.OP_CARTE_IMM);
 					
-					operationsCarte = operationService.recupererOperations(selectedCompte, date, listTypeCarte);
+					operationsCarte = operationService.recupererOperations(selectedCompte, cal.getTime(), listTypeCarte);
 					totalCarte 		= operationService.totalOperations(operationsCarte);
 				}
 				catch (ServiceException e) {
@@ -247,19 +225,13 @@ public class PrivateController {
 				}
 	
 				model.addAttribute("compte", selectedCompte);
-				model.addAttribute("operationsCarte", operationsCarte);
-				model.addAttribute("totalCarte", totalCarte);
+				model.addAttribute("operationscarte", operationsCarte);
+				model.addAttribute("totalcarte", totalCarte);
+				model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
+				model.addAttribute("moiscourant", cal.get(Calendar.MONTH));
+				model.addAttribute("anneecourante", cal.get(Calendar.YEAR));
 			}
 		}
-
-		// TODO : Refactorer la gestion des menus
-		int menuid = 0;
-		Menu menu = new Menu();
-		menu.addItem(new MenuItem(menuid++, "Mon résumé", "private/home.htm"));
-		menu.addItem(new MenuItem(menuid++, "Mes virements", "private/virement-"+selectedCompte.getId()+".htm"));
-		menu.setItemSelected(0);
-		model.addAttribute("menu", menu);
-		// TODO EOF : Refactorer la gestion des menus
 
 		return BASE_DIR + "compte-carte";
 	}
@@ -275,15 +247,6 @@ public class PrivateController {
 
 		// TODO : A implémenter
 		// model.addAttribute("virements", );
-
-		// TODO : Refactorer la gestion des menus
-		int menuid = 0;
-		Menu menu = new Menu();
-		menu.addItem(new MenuItem(menuid++, "Mon résumé", "private/home.htm"));
-		menu.addItem(new MenuItem(menuid++, "Mes virements", "private/virement.htm"));
-		menu.setItemSelected(1);
-		model.addAttribute("menu", menu);
-		// TODO EOF : Refactorer la gestion des menus
 
 		return BASE_DIR + "virement";
 	}
@@ -390,19 +353,6 @@ public class PrivateController {
 		}
 		return client;
 	}
-
-	/**
-	 * Import de données de références TODO : Importer les bonnes données
-	 */
-	// @ModelAttribute("types")
-	// public Collection<String> getTypes() {
-	// List<String> list = new ArrayList<String>();
-	// list.add("virement");
-	// list.add("dépot");
-	// list.add("retrait");
-	// // ...
-	// return list;
-	// }
 
 	// ~ Accessors ========================================================================================================
 

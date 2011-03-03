@@ -3,21 +3,31 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<h2>Compte n°${compte.id}: ${compte.libelle} (solde: <span<c:if test="${compte.solde < 0}"> class="decouvert"</c:if>>${compte.solde}€</span>)</h2>
-
 <div class="box width-800">
-	<h3>Opérations du mois : </h3> 
-	<select>
-	<% int i=0; %>
-	<c:forEach items="${listemois}" var="mois">
-		<option value="<%=i++%>">${mois}</option>
-	</c:forEach>
-	</select>
-	<select>
-		<c:forEach begin="${anneecourante-3}" end="${anneecourante}" var="annee">
-			<option value="${annee}"<c:if test="${anneecourante == annee}"> selected="selected"</c:if>>${annee}</option>
-		</c:forEach>
-	</select>
+	<h3>Opérations du compte "${compte.libelle}" (solde: <span<c:if test="${compte.solde < 0}"> class="decouvert"</c:if>>${compte.solde}€</span>)</h3>
+	
+	<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
+	
+	<form action="<c:url value="/private/compte/${compte.id}.htm"></c:url>" method="post" class="filter">
+		<select name="filter_month" id="filter_month">
+			<c:forEach items="${listemois}" var="mois" varStatus="status">
+				<c:if test="${mois != ''}">
+					<option value="${status.index}"<c:if test="${moiscourant == status.index}"> selected="selected"</c:if>>${mois}</option>
+				</c:if>
+			</c:forEach>
+		</select>
+		
+		<select name="filter_year" id="filter_year">
+			<c:forEach begin="${anneecourante-3}" end="${anneecourante}" var="annee">
+				<option value="${annee}"<c:if test="${anneecourante == annee}"> selected="selected"</c:if>>${annee}</option>
+			</c:forEach>
+		</select>
+		
+		<input type="submit" value="Afficher" />
+	</form>
+	
+	<p>Ci-dessous, la liste des opérations de ce compte pour le mois sélectionné</p>
+	
 	<table>
 		<thead>
 			<tr>
@@ -32,7 +42,7 @@
 		<tbody>
 			<c:choose>
 				<c:when test="${fn:length(operations) > 0}">
-					<% i = 0; %>
+					<% int i = 0; %>
 					<c:forEach items="${operations}" var="operation">
 						<tr class="line<%=i++ % 2%>">
 							<td><fmt:formatDate value="${operation.dateOp}" type="date" /></td>
@@ -63,7 +73,7 @@
 				<td align="right" ><c:if test="${soustotal >= 0}">${soustotal}€</c:if></td>
 			</tr>
 			<tr>
-				<td colspan="3"><a href="<c:url value="/private/compte-carte-${compte.id}.htm"/>">Opérations par carte</a></td>
+				<td colspan="3"><a href="<c:url value="/private/compte/${compte.id}/operations/carte.htm"/>">Opérations par carte</a></td>
 				<td align="right" class="decouvert"><c:if test="${soustotalCarte < 0}">${soustotalCarte}€</c:if></td>
 				<td align="right"><c:if test="${soustotalCarte >= 0}">${soustotalCarte}€</c:if></td>
 			</tr>
