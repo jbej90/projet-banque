@@ -1,10 +1,7 @@
 package com.excilys.projet.banque.web.controller;
 
 import java.text.DateFormatSymbols;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -13,13 +10,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeFieldType;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Months;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.tz.DateTimeZoneBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,8 +25,6 @@ import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
-import com.excilys.projet.banque.web.utils.MenuItem;
-import com.excilys.projet.banque.web.utils.MenuManager;
 import com.excilys.projet.banque.web.utils.MessageStack;
 
 @Controller
@@ -46,8 +34,6 @@ public class PrivateController {
 	private static final String	BASE_DIR		= "private/";
 	private static final String	BASE_URL_SUFFIX	= ".htm";
 
-	// ~ Attributes =======================================================================================================
-
 	@Autowired
 	private ClientService		clientService;
 	@Autowired
@@ -55,7 +41,9 @@ public class PrivateController {
 	@Autowired
 	private OperationService	operationService;
 
+	// =====================================================================================================================
 	// ~ Mapping show Methods ==============================================================================================
+	// =====================================================================================================================
 
 	/**
 	 * Map l'url de type /private/home.htm
@@ -195,7 +183,7 @@ public class PrivateController {
 				model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
 				model.addAttribute("moiscourant", cal.get(Calendar.MONTH));
 				model.addAttribute("anneecourante", calNow.get(Calendar.YEAR));
-				model.addAttribute("anneeselectionnee", cal.get(Calendar.YEAR));
+				model.addAttribute("annee50.0selectionnee", cal.get(Calendar.YEAR));
 			}
 		}
 
@@ -210,6 +198,11 @@ public class PrivateController {
 		Client client = getActualClient(request);
 
 		model.addAttribute("comptes", client.getComptes());
+		
+		// Récupération des valeurs probablement stockées en session après une erreur de validation
+		model.addAttribute("compte_src", request.getSession().getAttribute("compte_src"));
+		model.addAttribute("compte_dest", request.getSession().getAttribute("compte_dest"));
+		model.addAttribute("montant", request.getSession().getAttribute("montant"));
 
 		// TODO : A implémenter
 		// model.addAttribute("virements", );
@@ -227,7 +220,9 @@ public class PrivateController {
 		return showVirementHome(request, response, model);
 	}
 
-	// ~ Mapping action Methods =============================================================================================
+	// =====================================================================================================================
+	// ~ Mapping action Methods ============================================================================================
+	// =====================================================================================================================
 
 	/**
 	 * Map l'url d'action de type POST /private/virement.do
@@ -276,6 +271,7 @@ public class PrivateController {
 		// Vérifie que le montant soit correct
 		if (montant <= 0) {
 			MessageStack.getInstance(request).addError("Le montant doit être positif non null");
+			montant = 0;
 		}
 
 		// Si la pile d'erreur est vide, tout s'est bien passé
@@ -287,14 +283,33 @@ public class PrivateController {
 			else {
 				MessageStack.getInstance(request).addError("L'enregistrement du virement a échoué");
 			}
+			
+			// on supprime les données probablement stockées en session (pour la gestion d'erreurs)
+			request.getSession().removeAttribute("compte_src");
+			request.getSession().removeAttribute("compte_dest");
+			request.getSession().removeAttribute("montant");
+		} else {
+			// Si la pile d'erreur n'est pas vide, on stock les valeurs entrées pour les restituer
+			request.getSession().setAttribute("compte_src", compte_src_id);
+			request.getSession().setAttribute("compte_dest", compte_dest_id);
+			request.getSession().setAttribute("montant", montant);
 		}
 		return "redirect:/private/virement" + BASE_URL_SUFFIX;
 	}
 
-	// ~ Generic Methods ==================================================================================================
+	// =====================================================================================================================
+	// ~ Generic Methods ===================================================================================================
+	// =====================================================================================================================
 
+	/**
+	 * Récupère l'instance du client actuellement connecté.
+	 * La méthode utilise l'identifiant client stocké en session.
+	 * 
+	 * @param request : la requete passée aux méthodes du controlleur
+	 * @return une instance du client actuel; null sinon
+	 */
 	private Client getActualClient(HttpServletRequest request) {
-		// Réupère l'instance Client de l'utilisateur connecté
+		// Récupère l'instance Client de l'utilisateur connecté
 		Client client = null;
 		try {
 			Integer idClient = (Integer) request.getSession().getAttribute("idClient");
@@ -309,6 +324,14 @@ public class PrivateController {
 		return client;
 	}
 	
+	/**
+	 * Récupère une instance de compte à partir de son identifiant.
+	 * La méthode vérifie également que ce compte appartient bien à un client donnée
+	 *  
+	 * @param idCompte : identifiant du compte
+	 * @param client : instance de client devant être propriétaire du compte
+	 * @return instance de Compte correspondant à l'id si le client est le propriétaire; null sinon
+	 */
 	private Compte getCompteClient(int idCompte, Client client) {
 		// Vérifie que le client est bien le propriétaire du compte
 		Set<Compte> comptes = client.getComptes();
@@ -320,6 +343,14 @@ public class PrivateController {
 		return null;
 	}
 	
+	/**
+	 * Récupère une instance de Calendar. La date configurée est celle du 1er du mois sélectionné dans le formulaire de filtrage.
+	 * La méthode utilise donc les valeurs de deux champs HTML "filter_month" et "filter_year".
+	 * Si aucun filtrage n'a été demandé (ie: valeurs inexistantes) ou que les données sont incorrectes, la date actuelle est retournée.
+	 * 
+	 * @param request : la requete passée aux méthodes du controlleur
+	 * @return une instance de Calendar correspondant à la date de filtrage; la date actuelle sinon
+	 */
 	private Calendar getMonthYearFilter(HttpServletRequest request) {
 		Calendar cal = Calendar.getInstance(Locale.FRANCE);
 		
@@ -339,8 +370,10 @@ public class PrivateController {
 		return cal;
 	}
 
-	// ~ Accessors ========================================================================================================
-
+	// =====================================================================================================================
+	// ~ Accessors =========================================================================================================
+	// =====================================================================================================================
+	
 	public void setClientService(ClientService clientService) {
 		this.clientService = clientService;
 	}
