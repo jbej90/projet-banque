@@ -19,7 +19,7 @@
 		
 		<select name="filter_year" id="filter_year">
 			<c:forEach begin="${anneecourante-3}" end="${anneecourante}" var="annee">
-				<option value="${annee}"<c:if test="${anneecourante == annee}"> selected="selected"</c:if>>${annee}</option>
+				<option value="${annee}"<c:if test="${anneeselectionnee == annee}"> selected="selected"</c:if>>${annee}</option>
 			</c:forEach>
 		</select>
 		

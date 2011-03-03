@@ -92,24 +92,13 @@ public class PrivateController {
 	 * Map l'url de type /private/compte/{id}/operations.htm
 	 */
 	@RequestMapping(value = "compte/{id}" + BASE_URL_SUFFIX)
-	public String showCompte(@PathVariable long id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+	public String showCompte(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
-		Calendar cal = Calendar.getInstance();
 
 		// Essaye de parser la date pour le filtre d'opérations
-		if (request.getParameterMap().containsKey("filter_month") && request.getParameterMap().containsKey("filter_year")) {
-			try {
-				int month = Integer.parseInt(request.getParameter("filter_month"));
-				int year = Integer.parseInt(request.getParameter("filter_year"));
-				
-				cal.set(Calendar.DATE, 1);
-				cal.set(Calendar.MONTH, month);
-				cal.set(Calendar.YEAR, year);
-			} catch (NumberFormatException e) {
-				MessageStack.getInstance(request).addError("Format de date incorrect");
-			}
-		}
+		Calendar cal = getMonthYearFilter(request);
+		Calendar calNow = Calendar.getInstance();
 		
 		// Si l'instance est nulle, le client est introuvable
 		if (client == null) {
@@ -117,15 +106,8 @@ public class PrivateController {
 			return "redirect:/error/error.htm";
 		}
 		else {
-			// TODO: A optimiser
 			// Vérifie que le client est bien le propriétaire du compte
-			Set<Compte> comptes = client.getComptes();
-			for (Compte compte : comptes) {
-				if (compte.getId() == id) {
-					selectedCompte = compte;
-					break;
-				}
-			}
+			selectedCompte = getCompteClient(id, client);
 			
 			if (selectedCompte == null) {
 				MessageStack.getInstance(request).addError("Compte non valide");
@@ -159,7 +141,8 @@ public class PrivateController {
 				model.addAttribute("total", total+totalCarte);
 				model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
 				model.addAttribute("moiscourant", cal.get(Calendar.MONTH));
-				model.addAttribute("anneecourante", cal.get(Calendar.YEAR));
+				model.addAttribute("anneecourante", calNow.get(Calendar.YEAR));
+				model.addAttribute("anneeselectionnee", cal.get(Calendar.YEAR));
 			}
 		}
 		
@@ -170,24 +153,13 @@ public class PrivateController {
 	 * Map l'url de type /private/compte/{id}/operations/carte.htm
 	 */
 	@RequestMapping(value = "compte/{id}/operations/carte" + BASE_URL_SUFFIX)
-	public String showCompteCarte(@PathVariable long id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+	public String showCompteCarte(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
 		
-		Calendar cal = Calendar.getInstance();
-		
 		// Essaye de parser la date pour le filtre d'opérations
-		if (request.getParameterMap().containsKey("filter_month") && request.getParameterMap().containsKey("filter_year")) {
-			try {
-				int annee =Integer.parseInt(request.getParameter("filter_year"));
-				int mois =Integer.parseInt(request.getParameter("filter_month"));
-				cal.set(Calendar.YEAR,annee);
-				cal.set(Calendar.MONTH,mois);
-				cal.set(Calendar.DATE,1);
-			} catch (NumberFormatException e) {
-				MessageStack.getInstance(request).addError("Format de date incorrect");
-			}
-		}
+		Calendar cal = getMonthYearFilter(request);
+		Calendar calNow = Calendar.getInstance();
 
 		// Si l'instance est nulle, le client est introuvable
 		if (client == null) {
@@ -195,15 +167,8 @@ public class PrivateController {
 			return "redirect:/error/error.htm";
 		}
 		else {
-			// TODO: A optimiser
-			// Vérifie que le client est bien le propriétaire du compte
-			Set<Compte> comptes = client.getComptes();
-			for (Compte compte : comptes) {
-				if (compte.getId() == id) {
-					selectedCompte = compte;
-					break;
-				}
-			}
+			// Récupère le compte du client et vérifie qu'il lui appartient
+			selectedCompte = getCompteClient(id, client);
 			
 			if (selectedCompte == null) {
 				MessageStack.getInstance(request).addError("Compte non valide");
@@ -223,13 +188,14 @@ public class PrivateController {
 				catch (ServiceException e) {
 					e.printStackTrace();
 				}
-	
+				
 				model.addAttribute("compte", selectedCompte);
 				model.addAttribute("operationscarte", operationsCarte);
 				model.addAttribute("totalcarte", totalCarte);
 				model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
 				model.addAttribute("moiscourant", cal.get(Calendar.MONTH));
-				model.addAttribute("anneecourante", cal.get(Calendar.YEAR));
+				model.addAttribute("anneecourante", calNow.get(Calendar.YEAR));
+				model.addAttribute("anneeselectionnee", cal.get(Calendar.YEAR));
 			}
 		}
 
@@ -252,9 +218,9 @@ public class PrivateController {
 	}
 
 	/**
-	 * Map l'url de type /private/virement-{srcId}.htm
+	 * Map l'url de type /private/virement/{srcId}.htm
 	 */
-	@RequestMapping(value = "virement-{srcId}" + BASE_URL_SUFFIX)
+	@RequestMapping(value = "virement/{srcId}" + BASE_URL_SUFFIX)
 	public String showVirementHome(@PathVariable int srcId, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		model.addAttribute("compte_src", srcId);
 		
@@ -294,20 +260,9 @@ public class PrivateController {
 			MessageStack.getInstance(request).addError("Les comptes sources et destinations doivent être différents");
 		}
 		else {
-			// Récupère les instances des deux comptes
-			Set<Compte> comptes = client.getComptes();
-			for (Compte compte : comptes) {
-				if (compte.getId() == compte_src_id) {
-					compte_src = compte;
-				}
-				else if (compte.getId() == compte_dest_id) {
-					compte_dest = compte;
-				}
-				// Si les deux comptes ont été trouvés, on sort de la boucle
-				if (compte_src != null && compte_dest != null) {
-					break;
-				}
-			}
+			// Récupère les compte source et destination du client et vérifie qu'ils lui appartiennent
+			compte_src 	= getCompteClient(compte_src_id, client);
+			compte_dest = getCompteClient(compte_dest_id, client);
 
 			// Vérifie que le client est bien le propriétaire des comptes
 			if (compte_src == null) {
@@ -352,6 +307,36 @@ public class PrivateController {
 			e.printStackTrace();
 		}
 		return client;
+	}
+	
+	private Compte getCompteClient(int idCompte, Client client) {
+		// Vérifie que le client est bien le propriétaire du compte
+		Set<Compte> comptes = client.getComptes();
+		for (Compte compte : comptes) {
+			if (compte.getId() == idCompte) {
+				return compte;
+			}
+		}
+		return null;
+	}
+	
+	private Calendar getMonthYearFilter(HttpServletRequest request) {
+		Calendar cal = Calendar.getInstance(Locale.FRANCE);
+		
+		if (request.getParameterMap().containsKey("filter_month") && request.getParameterMap().containsKey("filter_year")) {
+			try {
+				int month = Integer.parseInt(request.getParameter("filter_month"));
+				int year = Integer.parseInt(request.getParameter("filter_year"));
+				
+				cal.set(Calendar.DATE, 1);
+				cal.set(Calendar.MONTH, month);
+				cal.set(Calendar.YEAR, year);
+			} catch (NumberFormatException e) {
+				MessageStack.getInstance(request).addError("Format de date incorrect");
+			}
+		}
+		
+		return cal;
 	}
 
 	// ~ Accessors ========================================================================================================

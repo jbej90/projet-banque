@@ -61,8 +61,8 @@ ul#messages li.error {
 ul#messages li.warning {
 	background: url('../images/warning.png') left center no-repeat;
 }
-ul#messages li.ok {
-	background: url('../images/ok.png') left center no-repeat;
+ul#messages li.info {
+	background: url('../images/info.png') left center no-repeat;
 }
 
 /* Forms */
@@ -121,6 +121,9 @@ table tbody tr.line1 {
 
 table tfoot tr td {
 	border-top: 1px #bbb solid;
+}
+table tfoot tr td.total {
+	font-weight: bold;
 }
 
 /* Utils */

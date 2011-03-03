@@ -4,6 +4,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <div class="box">
+	<h3>Effectuer un virement</h3>
+	
+	<p>Sélectionnez votre compte source et le compte destination et indiquez le montant à transféfer.</p>
+
 	<form method="post" action="<c:url value="/private/virement.do"/>">
 		<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
 		
@@ -37,6 +41,8 @@
 <div class="separator"></div>
 
 <div class="box">
+	<h3>Historique de mes virements</h3>
+	
 	<table>
 		<thead>
 			<tr>
