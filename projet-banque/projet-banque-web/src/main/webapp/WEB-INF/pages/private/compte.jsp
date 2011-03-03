@@ -85,4 +85,8 @@
 			</tr>
 		</tfoot>
 	</table>
+	
+	<p>
+		<a href="<c:url value="/private/virement/${compte.id}.htm"/>">Effectuer un virement</a>
+	</p>
 </div>

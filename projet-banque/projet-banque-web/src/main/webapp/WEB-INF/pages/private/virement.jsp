@@ -23,13 +23,13 @@
 			<label for="compte_dest">Destination :</label>
 			<select name="compte_dest" id="compte_dest">
 				<c:forEach items="${comptes}" var="compte">
-					<option value="${compte.id}">${compte.libelle} (${compte.solde}€)</option>
+					<option value="${compte.id}"<c:if test="${compte.id == compte_dest}"> selected="selected"</c:if>>${compte.libelle} (${compte.solde}€)</option>
 				</c:forEach>
 			</select>
 		</div>
 		<div class="row">
 			<label for="montant">Montant :</label>
-			<input class="input" id="montant" name="montant" type="text" />€
+			<input class="input" id="montant" name="montant" type="text" value="${montant}" />€
 		</div>
 		
 		<div class="buttons">
