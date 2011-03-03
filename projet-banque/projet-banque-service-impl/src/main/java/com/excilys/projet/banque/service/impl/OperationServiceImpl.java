@@ -3,6 +3,9 @@ package com.excilys.projet.banque.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.projet.banque.dao.api.OperationDAO;
 import com.excilys.projet.banque.model.Carte;
 import com.excilys.projet.banque.model.Compte;
@@ -12,10 +15,10 @@ import com.excilys.projet.banque.model.Type;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 
+@Repository("operationService")
 public class OperationServiceImpl implements OperationService {
 
-//	private final static Date DEFAULT_DATE = new Date();
-
+	@Autowired
 	private OperationDAO operationDao;
 
 	public OperationServiceImpl() {
@@ -43,8 +46,6 @@ public class OperationServiceImpl implements OperationService {
 	@Override
 	public List<Operation> recupererOperations(Compte compte, Date date) throws ServiceException {
 
-		System.out.println("recup operations");
-
 		List<Operation> ops = operationDao.findAllByMoisByCompte(date, compte);
 		if (ops.size() == 0) {
 			throw new ServiceException("Aucune opération.");
@@ -64,6 +65,7 @@ public class OperationServiceImpl implements OperationService {
 	@Override
 	public List<Operation> recupererOperations(Compte compte, Date date, List<Type> types) throws ServiceException {
 		List<Operation> ops = operationDao.findAllByMoisByCompteAndByTypes(date, compte, types);
+		System.out.println(ops);
 		if (ops.size() == 0) {
 			throw new ServiceException("Aucune opération.");
 		}
