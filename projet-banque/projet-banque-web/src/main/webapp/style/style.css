@@ -14,7 +14,8 @@ body {
 h1 {
 	font-size: 20px;
 	text-align: center;
-	padding: 12px 0 0 0;	
+	padding: 12px 52px 0 0;
+	margin: 0;	
 }
 h2 {
 	font-size: 16px;
@@ -25,16 +26,17 @@ h3 {
 	font-size: 14px;
 	padding: 0;
 	margin: 4px 0;
+	padding: 0 5px 0 0;
 }
 
 /* Texts */
 p {
-	margin: 5px;
+	margin: 5px 0;
 }
 
 /* Images */
 img {
-	border: none;auto
+	border: none;
 }
 
 /* Links */
@@ -64,6 +66,9 @@ ul#messages li.ok {
 }
 
 /* Forms */
+form.filter {
+	
+}
 form .row {
 	clear: both;
 	margin: 3px 0;
@@ -127,7 +132,7 @@ table tfoot tr td {
 	border: 1px #ccc solid;
 	padding: 10px;
 	margin: 0 auto;
-	width: 600px;
+	width: 800px;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;

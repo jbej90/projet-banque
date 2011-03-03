@@ -3,9 +3,31 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<h2>Opération par carte du compte n°${compte.id}: ${compte.libelle} </h2>
+
+
+
 
 <div class="box width-800">
+<h3>Opération par carte du compte n°${compte.id}: ${compte.libelle} </h3>
+<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
+	<form action="<c:url value="/private/compte/${compte.id}/operations/carte.htm"></c:url>" method="post" class="filter">
+		<select name="filter_month" id="filter_month">
+			<c:forEach items="${listemois}" var="mois" varStatus="status">
+				<c:if test="${mois != ''}">
+					<option value="${status.index}"<c:if test="${moiscourant == status.index}"> selected="selected"</c:if>>${mois}</option>
+				</c:if>
+			</c:forEach>
+		</select>
+		
+		<select name="filter_year" id="filter_year">
+			<c:forEach begin="${anneecourante-3}" end="${anneecourante}" var="annee">
+				<option value="${annee}"<c:if test="${anneecourante == annee}"> selected="selected"</c:if>>${annee}</option>
+			</c:forEach>
+		</select>
+		
+		<input type="submit" value="Afficher" />
+	</form>
+	<p>Ci-dessous, la liste des opérations de ce compte pour le mois sélectionné</p>
 	<table>
 		<thead>
 			<tr>
@@ -19,9 +41,9 @@
 	
 		<tbody>
 			<c:choose>
-				<c:when test="${fn:length(operationsCarte) > 0}">
+				<c:when test="${fn:length(operationscarte) > 0}">
 					<% int i = 0; %>
-					<c:forEach items="${operationsCarte}" var="operation">
+					<c:forEach items="${operationscarte}" var="operation">
 						<tr class="line<%=i++ % 2%>">
 							<td><fmt:formatDate value="${operation.dateOp}" type="date" /></td>
 							<td>${operation.libelle}</td>
@@ -47,8 +69,8 @@
 		<tfoot>
 			<tr>
 				<td colspan="3">Total des opérations</td>
-				<td align="right" class="decouvert"><c:if test="${totalCarte<0}" >${totalCarte}€</c:if></td>
-				<td align="right" ><c:if test="${totalCarte>=0}">${totalCarte}€</c:if></td>
+				<td align="right" class="decouvert"><c:if test="${totalcarte<0}" >${totalcarte}€</c:if></td>
+				<td align="right" ><c:if test="${totalcarte>=0}">${totalcarte}€</c:if></td>
 			</tr>
 		</tfoot>
 	</table>
