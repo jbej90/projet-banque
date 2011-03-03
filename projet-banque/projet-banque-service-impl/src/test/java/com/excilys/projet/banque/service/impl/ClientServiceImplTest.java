@@ -1,61 +1,76 @@
 package com.excilys.projet.banque.service.impl;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
-import org.junit.BeforeClass;
+import javax.annotation.Resource;
+
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.util.Assert;
+import org.junit.runner.RunWith;
+import org.springframework.test.annotation.ExpectedException;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.excilys.projet.banque.dao.impl.ClientDAOImpl;
+import com.excilys.projet.banque.dao.utils.DataSet;
+import com.excilys.projet.banque.dao.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 
+@DataSet("classpath:context/projet-banque-service-impl-dataSet.xml")
+@ContextConfiguration({ "classpath*:context/applicationContext.xml" })
+@RunWith(SpringJUnit4ClassRunner.class)
+@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class, DataSetTestExecutionListener.class })
+@Transactional
 public class ClientServiceImplTest {
-	private static ClientService clientService;
-	
-	@BeforeClass
-	public static void setUp() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/context/applicationContext.xml");
-		clientService = applicationContext.getBean("clientService", ClientService.class);
-	}
+
+	@Resource(name = "clientService")
+	private ClientService clientService;
+	@Resource(name = "clientDao")
+	private ClientDAOImpl clientDAO;
 
 	@Test
 	public void recupererListeComptesTest() {
-		Client client = new Client();
-		Set<Compte> comptes = new TreeSet<Compte>();
-		comptes.add(new Compte(1, "c1", client, 10));
-		comptes.add(new Compte(2, "c2", client, 20));
-		client.setComptes(comptes);
-		
-		assertEquals(clientService.recupererListeComptes(client), comptes);
+
+		Client client = clientDAO.findById(1);
+		List<Compte> lesComptes = clientService.recupererListeComptes(client);
+		assertTrue(lesComptes.size() == 2);
+		for (Compte compte : lesComptes) {
+			assertTrue(compte.getClient().getId() == 1);
+		}
 	}
 
 	@Test
-	public void recupererClientTest() {
-		int client = 0;
-		try {
-			client = clientService.recupererClientId("test1");
-		} catch (ServiceException e) {}
-		assertTrue(client == 0);
-		
-		client = 0;
-		try {
-			client = clientService.recupererClientId("aaa");
-		} catch (ServiceException e) {}
-		assertTrue(client != 0);
+	public void recupererClientIdTest() throws ServiceException {
+		Client leClient = clientDAO.findByUsername("log2");
+		assertTrue(clientService.recupererClientId("log2") == leClient.getId());
 	}
 
 	@Test
-	public void recupererClientsTest() {
-		
+	@ExpectedException(ServiceException.class)
+	public void recupererClientIdTestException() throws ServiceException {
+		clientService.recupererClientId("aaa");
 	}
+
+	@Test
+	public void recupererClientsTest() throws ServiceException {
+		List<Client> lesClient = clientService.recupererClients();
+		assertTrue(lesClient.size() == 3);
+	}
+
+	// @Test
+	// @ExpectedException(ServiceException.class)
+	// public void recupererListeComptesTest() {
+	//
+	// clientService.recupererListeComptes(5);
+	//
+	// }
+
 }

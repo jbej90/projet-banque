@@ -30,9 +30,14 @@ public class AuthDAOImpl extends HibernateDaoSupport implements AuthDAO {
 		return (Auth) getHibernateTemplate().find("From Auth a left join fetch a.client where a.id=" + idAuth).get(0);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Auth findByLogin(String login) {
-		return (Auth) getHibernateTemplate().find("From Auth a left join fetch a.client where a.login=?", login).get(0);
+		List<Auth> lesAuth = getHibernateTemplate().find("From Auth a left join fetch a.client where a.login=?", login);
+		if (lesAuth.isEmpty()) {
+			return null;
+		}
+		return lesAuth.get(0);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.excilys.projet.banque.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +52,12 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 
 	@Override
 	public Operation findById(int idOperation) {
-		return (Operation) getHibernateTemplate().find("From Operation o left join fetch o.compte left join fetch o.carte where o.id=?", idOperation).get(0);
+
+		List<Operation> lesOperations = getHibernateTemplate().find("From Operation o left join fetch o.compte left join fetch o.carte where o.id=?", idOperation);
+		if (lesOperations.isEmpty()) {
+			return null;
+		}
+		return lesOperations.get(0);
 	}
 
 	@Override
@@ -81,7 +87,7 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 	public List<Operation> findAllByMoisByCompteAndByTypes(Date date, Compte compte, List<Type> types) {
 		DateTime dateDebut = CalculDateMois.calculDateTimeDebutMois(date);
 		DateTime dateFin = CalculDateMois.calculDateTimeFinMois(date);
-
+		List<Operation> lesOperations = new ArrayList<Operation>();
 		String lesTypesEnString = "";
 		if (types.size() != 0) {
 			lesTypesEnString = "and type in (";
@@ -95,11 +101,14 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 				compteur++;
 			}
 			lesTypesEnString += ")";
-		}
-		String req = "From Operation o where DATE_OP between ? and ? and compte_fk = ?  " + lesTypesEnString;
-		System.out.println(req);
 
-		return getHibernateTemplate().find(req, dateDebut.toDate(), dateFin.toDate(), compte.getId());
+			String req = "From Operation o where DATE_OP between ? and ? and compte_fk = ?  " + lesTypesEnString;
+			System.out.println(req);
+
+			lesOperations = getHibernateTemplate().find(req, dateDebut.toDate(), dateFin.toDate(), compte.getId());
+
+		}
+		return lesOperations;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,6 +1,10 @@
 package com.excilys.projet.banque.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.projet.banque.dao.impl.AuthDAOImpl;
 import com.excilys.projet.banque.dao.impl.ClientDAOImpl;
@@ -11,10 +15,14 @@ import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 
+@Repository("clientService")
 public class ClientServiceImpl implements ClientService {
 
+	@Autowired
 	private CompteDAOImpl compteDao;
+	@Autowired
 	private ClientDAOImpl clientDao;
+	@Autowired
 	private AuthDAOImpl authDao;
 
 	public ClientServiceImpl() {
@@ -36,7 +44,7 @@ public class ClientServiceImpl implements ClientService {
 	public int recupererClientId(String username) throws ServiceException {
 		Auth auth = authDao.findByLogin(username);
 		if (auth == null)
-			throw new ServiceException("Le compte n'existe pas.");
+			throw new ServiceException("Le login d'authentification n'existe pas.");
 		return auth.getId();
 	}
 
@@ -49,13 +57,16 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
+	// TODO CHANGER EN THROWS EXCEPTION SSI LES CONSEQUENCES SONT BENINE EN
+	// MATIERE DE MODIF DE CODE
 	public List<Compte> recupererListeComptes(int idClient) {
+		List<Compte> lesComptes = new ArrayList<Compte>();
 		try {
-			return compteDao.findAllByClient(recupererClient(idClient));
+			lesComptes = compteDao.findAllByClient(recupererClient(idClient));
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return lesComptes;
 	}
 
 	@Override
