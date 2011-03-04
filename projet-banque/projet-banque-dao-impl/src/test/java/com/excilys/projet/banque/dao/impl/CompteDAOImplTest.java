@@ -87,4 +87,14 @@ public class CompteDAOImplTest {
 		assertTrue(100f == compteDAOImpl.findAllByClient(client).get(0).getSolde());
 
 	}
+	
+	
+	@Test
+	public void updateTest() {
+		Compte compte=compteDAOImpl.findById(1);
+		float ancienSolde = compte.getSolde();
+		compte.setSolde(20f);
+		compteDAOImpl.update(compte);
+		assertTrue(compteDAOImpl.findById(1).getSolde() == (ancienSolde+20f));
+	}
 }

@@ -71,7 +71,7 @@ public class Operation implements Serializable {
 		this.montant = montant;
 	}
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "date_op")
 	public Date getDateOp() {
 		return dateOp;

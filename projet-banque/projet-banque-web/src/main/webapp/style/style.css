@@ -118,6 +118,9 @@ table tbody tr.line1 {
 	background: #fff;
 	border-top: 1px #fff solid;
 }
+table tbody tr:hover {
+	background: #ffffcf;
+}
 
 table tfoot tr td {
 	border-top: 1px #bbb solid;
@@ -126,10 +129,7 @@ table tfoot tr td.total {
 	font-weight: bold;
 }
 
-/* Utils */
-.clearer {
-	clear: both;
-}
+/* Box */
 .box {
 	background: #fff;
 	border: 1px #ccc solid;
@@ -139,6 +139,14 @@ table tfoot tr td.total {
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
+}
+.box .icon {
+	float: right;
+}
+
+/* Utils */
+.clearer {
+	clear: both;
 }
 .separator {
 	display: block;
@@ -181,10 +189,10 @@ table tfoot tr td.total {
 	color: #e00;
 }
 .warning {
-	color: #FFAD1F;
+	color: #ffad1f;
 }
 .info {
-	color: #0F8F08;
+	color: #0f8f08;
 }
 
 
@@ -216,9 +224,18 @@ table tfoot tr td.total {
 	font-size: 13px;
 	height: 28px;
 }
-#sub-header #home {
+#sub-header #navigation {
 	float: right;
 	line-height: 28px; 
+}
+#sub-header #logout a {
+	display: block;
+	float: left;
+	line-height: 28px;
+	height: 28px; 
+}
+#sub-header #logout img {
+	margin: 2px 0 0 6px;
 }
 
 
@@ -242,7 +259,7 @@ table tfoot tr td.total {
 	border-left: 1px solid #ccc;
 }
 #menu .item.selected {
-	background: #EFF7FF;
+	background: #eff7ff;
 	line-height: 29px;
 	border-bottom: none;
 }
@@ -255,7 +272,7 @@ table tfoot tr td.total {
 	padding: 0;
 }
 #menu .item a:hover {
-	background: #CFE7FF;
+	background: #cfe7ff;
 }
 
 

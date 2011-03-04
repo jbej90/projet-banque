@@ -39,6 +39,11 @@ public class CompteDAOImpl extends HibernateDaoSupport implements CompteDAO {
 	public void save(Compte compte) {
 		getHibernateTemplate().save(compte);
 	}
+	
+	@Override
+	public void update(Compte compte) {
+		getHibernateTemplate().update(compte);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override

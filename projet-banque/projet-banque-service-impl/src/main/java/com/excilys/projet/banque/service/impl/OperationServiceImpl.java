@@ -36,7 +36,6 @@ public class OperationServiceImpl implements OperationService {
 		}
 		return op;
 	}
-
 	@Override
 	public List<Operation> recupererOperations(Compte compte) throws ServiceException {
 		return recupererOperations(compte, new Date());
@@ -45,6 +44,8 @@ public class OperationServiceImpl implements OperationService {
 
 	@Override
 	public List<Operation> recupererOperations(Compte compte, Date date) throws ServiceException {
+
+		System.out.println("recup operations");
 
 		List<Operation> ops = operationDao.findAllByMoisByCompte(date, compte);
 		if (ops.size() == 0) {
@@ -113,7 +114,7 @@ public class OperationServiceImpl implements OperationService {
 	@Override
 	public float totalOperations(List<Operation> operations) throws ServiceException {
 		if (operations == null)
-			throw new ServiceException("Liste d'opération inexistante.");
+			throw new ServiceException("Liste d'opération types inexistante.");
 		float somme = 0;
 		for (Operation o : operations)
 			somme += o.getMontant();
@@ -126,22 +127,48 @@ public class OperationServiceImpl implements OperationService {
 
 	@Override
 	public void effectuerVirementInterne(Compte compteEmetteur, Compte compteDestinataire, float montant) throws ServiceException {
-
 		Operation operationSource = new Operation();
 		operationSource.setCompte(compteEmetteur);
 		operationSource.setMontant(-montant);
 		operationSource.setType(Type.VIREMENT_INT);
 		operationSource.setDateOp(new Date());
-		operationSource.setEtat(EtatOperation.EN_COURS);
+		operationSource.setEtat(EtatOperation.EFFECTUE);
+		operationSource.setLibelle("virement compte "+compteEmetteur.getId()+" -> "+compteDestinataire.getId());
 
 		Operation operationDest = new Operation();
 		operationDest.setCompte(compteDestinataire);
 		operationDest.setMontant(montant);
 		operationDest.setType(Type.VIREMENT_INT);
 		operationDest.setDateOp(new Date());
-		operationDest.setEtat(EtatOperation.EN_COURS);
+		operationDest.setEtat(EtatOperation.EFFECTUE);
+		operationDest.setLibelle("virement compte "+compteEmetteur.getId()+" -> "+compteDestinataire.getId());
 
 		operationDao.save(operationSource);
 		operationDao.save(operationDest);
 	}
+
+
+//	public void validationVirements(List<Operation> operationsVirements){
+//		for (Operation op : operationsVirements) {
+//			if(op.getType() ==  Type.VIREMENT_INT || op.getType() ==  Type.VIREMENT_EXT) {
+//				if(op.getEtat() == EtatOperation.EN_COURS) {
+//					Compte compte = op.getCompte();
+//					compte.setSolde(compte.getSolde()+op.getMontant());
+//					op.setEtat(EtatOperation.EFFECTUE);
+//
+//					try {
+//						compteDao.update(compte);
+//					} catch (Exception e) {
+//						continue;
+//					}
+//					
+//					try {
+//						operationDao.update(op);
+//					} catch (Exception e) {
+//						
+//					}
+//				}
+//			}
+//		}
+//	}
 }

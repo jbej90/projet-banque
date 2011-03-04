@@ -10,9 +10,11 @@ import com.excilys.projet.banque.model.Type;
 
 public interface OperationDAO {
 
-	Operation findById(int idOperation);
+	void update(Operation operation);
 
 	void save(Operation operation);
+	
+	Operation findById(int idOperation);
 
 	List<Operation> findAll();
 

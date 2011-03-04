@@ -1,10 +1,15 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 		
-<div class="box">		
+<div class="box">
+	<div class="icon">
+		 <img src="<c:url value="/images/home.png"/>" alt="home" title="home" />
+	</div>
+	
 	<h3>Bienvenue ${client.prenom} ${client.nom}</h3>
 	
 	<p>Vous trouverez ci-dessous la liste de vos comptes et leur solde courant.</p>
+	<p>Cliquez sur le libellé d'un compte pour voir le détail de ses opérations.</p>
 	
 	<table>
 		<thead>

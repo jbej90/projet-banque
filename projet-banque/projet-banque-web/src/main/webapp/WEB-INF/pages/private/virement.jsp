@@ -3,7 +3,31 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
+<script type="text/javascript">
+	function filtrercompte(idCompte) {
+		$.getJSON(
+			'<c:url value="/private/ajax/comptes.htm"/>', {
+				client: ${idclient},
+				compte: idCompte
+			}, function(data) {
+				$('#compte_dest').empty();
+				$.each(data, function (index, value) {
+					$('#compte_dest').append('<option value="'+value.id+'">'+value.libelle+'</option>');
+				}
+			);
+		});
+	}
+	
+	$(document).ready(function () {
+		filtrercompte($('#compte_dest').val());
+	});
+</script>
+
 <div class="box">
+	<div class="icon">
+		 <img src="<c:url value="/images/virement.png"/>" alt="virement" title="virement" />
+	</div>
+	
 	<h3>Effectuer un virement</h3>
 	
 	<p>Sélectionnez votre compte source et le compte destination et indiquez le montant à transféfer.</p>
@@ -13,7 +37,7 @@
 		
 		<div class="row">
 			<label for="compte_src">Source :</label>
-			<select name="compte_src" id="compte_src">
+			<select name="compte_src" id="compte_src" onchange="filtrercompte(this.value)">
 				<c:forEach items="${comptes}" var="compte">
 					<option value="${compte.id}"<c:if test="${compte.id == compte_src}"> selected="selected"</c:if>>${compte.libelle} (${compte.solde}€)</option>
 				</c:forEach>
@@ -43,6 +67,8 @@
 <div class="box">
 	<h3>Historique de mes virements</h3>
 	
+	<p>Ce tableau présente la liste de vos virements.</p>
+	
 	<table>
 		<thead>
 			<tr>
@@ -60,7 +86,7 @@
 						<tr class="line<%=i++ % 2%>">
 							<td><fmt:formatDate value="${operation.dateOp}" type="both" /></td>
 							<td>${operation.libelle}</td>
-							<td align="right">${operation.montant}€</td>
+							<td align="right"<c:if test="${operation.montant < 0}"> class="decouvert"</c:if>>${operation.montant}€</td>
 						</tr>
 					</c:forEach>
 				</c:when>

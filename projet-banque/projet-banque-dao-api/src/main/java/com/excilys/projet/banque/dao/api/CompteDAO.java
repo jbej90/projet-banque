@@ -7,11 +7,13 @@ import com.excilys.projet.banque.model.Compte;
 
 public interface CompteDAO {
 
+	void save(Compte compte);
+	
+	void update(Compte compte);
+	
 	List<Compte> findAll();
 
 	Compte findById(int idCompte);
-
-	void save(Compte compte);
 
 	List<Compte> findAllByClient(Client client);
 
