@@ -44,6 +44,8 @@ public class CompteServiceImpl implements CompteService {
 
 	@Override
 	public float totalComptes(List<Compte> comptes) throws ServiceException {
+		if (comptes == null)
+			throw new ServiceException("Liste de comptes inexistante.");
 		return totalComptes(new TreeSet<Compte>(comptes));
 
 		// if (comptes == null)

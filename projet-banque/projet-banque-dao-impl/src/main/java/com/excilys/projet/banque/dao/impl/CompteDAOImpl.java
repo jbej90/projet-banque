@@ -25,9 +25,14 @@ public class CompteDAOImpl extends HibernateDaoSupport implements CompteDAO {
 		return getHibernateTemplate().find("From Compte");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Compte findById(int idCompte) {
-		return (Compte) getHibernateTemplate().find("From Compte where id=?", idCompte).get(0);
+		List<Compte> lesCompte = getHibernateTemplate().find("From Compte where id=?", idCompte);
+		if (lesCompte.size()==0){
+			return null;
+		}
+		return lesCompte.get(0);
 	}
 
 	@Override
