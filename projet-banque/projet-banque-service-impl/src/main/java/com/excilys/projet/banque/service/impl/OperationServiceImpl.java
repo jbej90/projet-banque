@@ -101,6 +101,7 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
+	// TODO REVOIR CETTE METHODE ET ACTIVER LE TEST
 	public List<Operation> recupererOperations(Type type, Date date) throws ServiceException {
 		List<Operation> ops = operationDao.findAllByType(type);
 		if (ops.size() == 0) {
@@ -112,7 +113,7 @@ public class OperationServiceImpl implements OperationService {
 	@Override
 	public float totalOperations(List<Operation> operations) throws ServiceException {
 		if (operations == null)
-			throw new ServiceException("Liste d'opérationtypes inexistante.");
+			throw new ServiceException("Liste d'opération inexistante.");
 		float somme = 0;
 		for (Operation o : operations)
 			somme += o.getMontant();
