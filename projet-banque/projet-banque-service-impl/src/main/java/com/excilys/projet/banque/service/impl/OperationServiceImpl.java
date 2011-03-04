@@ -65,7 +65,6 @@ public class OperationServiceImpl implements OperationService {
 	@Override
 	public List<Operation> recupererOperations(Compte compte, Date date, List<Type> types) throws ServiceException {
 		List<Operation> ops = operationDao.findAllByMoisByCompteAndByTypes(date, compte, types);
-		System.out.println(ops);
 		if (ops.size() == 0) {
 			throw new ServiceException("Aucune opération.");
 		}
@@ -87,6 +86,7 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
+	// TODO REVOIR CETTE METHODE ET ACTIVER LE TEST
 	public List<Operation> recupererOperations(Carte carte, Date date) throws ServiceException {
 		List<Operation> ops = operationDao.findAllByCarte(carte);
 		if (ops.size() == 0) {

@@ -34,7 +34,6 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Operation> findAllByType(Type type) {
-		System.out.println(type);
 		return getHibernateTemplate().find("From Operation o where type = ?", type);
 	}
 
