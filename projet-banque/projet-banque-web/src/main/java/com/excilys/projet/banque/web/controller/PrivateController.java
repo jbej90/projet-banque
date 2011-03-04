@@ -87,7 +87,7 @@ public class PrivateController {
 		// Essaye de parser la date pour le filtre d'opérations
 		Calendar cal = getMonthYearFilter(request);
 		Calendar calNow = Calendar.getInstance();
-		
+
 		// Si l'instance est nulle, le client est introuvable
 		if (client == null) {
 			MessageStack.getInstance(request).addError("Client introuvable");
@@ -96,7 +96,7 @@ public class PrivateController {
 		else {
 			// Vérifie que le client est bien le propriétaire du compte
 			selectedCompte = getCompteClient(id, client);
-			
+
 			if (selectedCompte == null) {
 				MessageStack.getInstance(request).addError("Compte non valide");
 				return "redirect:/error/error.htm";
@@ -106,34 +106,49 @@ public class PrivateController {
 				List<Operation> operationsCarte = new LinkedList<Operation>();
 				float total 		= 0;
 				float totalCarte 	= 0;
+				List<Type> listTypeCarte = new LinkedList<Type>();
+				listTypeCarte.add(Type.OP_CARTE_DIFF);
+				listTypeCarte.add(Type.OP_CARTE_IMM);
+
 				try {
-					List<Type> listTypeCarte = new LinkedList<Type>();
-					listTypeCarte.add(Type.OP_CARTE_DIFF);
-					listTypeCarte.add(Type.OP_CARTE_IMM);
-					
 					operations 		= operationService.recupererOperationsSansType(selectedCompte, cal.getTime(), listTypeCarte);
+				}
+				catch (ServiceException e) {
+					e.printStackTrace();
+				}
+				try {
 					operationsCarte = operationService.recupererOperations(selectedCompte, cal.getTime(), listTypeCarte);
+				}
+				catch (ServiceException e) {
+					e.printStackTrace();
+				}
+				try {
 					total 			= operationService.totalOperations(operations);
+				}
+				catch (ServiceException e) {
+					e.printStackTrace();
+				}
+				try {
 					totalCarte 		= operationService.totalOperations(operationsCarte);
 				}
 				catch (ServiceException e) {
 					e.printStackTrace();
 				}
-	
+
 				model.addAttribute("compte", selectedCompte);
 				model.addAttribute("operations", operations);
 				model.addAttribute("operationsCarte", operationsCarte);
 				model.addAttribute("operationsCarteCount", operationsCarte.size());
 				model.addAttribute("soustotal", total);
 				model.addAttribute("soustotalCarte", totalCarte);
-				model.addAttribute("total", total+totalCarte);
+				model.addAttribute("total", (total+totalCarte));
 				model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
 				model.addAttribute("moiscourant", cal.get(Calendar.MONTH));
 				model.addAttribute("anneecourante", calNow.get(Calendar.YEAR));
 				model.addAttribute("anneeselectionnee", cal.get(Calendar.YEAR));
 			}
 		}
-		
+
 		return BASE_DIR + "compte";
 	}
 
@@ -144,7 +159,7 @@ public class PrivateController {
 	public String showCompteCarte(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
-		
+
 		// Essaye de parser la date pour le filtre d'opérations
 		Calendar cal = getMonthYearFilter(request);
 		Calendar calNow = Calendar.getInstance();
@@ -157,7 +172,7 @@ public class PrivateController {
 		else {
 			// Récupère le compte du client et vérifie qu'il lui appartient
 			selectedCompte = getCompteClient(id, client);
-			
+
 			if (selectedCompte == null) {
 				MessageStack.getInstance(request).addError("Compte non valide");
 				return "redirect:/error/error.htm";
@@ -169,21 +184,21 @@ public class PrivateController {
 					List<Type> listTypeCarte = new LinkedList<Type>();
 					listTypeCarte.add(Type.OP_CARTE_DIFF);
 					listTypeCarte.add(Type.OP_CARTE_IMM);
-					
+
 					operationsCarte = operationService.recupererOperations(selectedCompte, cal.getTime(), listTypeCarte);
 					totalCarte 		= operationService.totalOperations(operationsCarte);
 				}
 				catch (ServiceException e) {
 					e.printStackTrace();
 				}
-				
+
 				model.addAttribute("compte", selectedCompte);
 				model.addAttribute("operationscarte", operationsCarte);
 				model.addAttribute("totalcarte", totalCarte);
 				model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
 				model.addAttribute("moiscourant", cal.get(Calendar.MONTH));
 				model.addAttribute("anneecourante", calNow.get(Calendar.YEAR));
-				model.addAttribute("annee50.0selectionnee", cal.get(Calendar.YEAR));
+				model.addAttribute("anneeselectionnee", cal.get(Calendar.YEAR));
 			}
 		}
 
@@ -198,14 +213,25 @@ public class PrivateController {
 		Client client = getActualClient(request);
 
 		model.addAttribute("comptes", client.getComptes());
-		
+		model.addAttribute("idclient", client.getId());
+
 		// Récupération des valeurs probablement stockées en session après une erreur de validation
 		model.addAttribute("compte_src", request.getSession().getAttribute("compte_src"));
 		model.addAttribute("compte_dest", request.getSession().getAttribute("compte_dest"));
 		model.addAttribute("montant", request.getSession().getAttribute("montant"));
 
-		// TODO : A implémenter
-		// model.addAttribute("virements", );
+		List<Operation> virements = new LinkedList<Operation>();
+		try {
+			virements.addAll(operationService.recupererOperations(Type.VIREMENT_INT));
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
+		try {
+			virements.addAll(operationService.recupererOperations(Type.VIREMENT_EXT));
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
+		model.addAttribute("virements", virements);
 
 		return BASE_DIR + "virement";
 	}
@@ -216,7 +242,7 @@ public class PrivateController {
 	@RequestMapping(value = "virement/{srcId}" + BASE_URL_SUFFIX)
 	public String showVirementHome(@PathVariable int srcId, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		model.addAttribute("compte_src", srcId);
-		
+
 		return showVirementHome(request, response, model);
 	}
 
@@ -230,10 +256,10 @@ public class PrivateController {
 	@RequestMapping(value = "virement.do")
 	public String doVirement(HttpServletRequest request, HttpServletResponse response, RequestMethod method, ModelMap model) {
 		// Opération de controle sur le type de requete demandé
-//		if (method != RequestMethod.POST) {
-//			return "redirect:/error/405.htm";
-//		}
-		
+		//		if (method != RequestMethod.POST) {
+		//			return "redirect:/error/405.htm";
+		//		}
+
 		int compte_src_id = 0;
 		int compte_dest_id = 0;
 		float montant = 0;
@@ -277,13 +303,14 @@ public class PrivateController {
 		// Si la pile d'erreur est vide, tout s'est bien passé
 		// On valide le traitement
 		if (MessageStack.getInstance(request).getSize() == 0) {
-			if (compteService.virer(compte_src, compte_dest, montant)) {
-				MessageStack.getInstance(request).addInfo("Virement enregistré. Il sera traité cette nuit");
+			try {
+				compteService.virer(compte_src, compte_dest, montant);
+				MessageStack.getInstance(request).addInfo("Virement effectué.");
 			}
-			else {
-				MessageStack.getInstance(request).addError("L'enregistrement du virement a échoué");
+			catch (ServiceException e) {
+				MessageStack.getInstance(request).addError(e.getMessage());
 			}
-			
+
 			// on supprime les données probablement stockées en session (pour la gestion d'erreurs)
 			request.getSession().removeAttribute("compte_src");
 			request.getSession().removeAttribute("compte_dest");
@@ -323,7 +350,7 @@ public class PrivateController {
 		}
 		return client;
 	}
-	
+
 	/**
 	 * Récupère une instance de compte à partir de son identifiant.
 	 * La méthode vérifie également que ce compte appartient bien à un client donnée
@@ -342,7 +369,7 @@ public class PrivateController {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Récupère une instance de Calendar. La date configurée est celle du 1er du mois sélectionné dans le formulaire de filtrage.
 	 * La méthode utilise donc les valeurs de deux champs HTML "filter_month" et "filter_year".
@@ -353,12 +380,12 @@ public class PrivateController {
 	 */
 	private Calendar getMonthYearFilter(HttpServletRequest request) {
 		Calendar cal = Calendar.getInstance(Locale.FRANCE);
-		
+
 		if (request.getParameterMap().containsKey("filter_month") && request.getParameterMap().containsKey("filter_year")) {
 			try {
 				int month = Integer.parseInt(request.getParameter("filter_month"));
 				int year = Integer.parseInt(request.getParameter("filter_year"));
-				
+
 				cal.set(Calendar.DATE, 1);
 				cal.set(Calendar.MONTH, month);
 				cal.set(Calendar.YEAR, year);
@@ -366,14 +393,14 @@ public class PrivateController {
 				MessageStack.getInstance(request).addError("Format de date incorrect");
 			}
 		}
-		
+
 		return cal;
 	}
 
 	// =====================================================================================================================
 	// ~ Accessors =========================================================================================================
 	// =====================================================================================================================
-	
+
 	public void setClientService(ClientService clientService) {
 		this.clientService = clientService;
 	}

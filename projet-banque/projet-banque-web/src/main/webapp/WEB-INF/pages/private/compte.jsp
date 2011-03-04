@@ -4,7 +4,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <div class="box width-800">
-	<h3>Opérations du compte "${compte.libelle}" (solde: <span<c:if test="${compte.solde < 0}"> class="decouvert"</c:if>>${compte.solde}€</span>)</h3>
+	<div class="icon">
+		 <img src="<c:url value="/images/compte.png"/>" alt="compte" title="compte" />
+	</div>
+	
+	<h3>Opérations du compte "${compte.libelle}" (solde courant : <span<c:if test="${compte.solde < 0}"> class="decouvert"</c:if>>${compte.solde}€</span>)</h3>
 	
 	<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
 	
@@ -26,7 +30,8 @@
 		<input type="submit" value="Afficher" />
 	</form>
 	
-	<p>Ci-dessous, la liste des opérations de ce compte pour le mois sélectionné</p>
+	<p>Ci-dessous, la liste des opérations de ce compte pour le mois sélectionné.</p>
+	<p>Les opérations par carte sont regroupées en une seule ligne dans le sous-total.</p>
 	
 	<table>
 		<thead>
@@ -49,10 +54,10 @@
 							<td>${operation.libelle}</td>
 							<td>${operation.type}</td>
 							<td align="right" class="decouvert">
-								<c:if test="${operation.montant < 0}">${operation.montant}€</c:if>
+								<c:if test="${operation.montant < 0}"><fmt:formatNumber maxFractionDigits="2">${operation.montant}</fmt:formatNumber>€</c:if>
 							</td>
 							<td align="right">
-								<c:if test="${operation.montant >= 0}">${operation.montant}€</c:if>
+								<c:if test="${operation.montant >= 0}"><fmt:formatNumber maxFractionDigits="2">${operation.montant}</fmt:formatNumber>€</c:if>
 							</td>
 						</tr>
 					</c:forEach>
@@ -69,13 +74,13 @@
 		<tfoot>
 			<tr>
 				<td colspan="3">Opérations</td>
-				<td align="right" class="decouvert"><c:if test="${soustotal < 0}" >${soustotal}€</c:if></td>
-				<td align="right" ><c:if test="${soustotal >= 0}">${soustotal}€</c:if></td>
+				<td align="right" class="decouvert"><c:if test="${soustotal < 0}" ><fmt:formatNumber maxFractionDigits="2">${soustotal}</fmt:formatNumber>€</c:if></td>
+				<td align="right" ><c:if test="${soustotal >= 0}"><fmt:formatNumber maxFractionDigits="2">${soustotal}</fmt:formatNumber>€</c:if></td>
 			</tr>
 			<tr>
 				<td colspan="3"><a href="<c:url value="/private/compte/${compte.id}/operations/carte.htm"/>">Opérations par carte</a></td>
-				<td align="right" class="decouvert"><c:if test="${soustotalCarte < 0}">${soustotalCarte}€</c:if></td>
-				<td align="right"><c:if test="${soustotalCarte >= 0}">${soustotalCarte}€</c:if></td>
+				<td align="right" class="decouvert"><c:if test="${soustotalCarte < 0}"><fmt:formatNumber maxFractionDigits="2">${soustotalCarte}</fmt:formatNumber>€</c:if></td>
+				<td align="right"><c:if test="${soustotalCarte >= 0}"><fmt:formatNumber maxFractionDigits="2">${soustotalCarte}</fmt:formatNumber>€</c:if></td>
 			</tr>
 			<tr>
 				<td colspan="3">Total des opérations</td>

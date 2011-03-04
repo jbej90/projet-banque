@@ -84,7 +84,16 @@
 			<groupId>org.seleniumhq.selenium.client-drivers</groupId>
 			<artifactId>selenium-java-client-driver</artifactId>
 		</dependency>
+		
+				
+		<!-- Jackson JSON Mapper -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.7.0</version>
+		</dependency>
 	</dependencies>
+	
 	<build>
 		<finalName>web</finalName>
 

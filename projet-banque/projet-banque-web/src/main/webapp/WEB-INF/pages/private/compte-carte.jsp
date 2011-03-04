@@ -4,7 +4,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <div class="box width-800">
-	<h3>Opération par carte du compte n°${compte.id}: ${compte.libelle} </h3>
+	<div class="icon">
+		 <img src="<c:url value="/images/compte.png"/>" alt="compte" title="compte" />
+	</div>
+	
+	<h3>Opérations par carte du compte "<a href="<c:url value="/private/compte/${compte.id}.htm"/>">${compte.libelle}</a>"</h3>
 	
 	<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
 	
@@ -26,7 +30,7 @@
 		<input type="submit" value="Afficher" />
 	</form>
 	
-	<p>Ci-dessous, la liste des opérations de ce compte pour le mois sélectionné</p>
+	<p>Ci-dessous, la liste des opérations par carte de ce compte pour le mois sélectionné.</p>
 	
 	<table>
 		<thead>

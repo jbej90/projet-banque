@@ -17,7 +17,9 @@
 		<div id="container">
 			<div id="header">
 				<div id="logo">
-					<img src="<c:url value="/images/login.gif"/>" alt="login" title="login" />
+					<a href="<c:url value="/"/>">
+						<img src="<c:url value="/images/login.gif"/>" alt="login" title="login" />
+					</a>
 				</div>
 				<h1>${title}</h1>
 				
@@ -25,9 +27,10 @@
 			</div>
 			
 			<div id="sub-header">
-				<div id="home">
+				<div id="navigation">
 					<a href="<c:url value="/"/>">Retour à l'accueil</a>
 				</div>
+				<div class="clearer"></div>
 			</div>
 		
 			<div id="body">

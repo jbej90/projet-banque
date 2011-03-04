@@ -27,7 +27,7 @@ public class FailureLoginHandler implements AuthenticationFailureHandler {
 			MessageStack.getInstance(request).addError("Connexion échouée");
 		}
 		
-		exception.printStackTrace();
+//		exception.printStackTrace();
 		
 		response.sendRedirect(response.encodeRedirectURL("login.htm"));
 	}

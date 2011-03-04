@@ -10,8 +10,7 @@
 	Chaque map correspond à un item et doit avoir 3 entrées :
 		* title : Titre ou libellé de l'item
 		* url : lien de l'item
-		* pattern : pattern devant correspondre avec l'url pour que ce menu soit marqué comme étant sélectionné
-	-->
+		* pattern : pattern devant correspondre avec l'url pour que ce menu soit marqué comme étant sélectionné -->
 	<bean id="menuManager" class="com.excilys.projet.banque.web.utils.MenuManager">
 		<constructor-arg name="items">
 			<list>

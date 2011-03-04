@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.excilys.projet.banque.dao.api.CompteDAO;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.CompteService;
+import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 
 @Repository("compteService")
@@ -17,6 +18,8 @@ public class CompteServiceImpl implements CompteService {
 
 	@Autowired
 	private CompteDAO compteDao;
+	
+	private OperationService operationService;
 
 	public CompteServiceImpl() {
 	}
@@ -44,16 +47,7 @@ public class CompteServiceImpl implements CompteService {
 
 	@Override
 	public float totalComptes(List<Compte> comptes) throws ServiceException {
-		if (comptes == null)
-			throw new ServiceException("Liste de comptes inexistante.");
 		return totalComptes(new TreeSet<Compte>(comptes));
-
-		// if (comptes == null)
-		// throw new ServiceException("Liste de comptes inexistante.");
-		// float somme = 0;
-		// for (Compte c : comptes)
-		// somme += c.getSolde();
-		// return somme;
 	}
 
 	@Override
@@ -67,9 +61,16 @@ public class CompteServiceImpl implements CompteService {
 	}
 
 	public boolean virer(Compte source, Compte destination, float montant) throws ServiceException {
-		OperationServiceImpl operationServiceImpl = new OperationServiceImpl();
 		if (verifierAvantVirement(source, destination, montant)) {
-			operationServiceImpl.effectuerVirementInterne(source, destination, montant);
+			operationService.effectuerVirementInterne(source, destination, montant);
+			
+			// Normalement exécuté en batch pour un ensemble de comptes et opérations
+			source.setSolde(source.getSolde()-montant);
+			destination.setSolde(destination.getSolde()+montant);
+			compteDao.update(source);
+			compteDao.update(destination);
+			
+			return true;
 		}
 		return false;
 	}
@@ -78,10 +79,14 @@ public class CompteServiceImpl implements CompteService {
 		this.compteDao = compteDao;
 	}
 
+	public void setOperationService(OperationService operationService) {
+		this.operationService = operationService;
+	}
+
 	@Override
 	public boolean verifierAvantVirement(Compte compteEmetteur, Compte compteDestinataire, float montant) throws ServiceException {
 		if (compteEmetteur == null || compteDestinataire == null)
-			throw new ServiceException("Compte null. ");
+			throw new ServiceException("Compte inexistant. ");
 		if (!(compteEmetteur.getSolde() >= montant))
 			throw new ServiceException("Solde du compte insuffisant. ");
 		if (montant <= 0)

@@ -12,14 +12,16 @@
 		<link rel="icon" type="image/png" href="<c:url value="/images/favicon.png"/>" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/style/style.css"/>" />
 		
-<!--		<script src=”https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js”></script>-->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 	</head>
 	
 	<body>
 		<div id="container">
 			<div id="header">
 				<div id="logo">
-					<img src="<c:url value="/images/login.gif"/>" alt="login" title="login" />
+					<a href="<c:url value="/"/>">
+						<img src="<c:url value="/images/login.gif"/>" alt="login" title="login" />
+					</a>
 				</div>
 				<h1><tiles:insertAttribute name="title" /></h1>
 				
@@ -28,7 +30,7 @@
 			
 			<div id="sub-header">
 				<tiles:insertAttribute name="menu" />
-				<div id="home">
+				<div id="navigation">
 					<tiles:insertAttribute name="sub-header" />
 				</div>
 				<div class="clearer"></div>
