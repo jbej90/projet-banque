@@ -5,10 +5,12 @@ import static junit.framework.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.ExpectedException;
@@ -23,6 +25,7 @@ import com.excilys.projet.banque.dao.impl.CompteDAOImpl;
 import com.excilys.projet.banque.dao.impl.OperationDAOImpl;
 import com.excilys.projet.banque.dao.utils.DataSet;
 import com.excilys.projet.banque.dao.utils.DataSetTestExecutionListener;
+import com.excilys.projet.banque.model.Carte;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.model.Type;
@@ -55,7 +58,7 @@ public class OperationServiceImplTest {
 		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
 		Date date = dateJoda.toDate();
 		List<Operation> operations = operationService.recupererOperations(compte, date);
-		assertTrue("Il n'y a pas deux opérations trouvées", operations.size() == 1);
+		assertTrue("Il n'y a pas deux opérations trouvées", operations.size() == 2);
 
 	}
 
@@ -127,7 +130,7 @@ public class OperationServiceImplTest {
 	public void recupererOperationsParamCompteDateListTypeTestExceptionListTypeMauvais() throws ServiceException {
 		List<Type> lesTypes = new ArrayList<Type>();
 		lesTypes.add(Type.DEPOT);
-		lesTypes.add(Type.RETRAIT);
+		lesTypes.add(Type.VIREMENT_EXT);
 		Compte compte = compteDao.findById(1);
 		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
 		Date date = dateJoda.toDate();
@@ -146,6 +149,120 @@ public class OperationServiceImplTest {
 		Date date = dateJoda.toDate();
 		operationService.recupererOperations(compte, date, lesTypes);
 
+	}
+
+	@Test
+	public void recupererOperationsSansType() throws ServiceException {
+		List<Type> lesTypes = new ArrayList<Type>();
+		lesTypes.add(Type.DEPOT);
+		lesTypes.add(Type.RETRAIT);
+		Compte compte = compteDao.findById(1);
+		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
+		Date date = dateJoda.toDate();
+		List<Operation> operations = operationService.recupererOperationsSansType(compte, date, lesTypes);
+		assertTrue("Il y a trop d'opération trouvées", operations.size() == 1);
+	}
+
+	@Test
+	@ExpectedException(ServiceException.class)
+	public void recupererOperationsSansTypeAucunResultat() throws ServiceException {
+		List<Type> lesTypes = new ArrayList<Type>();
+		lesTypes.add(Type.RETRAIT);
+		lesTypes.add(Type.OP_CARTE_DIFF);
+		Compte compte = compteDao.findById(1);
+		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
+		Date date = dateJoda.toDate();
+		operationService.recupererOperationsSansType(compte, date, lesTypes);
+	}
+
+	@Test
+	@ExpectedException(ServiceException.class)
+	public void recupererOperationsSansTypeMauvaiseDate() throws ServiceException {
+		List<Type> lesTypes = new ArrayList<Type>();
+		lesTypes.add(Type.DEPOT);
+		lesTypes.add(Type.OP_CARTE_DIFF);
+		Compte compte = compteDao.findById(1);
+		DateTime dateJoda = new DateTime(1000, 10, 9, 0, 0, 0, 0);
+		Date date = dateJoda.toDate();
+		operationService.recupererOperationsSansType(compte, date, lesTypes);
+	}
+
+	@Test
+	public void recupererOperationsParCarteEtDateTest() throws ServiceException {
+
+		Set<Carte> cartes = compteDao.findById(1).getCarte();
+		Carte carte1 = null;
+		for (Carte carte : cartes) {
+			carte1 = carte;
+		}
+		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
+		Date date = dateJoda.toDate();
+		List<Operation> operations = operationService.recupererOperations(carte1, date);
+		assertTrue("Il y a trop d'opération trouvées", operations.size() == 2);
+
+	}
+
+	@Ignore
+	@ExpectedException(ServiceException.class)
+	public void recupererOperationsParCarteEtDateTestMauvaiseDate() throws ServiceException {
+
+		Set<Carte> cartes = compteDao.findById(1).getCarte();
+		Carte carte1 = null;
+		for (Carte carte : cartes) {
+			carte1 = carte;
+		}
+		DateTime dateJoda = new DateTime(1000, 10, 9, 0, 0, 0, 0);
+		Date date = dateJoda.toDate();
+		List<Operation> operations = operationService.recupererOperations(carte1, date);
+		assertTrue("Il y a trop d'opération trouvées", operations.size() == 2);
+
+	}
+
+	@Test
+	@ExpectedException(ServiceException.class)
+	public void recupererOperationsParCarteEtDateTestCarteNExistePas() throws ServiceException {
+		Carte carte1 = new Carte();
+		carte1.setId(15);
+		DateTime dateJoda = new DateTime(1000, 10, 9, 0, 0, 0, 0);
+		Date date = dateJoda.toDate();
+		operationService.recupererOperations(carte1, date);
+
+	}
+
+	@Test
+	public void recupererOperationsParTypeTest() throws ServiceException {
+		List<Operation> operations = operationService.recupererOperations(Type.RETRAIT);
+		assertTrue("Il y a trop d'opération trouvées", operations.size() == 1);
+	}
+
+	@Test
+	@ExpectedException(ServiceException.class)
+	public void recupererOperationsParTypeTestMaisPasCeTypeDansLaBase() throws ServiceException {
+		operationService.recupererOperations(Type.VIREMENT_EXT);
+	}
+
+	@Test
+	public void recupererOperationsParTypeEtDateTest() throws ServiceException {
+		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
+		Date date = dateJoda.toDate();
+		List<Operation> operations = operationService.recupererOperations(Type.RETRAIT, date);
+		assertTrue("Il y a trop d'opération trouvées", operations.size() == 1);
+	}
+
+	@Test
+	@ExpectedException(ServiceException.class)
+	public void recupererOperationsParTypeEtDateTestDateMauvaise() throws ServiceException {
+		DateTime dateJoda = new DateTime(1000, 10, 9, 0, 0, 0, 0);
+		Date date = dateJoda.toDate();
+		operationService.recupererOperations(Type.RETRAIT, date);
+	}
+
+	@Test
+	@ExpectedException(ServiceException.class)
+	public void recupererOperationsParTypeEtDateTestAucunTypeTrouve() throws ServiceException {
+		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
+		Date date = dateJoda.toDate();
+		operationService.recupererOperations(Type.VIREMENT_INT, date);
 	}
 
 }

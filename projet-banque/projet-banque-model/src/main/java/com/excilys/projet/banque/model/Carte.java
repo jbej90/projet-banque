@@ -77,4 +77,9 @@ public class Carte implements Serializable {
 		this.type = type;
 	}
 
+	@Override
+	public String toString() {
+		return "Carte [id=" + id + ", compte=" + compte + ", numCarte=" + numCarte + ", dateLim=" + dateLim + ", type=" + type + "]";
+	}
+
 }
