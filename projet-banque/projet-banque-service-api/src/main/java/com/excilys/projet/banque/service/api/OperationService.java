@@ -15,24 +15,24 @@ public interface OperationService {
 
 	Operation recupererOperation(int id) throws ServiceException;
 
-	List<Operation> recupererOperations(Compte compte) throws ServiceException;
+	List<Operation> recupererOperations(Compte compte);
 
-	List<Operation> recupererOperations(Compte compte, Date date) throws ServiceException;
+	List<Operation> recupererOperations(Compte compte, Date date);
 
-	List<Operation> recupererOperations(Compte compte, Date date, Type type) throws ServiceException;
+	List<Operation> recupererOperations(Compte compte, Date date, Type type);
 
-	List<Operation> recupererOperations(Compte compte, Date date, List<Type> types) throws ServiceException;
+	List<Operation> recupererOperations(Compte compte, Date date, List<Type> types);
 
-	List<Operation> recupererOperationsSansType(Compte compte, Date date, List<Type> types) throws ServiceException;
+	List<Operation> recupererOperationsSansType(Compte compte, Date date, List<Type> types);
 
-	List<Operation> recupererOperations(Carte carte) throws ServiceException;
+	List<Operation> recupererOperations(Carte carte);
 
-	List<Operation> recupererOperations(Carte carte, Date date) throws ServiceException;
+	List<Operation> recupererOperations(Carte carte, Date date);
 
-	List<Operation> recupererOperations(Type type) throws ServiceException;
+	List<Operation> recupererOperations(Type type);
 
-	List<Operation> recupererOperations(Type type, Date date) throws ServiceException;
+	List<Operation> recupererOperations(Type type, Date date);
 
-	float totalOperations(List<Operation> operations) throws ServiceException;
+	float totalOperations(List<Operation> operations);
 
 }
