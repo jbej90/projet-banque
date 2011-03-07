@@ -11,7 +11,6 @@
 						http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 
 	<http>
-<!--	<custom-filter ref="myAuthenticationFilter" position="FORM_LOGIN_FILTER"/>-->
 		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
 		<intercept-url pattern="/private/**" access="ROLE_USER" />
 
@@ -20,9 +19,9 @@
 		<form-login login-page="/login.htm" authentication-success-handler-ref="roleAuthenticationHandler" authentication-failure-handler-ref="failureLoginHandler" />
 		<logout logout-success-url="/" />
 		
-<!--		<session-management>-->
-<!--			<concurrency-control max-sessions="1" expired-url="/login.jsp" />-->
-<!--		</session-management>-->
+		<session-management>
+			<concurrency-control max-sessions="1" expired-url="/login.htm" error-if-maximum-exceeded="true" />
+		</session-management>
 	</http>
 
 

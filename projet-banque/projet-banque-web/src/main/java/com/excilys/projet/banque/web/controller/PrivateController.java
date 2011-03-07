@@ -27,11 +27,19 @@ import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 import com.excilys.projet.banque.web.utils.MessageStack;
 
+/**
+ * Controller de la partie privée (ie: toutes url de type /private/*)
+ * 
+ * @author excilys
+ *
+ */
 @Controller
 @RequestMapping("/private/")
 public class PrivateController {
 
+	/** prefix ajouté sur les retours des méthodes de mapping */
 	private static final String	BASE_DIR		= "private/";
+	/** Suffix des URI à mapper */
 	private static final String	BASE_URL_SUFFIX	= ".htm";
 
 	@Autowired
@@ -79,7 +87,7 @@ public class PrivateController {
 	/**
 	 * Map l'url de type /private/compte/{id}/operations.htm
 	 */
-	@RequestMapping(value = "compte/{id}" + BASE_URL_SUFFIX, method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "compte/{id}" + BASE_URL_SUFFIX, method = { RequestMethod.GET, RequestMethod.POST })
 	public String showCompte(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
@@ -100,20 +108,21 @@ public class PrivateController {
 			if (selectedCompte == null) {
 				MessageStack.getInstance(request).addError("Compte non valide");
 				return "redirect:/error/error.htm";
-			} else {
+			}
+			else {
 				// Récupère les opérations de ce compte
-				List<Operation> operations 		= new LinkedList<Operation>();
+				List<Operation> operations = new LinkedList<Operation>();
 				List<Operation> operationsCarte = new LinkedList<Operation>();
-				float total 		= 0;
-				float totalCarte 	= 0;
+				float total = 0;
+				float totalCarte = 0;
 				List<Type> listTypeCarte = new LinkedList<Type>();
 				listTypeCarte.add(Type.OP_CARTE_DIFF);
 				listTypeCarte.add(Type.OP_CARTE_IMM);
 
-					operations 		= operationService.recupererOperationsSansType(selectedCompte, cal.getTime(), listTypeCarte);
-					operationsCarte = operationService.recupererOperations(selectedCompte, cal.getTime(), listTypeCarte);
-					total 			= operationService.totalOperations(operations);
-					totalCarte 		= operationService.totalOperations(operationsCarte);
+				operations = operationService.recupererOperationsSansType(selectedCompte, cal.getTime(), listTypeCarte);
+				operationsCarte = operationService.recupererOperations(selectedCompte, cal.getTime(), listTypeCarte);
+				total = operationService.totalOperations(operations);
+				totalCarte = operationService.totalOperations(operationsCarte);
 
 				model.addAttribute("compte", selectedCompte);
 				model.addAttribute("operations", operations);
@@ -121,7 +130,7 @@ public class PrivateController {
 				model.addAttribute("operationsCarteCount", operationsCarte.size());
 				model.addAttribute("soustotal", total);
 				model.addAttribute("soustotalCarte", totalCarte);
-				model.addAttribute("total", (total+totalCarte));
+				model.addAttribute("total", (total + totalCarte));
 				model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
 				model.addAttribute("moiscourant", cal.get(Calendar.MONTH));
 				model.addAttribute("anneecourante", calNow.get(Calendar.YEAR));
@@ -135,7 +144,7 @@ public class PrivateController {
 	/**
 	 * Map l'url de type /private/compte/{id}/operations/carte.htm
 	 */
-	@RequestMapping(value = "compte/{id}/operations/carte" + BASE_URL_SUFFIX, method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "compte/{id}/operations/carte" + BASE_URL_SUFFIX, method = { RequestMethod.GET, RequestMethod.POST })
 	public String showCompteCarte(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
@@ -156,14 +165,15 @@ public class PrivateController {
 			if (selectedCompte == null) {
 				MessageStack.getInstance(request).addError("Compte non valide");
 				return "redirect:/error/error.htm";
-			} else {
+			}
+			else {
 				// Récupère les opérations de ce compte
 				List<Type> listTypeCarte = new LinkedList<Type>();
 				listTypeCarte.add(Type.OP_CARTE_DIFF);
 				listTypeCarte.add(Type.OP_CARTE_IMM);
 
 				List<Operation> operationsCarte = operationService.recupererOperations(selectedCompte, cal.getTime(), listTypeCarte);
-				float totalCarte 				= operationService.totalOperations(operationsCarte);
+				float totalCarte = operationService.totalOperations(operationsCarte);
 
 				model.addAttribute("compte", selectedCompte);
 				model.addAttribute("operationscarte", operationsCarte);
@@ -196,7 +206,7 @@ public class PrivateController {
 		List<Operation> virements = new LinkedList<Operation>();
 		virements.addAll(operationService.recupererOperations(Type.VIREMENT_INT));
 		virements.addAll(operationService.recupererOperations(Type.VIREMENT_EXT));
-		
+
 		model.addAttribute("virements", virements);
 
 		return BASE_DIR + "virement";
@@ -208,7 +218,7 @@ public class PrivateController {
 	@RequestMapping(value = "virement/{srcId}" + BASE_URL_SUFFIX, method = RequestMethod.GET)
 	public String showVirementHome(@PathVariable int srcId, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		String res = showVirementHome(request, response, model);
-		
+
 		model.addAttribute("compte_src", srcId);
 
 		return res;
@@ -228,7 +238,7 @@ public class PrivateController {
 		int compte_src_id = 0;
 		int compte_dest_id = 0;
 		float montant = 0;
-		
+
 		// Récupération des données du formulaire
 		try {
 			compte_src_id = Integer.parseInt(request.getParameter("compte_src"));
@@ -245,9 +255,10 @@ public class PrivateController {
 		// Vérifie que les deux comptes sélectionnés soient bien différents
 		if (compte_src_id == compte_dest_id) {
 			MessageStack.getInstance(request).addError("Les comptes sources et destinations doivent être différents");
-		} else {
+		}
+		else {
 			// Récupère les compte source et destination du client et vérifie qu'ils lui appartiennent
-			compte_src 	= getCompteClient(compte_src_id, client);
+			compte_src = getCompteClient(compte_src_id, client);
 			compte_dest = getCompteClient(compte_dest_id, client);
 
 			// Vérifie que le client est bien le propriétaire des comptes
@@ -280,7 +291,8 @@ public class PrivateController {
 			request.getSession().removeAttribute("compte_src");
 			request.getSession().removeAttribute("compte_dest");
 			request.getSession().removeAttribute("montant");
-		} else {
+		}
+		else {
 			// Si la pile d'erreur n'est pas vide, on stock les valeurs entrées pour les restituer
 			request.getSession().setAttribute("compte_src", compte_src_id);
 			request.getSession().setAttribute("compte_dest", compte_dest_id);
@@ -294,10 +306,10 @@ public class PrivateController {
 	// =====================================================================================================================
 
 	/**
-	 * Récupère l'instance du client actuellement connecté.
-	 * La méthode utilise l'identifiant client stocké en session.
+	 * Récupère l'instance du client actuellement connecté. La méthode utilise l'identifiant client stocké en session.
 	 * 
-	 * @param request : la requete passée aux méthodes du controlleur
+	 * @param request
+	 *            : la requete passée aux méthodes du controlleur
 	 * @return une instance du client actuel; null sinon
 	 */
 	private Client getActualClient(HttpServletRequest request) {
@@ -317,11 +329,12 @@ public class PrivateController {
 	}
 
 	/**
-	 * Récupère une instance de compte à partir de son identifiant.
-	 * La méthode vérifie également que ce compte appartient bien à un client donnée
-	 *  
-	 * @param idCompte : identifiant du compte
-	 * @param client : instance de client devant être propriétaire du compte
+	 * Récupère une instance de compte à partir de son identifiant. La méthode vérifie également que ce compte appartient bien à un client donnée
+	 * 
+	 * @param idCompte
+	 *            : identifiant du compte
+	 * @param client
+	 *            : instance de client devant être propriétaire du compte
 	 * @return instance de Compte correspondant à l'id si le client est le propriétaire; null sinon
 	 */
 	private Compte getCompteClient(int idCompte, Client client) {
@@ -336,11 +349,11 @@ public class PrivateController {
 	}
 
 	/**
-	 * Récupère une instance de Calendar. La date configurée est celle du 1er du mois sélectionné dans le formulaire de filtrage.
-	 * La méthode utilise donc les valeurs de deux champs HTML "filter_month" et "filter_year".
-	 * Si aucun filtrage n'a été demandé (ie: valeurs inexistantes) ou que les données sont incorrectes, la date actuelle est retournée.
+	 * Récupère une instance de Calendar. La date configurée est celle du 1er du mois sélectionné dans le formulaire de filtrage. La méthode utilise donc les valeurs de deux champs
+	 * HTML "filter_month" et "filter_year". Si aucun filtrage n'a été demandé (ie: valeurs inexistantes) ou que les données sont incorrectes, la date actuelle est retournée.
 	 * 
-	 * @param request : la requete passée aux méthodes du controlleur
+	 * @param request
+	 *            : la requete passée aux méthodes du controlleur
 	 * @return une instance de Calendar correspondant à la date de filtrage; la date actuelle sinon
 	 */
 	private Calendar getMonthYearFilter(HttpServletRequest request) {
@@ -354,7 +367,8 @@ public class PrivateController {
 				cal.set(Calendar.DATE, 1);
 				cal.set(Calendar.MONTH, month);
 				cal.set(Calendar.YEAR, year);
-			} catch (NumberFormatException e) {
+			}
+			catch (NumberFormatException e) {
 				MessageStack.getInstance(request).addError("Format de date incorrect");
 			}
 		}

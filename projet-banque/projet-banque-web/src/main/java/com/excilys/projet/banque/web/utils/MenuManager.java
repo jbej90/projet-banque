@@ -7,23 +7,37 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 import org.springframework.util.PatternMatchUtils;
 
+/**
+ * <p>
+ * Gestionnaire de menu permettant de :
+ * </p>
+ * <ul>
+ * <li>parser le fichier de configuration des menus</li>
+ * <li>vérifier la concordance entre le pattern des items et l'URI pour savoir quel item sélectionner</li>
+ * </ul>
+ * 
+ * @author excilys
+ * 
+ */
 @Component
 public class MenuManager {
-	private List<MenuItem> items;
-	private MenuItem itemCourant;
-	
-	
+
+	/** Liste des items du menu */
+	private List<MenuItem>	items;
+	/** Item courant */
+	private MenuItem		itemCourant;
+
 	public MenuManager() {
 		items = new LinkedList<MenuItem>();
 	}
+
 	public MenuManager(List<Map<String, String>> items) {
 		init(items);
 	}
-	
-	
+
 	public void init(List<Map<String, String>> items) {
 		this.items = new LinkedList<MenuItem>();
-		
+
 		// Parcours la liste de map passé par spring depuis la conf XMl, et créé une liste de MenuItem
 		int id = 0;
 		for (Map<String, String> item : items) {
@@ -38,7 +52,7 @@ public class MenuManager {
 			// Parcours le ou les patterns pour chaque item
 			patterns = item.getPattern().split(";");
 			for (String pattern : patterns) {
-				// Si ça correspond, on change l'item courant en pensant à déselectionner l'ancien 
+				// Si ça correspond, on change l'item courant en pensant à déselectionner l'ancien
 				if (PatternMatchUtils.simpleMatch(pattern, uri)) {
 					if (itemCourant != null) {
 						itemCourant.setSelected(false);
@@ -49,13 +63,11 @@ public class MenuManager {
 			}
 		}
 	}
-	
-	
-	
+
 	public List<MenuItem> getItems() {
 		return items;
 	}
-	
+
 	public MenuItem getItemCourant() {
 		return itemCourant;
 	}
