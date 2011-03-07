@@ -89,6 +89,8 @@ public class CompteServiceImpl implements CompteService {
 	public boolean verifierAvantVirement(Compte compteEmetteur, Compte compteDestinataire, float montant) throws ServiceException {
 		if (compteEmetteur == null || compteDestinataire == null)
 			throw new ServiceException("Compte inexistant. ");
+		if (compteEmetteur.equals(compteDestinataire))
+			throw new ServiceException("Compte emetteur et destinataire identiques. ");
 		if (!(compteEmetteur.getSolde() >= montant))
 			throw new ServiceException("Solde du compte insuffisant. ");
 		if (montant <= 0)

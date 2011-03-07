@@ -268,7 +268,6 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	// TODO REPASSER LE TEST APRÈS COMMIT ET UPDATE
 	public void effectuerVirementInterne() throws ServiceException {
 		// 1 3
 		Compte compteEmetteur = compteDao.findById(1);
@@ -279,8 +278,20 @@ public class OperationServiceImplTest {
 
 		operationService.effectuerVirementInterne(compteEmetteur, compteDestinataire, 100f);
 
-		assertTrue(operationService.recupererOperations(compteEmetteur).size() == 1);
-		assertTrue(operationService.recupererOperations(compteDestinataire).size() == 1);
+		List<Operation> operationsEmetteur = operationService.recupererOperations(compteEmetteur);
+		List<Operation> operationsDestinataire= operationService.recupererOperations(compteDestinataire);
+
+		assertTrue(operationsEmetteur.size() == 1);
+		assertTrue(operationsDestinataire.size() == 1);
+
+		float montantEmetteur = operationsEmetteur.get(0).getMontant(); 
+		float montantDestinataire= operationsDestinataire.get(0).getMontant(); 
+		
+		assertTrue(montantEmetteur < 0);
+		assertTrue(montantDestinataire > 0);
+		assertTrue(Math.abs(montantEmetteur) == Math.abs(montantDestinataire));
+		
+		
 
 	}
 
