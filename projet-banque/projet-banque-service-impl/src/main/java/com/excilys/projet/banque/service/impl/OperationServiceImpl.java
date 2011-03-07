@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.excilys.projet.banque.dao.api.OperationDAO;
 import com.excilys.projet.banque.model.Carte;
@@ -15,7 +15,7 @@ import com.excilys.projet.banque.model.Type;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 
-@Repository("operationService")
+@Service("operationService")
 public class OperationServiceImpl implements OperationService {
 
 	@Autowired
