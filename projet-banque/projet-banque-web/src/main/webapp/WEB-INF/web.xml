@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 						http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-	<display-name>web</display-name>
+	<display-name>projet-banque-web</display-name>
 
 	<session-config>
 		<session-timeout>30</session-timeout>

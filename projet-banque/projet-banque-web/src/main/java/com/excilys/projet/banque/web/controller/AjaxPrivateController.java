@@ -12,6 +12,7 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,13 +33,14 @@ public class AjaxPrivateController {
 	private ClientService		clientService;
 
 	/**
+	 * Map l'url de type /private/comptes/{client}.htm
 	 * 
 	 * @param client: client courant
-	 * @param compte: compte à exclure
-	 * @return Liste de comptes
+	 * @param exclude: compte à exclure
+	 * @return Liste de comptes sans celui à exclure
 	 */
-	@RequestMapping(value = "comptes" + BASE_URL_SUFFIX, method=RequestMethod.GET)
-	public @ResponseBody void getComptes(@RequestParam int client, @RequestParam int compte, HttpServletResponse response) {
+	@RequestMapping(value = "comptes/{client}" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	public @ResponseBody void getComptes(@PathVariable int client, @RequestParam(required=false, defaultValue="-1") int exclude, HttpServletResponse response) {
 		Client cli = null;
 		try {
 			cli = clientService.recupererClient(client);
@@ -50,7 +52,7 @@ public class AjaxPrivateController {
 		Set<Compte> comptes = cli.getComptes();
 		Set<AjaxCompte> listComptes = new TreeSet<AjaxCompte>();
 		for (Compte c : comptes) {
-			if (c.getId() != compte) {
+			if (c.getId() != exclude) {
 				listComptes.add(new AjaxCompte(c.getId(), c.getLibelle(), c.getSolde()));
 			}
 		}
