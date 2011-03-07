@@ -6,9 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.projet.banque.dao.impl.AuthDAOImpl;
-import com.excilys.projet.banque.dao.impl.ClientDAOImpl;
-import com.excilys.projet.banque.dao.impl.CompteDAOImpl;
+import com.excilys.projet.banque.dao.api.AuthDAO;
+import com.excilys.projet.banque.dao.api.ClientDAO;
+import com.excilys.projet.banque.dao.api.CompteDAO;
+
 import com.excilys.projet.banque.model.Auth;
 import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
@@ -19,16 +20,16 @@ import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 public class ClientServiceImpl implements ClientService {
 
 	@Autowired
-	private CompteDAOImpl compteDao;
+	private CompteDAO compteDao;
 	@Autowired
-	private ClientDAOImpl clientDao;
+	private ClientDAO clientDao;
 	@Autowired
-	private AuthDAOImpl authDao;
+	private AuthDAO authDao;
 
 	public ClientServiceImpl() {
 	}
 
-	public ClientServiceImpl(CompteDAOImpl compteDao) {
+	public ClientServiceImpl(CompteDAO compteDao) {
 		this.compteDao = compteDao;
 	}
 
@@ -74,15 +75,15 @@ public class ClientServiceImpl implements ClientService {
 		return compteDao.findAllByClient(client);
 	}
 
-	public void setCompteDao(CompteDAOImpl compteDao) {
+	public void setCompteDao(CompteDAO compteDao) {
 		this.compteDao = compteDao;
 	}
 
-	public void setClientDao(ClientDAOImpl clientDao) {
+	public void setClientDao(ClientDAO clientDao) {
 		this.clientDao = clientDao;
 	}
 
-	public void setAuthDao(AuthDAOImpl authDao) {
+	public void setAuthDao(AuthDAO authDao) {
 		this.authDao = authDao;
 	}
 }

@@ -23,7 +23,7 @@ public class SeleniumTest extends SeleneseTestCase {
 	
 	@Test
 	public void testLogin() throws Exception {
-		selenium.open("/projet-banque-web/login.htm");
+		selenium.open("/web/login.htm");
 		selenium.type("username", "test1");
 		selenium.type("password", "test1");
 		selenium.click("//input[@value='Valider']");
@@ -33,7 +33,7 @@ public class SeleniumTest extends SeleneseTestCase {
 	
 	@Test
 	public void testLoginDelog() throws Exception {
-		selenium.open("/projet-banque-web/login.htm");
+		selenium.open("/web/login.htm");
 		selenium.type("username", "test1");
 		selenium.type("password", "test1");
 		selenium.click("//input[@value='Valider']");
@@ -45,7 +45,7 @@ public class SeleniumTest extends SeleneseTestCase {
 
 	@Test
 	public void testLoginMdpErrones() throws Exception {
-		selenium.open("/projet-banque-web/login.htm");
+		selenium.open("/web/login.htm");
 		selenium.type("username", "aaaaa");
 		selenium.type("password", "aaaaa");
 		selenium.click("//input[@value='Valider']");
@@ -56,7 +56,7 @@ public class SeleniumTest extends SeleneseTestCase {
 	
 	@Test
 	public void testLoginChampsVides() throws Exception {
-		selenium.open("/projet-banque-web/login.htm");
+		selenium.open("/web/login.htm");
 		selenium.click("//input[@value='Valider']");
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Login ou mot de passe erroné"));
