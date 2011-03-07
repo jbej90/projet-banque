@@ -5,21 +5,25 @@
 
 <script type="text/javascript">
 	function filtrercompte(idCompte) {
+		$('#compte_dest_loading').removeClass('hidden');
+		
 		$.getJSON(
 			'<c:url value="/private/ajax/comptes.htm"/>', {
 				client: ${idclient},
 				compte: idCompte
 			}, function(data) {
+				$('#compte_dest_loading').addClass('hidden');
 				$('#compte_dest').empty();
 				$.each(data, function (index, value) {
-					$('#compte_dest').append('<option value="'+value.id+'">'+value.libelle+'</option>');
+					$('#compte_dest').append('<option value="'+value.id+'">'+value.libelle+' ('+value.solde+'€)'+'</option>');
 				}
 			);
 		});
 	}
 	
 	$(document).ready(function () {
-		filtrercompte($('#compte_dest').val());
+		$('#compte_src').val(${compte_src});
+		$('#compte_src').change();
 	});
 </script>
 
@@ -45,11 +49,9 @@
 		</div>
 		<div class="row">
 			<label for="compte_dest">Destination :</label>
-			<select name="compte_dest" id="compte_dest">
-				<c:forEach items="${comptes}" var="compte">
-					<option value="${compte.id}"<c:if test="${compte.id == compte_dest}"> selected="selected"</c:if>>${compte.libelle} (${compte.solde}€)</option>
-				</c:forEach>
-			</select>
+			<select name="compte_dest" id="compte_dest"></select>
+			
+			<img id="compte_dest_loading" src="<c:url value="/images/loading.gif"/>" alt="Chargement" title="Chargement" class="hidden" />
 		</div>
 		<div class="row">
 			<label for="montant">Montant :</label>

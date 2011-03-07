@@ -1,6 +1,12 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#username').focus();
+	});
+</script>
+
 <div class="box width-400">
 	<form method="post" action="<c:url value="/login.do"/>">
 		<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />

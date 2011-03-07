@@ -1,8 +1,6 @@
 package com.excilys.projet.banque.web.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -23,6 +21,7 @@ import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
+import com.excilys.projet.banque.web.ajax.AjaxCompte;
 
 @Controller
 @RequestMapping("/private/ajax/")
@@ -40,7 +39,6 @@ public class AjaxPrivateController {
 	 */
 	@RequestMapping(value = "comptes" + BASE_URL_SUFFIX, method=RequestMethod.GET)
 	public @ResponseBody void getComptes(@RequestParam int client, @RequestParam int compte, HttpServletResponse response) {
-
 		Client cli = null;
 		try {
 			cli = clientService.recupererClient(client);
@@ -50,10 +48,10 @@ public class AjaxPrivateController {
 		
 		// Récupération de la liste des clients
 		Set<Compte> comptes = cli.getComptes();
-		Set<TmpCompte> listComptes = new TreeSet<TmpCompte>();
+		Set<AjaxCompte> listComptes = new TreeSet<AjaxCompte>();
 		for (Compte c : comptes) {
 			if (c.getId() != compte) {
-				listComptes.add(new TmpCompte(c.getId(), c.getLibelle()+" ("+c.getSolde()+"€)"));
+				listComptes.add(new AjaxCompte(c.getId(), c.getLibelle(), c.getSolde()));
 			}
 		}
 		
@@ -69,37 +67,5 @@ public class AjaxPrivateController {
 	        	e2.printStackTrace();
 	        }
 	    }
-	}
-	
-	class TmpCompte implements Comparable<TmpCompte> {
-		private int id;
-		private String libelle;
-		
-		public TmpCompte(int id, String libelle) {
-			super();
-			this.id = id;
-			this.libelle = libelle;
-		}
-		
-		public int getId() {
-			return id;
-		}
-		
-		public void setId(int id) {
-			this.id = id;
-		}
-		
-		public String getLibelle() {
-			return libelle;
-		}
-		
-		public void setLibelle(String libelle) {
-			this.libelle = libelle;
-		}
-
-		@Override
-		public int compareTo(TmpCompte o) {
-			return getLibelle().compareTo(o.getLibelle());
-		}
 	}
 }

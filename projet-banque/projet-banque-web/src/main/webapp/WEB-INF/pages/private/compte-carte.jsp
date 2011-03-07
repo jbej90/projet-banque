@@ -73,8 +73,8 @@
 		<tfoot>
 			<tr>
 				<td colspan="3">Total des opérations</td>
-				<td align="right" class="decouvert"><c:if test="${totalcarte<0}" >${totalcarte}€</c:if></td>
-				<td align="right" ><c:if test="${totalcarte>=0}">${totalcarte}€</c:if></td>
+				<td align="right" class="total decouvert"><c:if test="${totalcarte<0}" ><fmt:formatNumber maxFractionDigits="2">${totalcarte}</fmt:formatNumber>€</c:if></td>
+				<td align="right" class="total"><c:if test="${totalcarte>=0}"><fmt:formatNumber maxFractionDigits="2">${totalcarte}</fmt:formatNumber>€</c:if></td>
 			</tr>
 		</tfoot>
 	</table>

@@ -241,9 +241,11 @@ public class PrivateController {
 	 */
 	@RequestMapping(value = "virement/{srcId}" + BASE_URL_SUFFIX)
 	public String showVirementHome(@PathVariable int srcId, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+		String res = showVirementHome(request, response, model);
+		
 		model.addAttribute("compte_src", srcId);
 
-		return showVirementHome(request, response, model);
+		return res;
 	}
 
 	// =====================================================================================================================

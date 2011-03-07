@@ -32,7 +32,7 @@
 		<tfoot>
 			<tr>
 				<td></td>
-				<td align="right"<c:if test="${total < 0}"> class="decouvert"</c:if>>${total}€</td>
+				<td align="right" class="total<c:if test="${total < 0}"> decouvert</c:if>">${total}€</td>
 			</tr>
 		</tfoot>
 	</table>
