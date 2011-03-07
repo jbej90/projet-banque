@@ -19,7 +19,7 @@ import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 public class OperationServiceImpl implements OperationService {
 
 	@Autowired
-	private OperationDAO operationDao;
+	private OperationDAO	operationDao;
 
 	public OperationServiceImpl() {
 	}
@@ -36,6 +36,7 @@ public class OperationServiceImpl implements OperationService {
 		}
 		return op;
 	}
+
 	@Override
 	public List<Operation> recupererOperations(Compte compte) throws ServiceException {
 		return recupererOperations(compte, new Date());
@@ -43,81 +44,57 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
-	public List<Operation> recupererOperations(Compte compte, Date date) throws ServiceException {
-
-		System.out.println("recup operations");
-
-		List<Operation> ops = operationDao.findAllByMoisByCompte(date, compte);
-		if (ops.size() == 0) {
-			throw new ServiceException("Aucune opération.");
-		}
-		return ops;
+	public List<Operation> recupererOperations(Compte compte, Date date) {
+		return operationDao.findAllByMoisByCompte(date, compte);
 	}
 
 	@Override
-	public List<Operation> recupererOperations(Compte compte, Date date, Type type) throws ServiceException {
-		List<Operation> ops = operationDao.findAllByMoisByCompteAndByType(date, compte, type);
-		if (ops.size() == 0) {
-			throw new ServiceException("Aucune opération.");
-		}
-		return ops;
+	public List<Operation> recupererOperations(Compte compte, Date date, Type type) {
+		return operationDao.findAllByMoisByCompteAndByType(date, compte, type);
 	}
 
 	@Override
-	public List<Operation> recupererOperations(Compte compte, Date date, List<Type> types) throws ServiceException {
-		List<Operation> ops = operationDao.findAllByMoisByCompteAndByTypes(date, compte, types);
-		if (ops.size() == 0) {
-			throw new ServiceException("Aucune opération.");
-		}
-		return ops;
+	public List<Operation> recupererOperations(Compte compte, Date date, List<Type> types) {
+		return operationDao.findAllByMoisByCompteAndByTypes(date, compte, types);
 	}
 
 	@Override
-	public List<Operation> recupererOperationsSansType(Compte compte, Date date, List<Type> types) throws ServiceException {
-		List<Operation> ops = operationDao.findAllByMoisByCompteAndNotInTypes(date, compte, types);
-		if (ops.size() == 0) {
-			throw new ServiceException("Aucune opération.");
-		}
-		return ops;
+	public List<Operation> recupererOperationsSansType(Compte compte, Date date, List<Type> types) {
+		return operationDao.findAllByMoisByCompteAndNotInTypes(date, compte, types);
 	}
 
 	@Override
-	public List<Operation> recupererOperations(Carte carte) throws ServiceException {
+	public List<Operation> recupererOperations(Carte carte) {
 		return recupererOperations(carte, new Date());
 	}
 
 	@Override
 	// TODO REVOIR CETTE METHODE ET ACTIVER LE TEST
-	public List<Operation> recupererOperations(Carte carte, Date date) throws ServiceException {
-		List<Operation> ops = operationDao.findAllByCarte(carte);
-		if (ops.size() == 0) {
-			throw new ServiceException("Aucune opération.");
-		}
-		return ops;
+	public List<Operation> recupererOperations(Carte carte, Date date) {
+		return operationDao.findAllByCarte(carte);
 	}
 
 	@Override
-	public List<Operation> recupererOperations(Type type) throws ServiceException {
+	public List<Operation> recupererOperations(Type type) {
 		return recupererOperations(type, new Date());
 	}
 
 	@Override
 	// TODO REVOIR CETTE METHODE ET ACTIVER LE TEST
-	public List<Operation> recupererOperations(Type type, Date date) throws ServiceException {
-		List<Operation> ops = operationDao.findAllByType(type);
-		if (ops.size() == 0) {
-			throw new ServiceException("Aucune opération.");
-		}
-		return ops;
+	public List<Operation> recupererOperations(Type type, Date date) {
+		return operationDao.findAllByType(type);
 	}
 
 	@Override
-	public float totalOperations(List<Operation> operations) throws ServiceException {
-		if (operations == null)
-			throw new ServiceException("Liste d'opération types inexistante.");
+	public float totalOperations(List<Operation> operations) {
 		float somme = 0;
-		for (Operation o : operations)
-			somme += o.getMontant();
+		if (operations == null) {
+			somme = 0;
+		}
+		else {
+			for (Operation o : operations)
+				somme += o.getMontant();
+		}
 		return somme;
 	}
 
@@ -133,7 +110,7 @@ public class OperationServiceImpl implements OperationService {
 		operationSource.setType(Type.VIREMENT_INT);
 		operationSource.setDateOp(new Date());
 		operationSource.setEtat(EtatOperation.EFFECTUE);
-		operationSource.setLibelle("virement compte "+compteEmetteur.getId()+" -> "+compteDestinataire.getId());
+		operationSource.setLibelle("virement compte " + compteEmetteur.getId() + " -> " + compteDestinataire.getId());
 
 		Operation operationDest = new Operation();
 		operationDest.setCompte(compteDestinataire);
@@ -141,34 +118,33 @@ public class OperationServiceImpl implements OperationService {
 		operationDest.setType(Type.VIREMENT_INT);
 		operationDest.setDateOp(new Date());
 		operationDest.setEtat(EtatOperation.EFFECTUE);
-		operationDest.setLibelle("virement compte "+compteEmetteur.getId()+" -> "+compteDestinataire.getId());
+		operationDest.setLibelle("virement compte " + compteEmetteur.getId() + " -> " + compteDestinataire.getId());
 
 		operationDao.save(operationSource);
 		operationDao.save(operationDest);
 	}
 
-
-//	public void validationVirements(List<Operation> operationsVirements){
-//		for (Operation op : operationsVirements) {
-//			if(op.getType() ==  Type.VIREMENT_INT || op.getType() ==  Type.VIREMENT_EXT) {
-//				if(op.getEtat() == EtatOperation.EN_COURS) {
-//					Compte compte = op.getCompte();
-//					compte.setSolde(compte.getSolde()+op.getMontant());
-//					op.setEtat(EtatOperation.EFFECTUE);
-//
-//					try {
-//						compteDao.update(compte);
-//					} catch (Exception e) {
-//						continue;
-//					}
-//					
-//					try {
-//						operationDao.update(op);
-//					} catch (Exception e) {
-//						
-//					}
-//				}
-//			}
-//		}
-//	}
+	// public void validationVirements(List<Operation> operationsVirements){
+	// for (Operation op : operationsVirements) {
+	// if(op.getType() == Type.VIREMENT_INT || op.getType() == Type.VIREMENT_EXT) {
+	// if(op.getEtat() == EtatOperation.EN_COURS) {
+	// Compte compte = op.getCompte();
+	// compte.setSolde(compte.getSolde()+op.getMontant());
+	// op.setEtat(EtatOperation.EFFECTUE);
+	//
+	// try {
+	// compteDao.update(compte);
+	// } catch (Exception e) {
+	// continue;
+	// }
+	//
+	// try {
+	// operationDao.update(op);
+	// } catch (Exception e) {
+	//
+	// }
+	// }
+	// }
+	// }
+	// }
 }

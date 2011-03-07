@@ -50,7 +50,9 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Operation findById(int idOperation) {
+
 		List<Operation> lesOperations = getHibernateTemplate().find("From Operation o left join fetch o.compte left join fetch o.carte where o.id=?", idOperation);
 		if (lesOperations.isEmpty()) {
 			return null;
@@ -130,12 +132,11 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 		return getHibernateTemplate().find(req, dateDebut.toDate(), dateFin.toDate(), compte.getId());
 	}
 
-
 	@Override
 	public void save(Operation operation) {
 		getHibernateTemplate().save(operation);
 	}
-	
+
 	@Override
 	public void update(Operation operation) {
 		getHibernateTemplate().update(operation);
