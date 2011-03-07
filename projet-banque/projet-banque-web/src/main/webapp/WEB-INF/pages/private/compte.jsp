@@ -70,7 +70,7 @@
 				</c:otherwise>
 			</c:choose>
 		</tbody>
-	
+		
 		<tfoot>
 			<tr>
 				<td colspan="3">Opérations</td>
@@ -84,8 +84,8 @@
 			</tr>
 			<tr>
 				<td colspan="3">Total des opérations</td>
-				<td align="right" class="decouvert"><c:if test="${total<0}" ><fmt:formatNumber maxFractionDigits="2">${total}</fmt:formatNumber>€</c:if></td>
-				<td align="right" ><c:if test="${total>=0}"><fmt:formatNumber maxFractionDigits="2">${total}</fmt:formatNumber>€</c:if></td>
+				<td align="right" class="total decouvert"><c:if test="${total<0}" ><fmt:formatNumber maxFractionDigits="2">${total}</fmt:formatNumber>€</c:if></td>
+				<td align="right" class="total"><c:if test="${total>=0}"><fmt:formatNumber maxFractionDigits="2">${total}</fmt:formatNumber>€</c:if></td>
 				
 			</tr>
 		</tfoot>

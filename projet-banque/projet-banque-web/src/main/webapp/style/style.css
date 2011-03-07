@@ -92,6 +92,7 @@ table {
 	border-spacing: 1px;
 	background: #e7e7e7;
 	width: 100%;
+	margin: 10px 0 0 0;
 }
 table tr { 
 	height: 24px;
@@ -147,6 +148,9 @@ table tfoot tr td.total {
 /* Utils */
 .clearer {
 	clear: both;
+}
+.hidden {
+	display: none;
 }
 .separator {
 	display: block;
