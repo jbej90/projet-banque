@@ -15,33 +15,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.excilys.projet.banque.web.utils.MenuManager;
 
 /**
- * Classe permettant de filtrer le contenu du menu et le l'item courant.
- * Elle indique juste l'URI actuelle au MenuManager qui va s'occuper du filtrage  
+ * Classe permettant de filtrer le contenu du menu et le l'item devant être marqué comme sélectionné. Elle indique l'URI actuelle au MenuManager qui va s'occuper du filtrage
  */
 public class MenuFilter implements Filter {
-	private MenuManager menuManager;
-	
-	
-	public MenuFilter() {}
+
+	private MenuManager	menuManager;
+
+	public MenuFilter() {
+	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		HttpServletRequest req = (HttpServletRequest)request;
-		
+		HttpServletRequest req = (HttpServletRequest) request;
+
+		// Transmets l'URI actuelle au menu manager
 		menuManager.setUri(req.getServletPath());
-		
+
 		// Continue la chaine d'exécution
 		filterChain.doFilter(request, response);
 	}
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {}
+	public void init(FilterConfig filterConfig) throws ServletException {
+	}
 
 	@Override
-	public void destroy() {}
+	public void destroy() {
+	}
 
-	
-	
 	public MenuManager getMenuManager() {
 		return menuManager;
 	}

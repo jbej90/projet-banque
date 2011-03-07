@@ -24,9 +24,16 @@ import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 import com.excilys.projet.banque.web.ajax.AjaxCompte;
 
+/**
+ * Controller des requêtes AJAX de la partie privée (ie: toutes url de type /private/ajax/*)
+ * 
+ * @author excilys
+ *
+ */
 @Controller
 @RequestMapping("/private/ajax/")
 public class AjaxPrivateController {
+	/** Suffix des URI à mapper */
 	private static final String	BASE_URL_SUFFIX	= ".htm";
 
 	@Autowired
