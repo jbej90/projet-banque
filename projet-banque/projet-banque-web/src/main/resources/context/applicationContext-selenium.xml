@@ -5,93 +5,17 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
-
-<!--	<context:annotation-config />-->
-<!--	<context:component-scan base-package="com.excilys.projet.banque" />-->
-<!---->
-<!---->
-<!--	<bean name="propertyPlaceholder"-->
-<!--		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
-<!--		<property name="locations">-->
-<!--			<value>classpath:context/hsqldb.properties-->
-<!--			</value>-->
-<!--		</property>-->
-<!--	</bean>-->
-
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="${datasource.classname}" />
-<!--		<property name="url" value="${datasource.url}" />-->
-		<property name="url" value="jdbc:mysql://192.168.10.62/banqueBDD" />
-		<property name="username" value="${datasource.username}" />
-		<property name="password" value="${datasource.password}" />
+	
+<!--	<import resource="classpath*:/context/applicationContext.xml"/> -->
+	
+<!-- Chargement du fichier de propriétés -->
+	<bean id="propertyPlaceHolder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:/context/selenium.properties" />
 	</bean>
 	
-	<import resource="classpath*:context/applicationContext.xml"/>
-<!--	-->
-<!--	<bean name="propertyPlaceholder"-->
-<!--		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
-<!--		<property name="locations">-->
-<!--			<value>classpath:context/projet-banque-web.properties-->
-<!--			</value>-->
-<!--		</property>-->
-<!--	</bean>-->
-
-<!--	<bean id="sessionFactory"-->
-<!--		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">-->
-<!--		<property name="dataSource" ref="dataSource" />-->
-<!--		<property name="hibernateProperties">-->
-<!--			<props>-->
-<!--				<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>-->
-<!--				<prop key="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</prop>-->
-<!--				<prop key="hibernate.show_sql">true</prop>-->
-<!--				<prop key="hibernate.use_sql_comments">false</prop>-->
-<!--				<prop key="hibernate.jdbc.batch_size">0</prop>-->
-<!--				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>-->
-<!--			</props>-->
-<!--		</property>-->
-<!--		<property name="packagesToScan" value="com.excilys.projet.banque.model" />-->
-<!--	</bean>-->
-<!--	-->
-<!--		<bean id="transactionManager"-->
-<!--		class="org.springframework.orm.hibernate3.HibernateTransactionManager">-->
-<!--		<property name="sessionFactory" ref="sessionFactory" />-->
-<!--	</bean>-->
+	<!-- Chargement des fichiers du context web -->
+	<import resource="projet-banque-web-*.xml"/> 
 	
-
-<!---->
-<!---->
-	<!-- <bean id="banqueSessionFactory" -->
-	<!-- class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"> -->
-	<!-- <property name="dataSource" ref="dataSource"></property> -->
-	<!-- <property name="mappingResources"> -->
-	<!-- <list> -->
-	<!-- <value>Compte.hbm.xml</value> -->
-	<!-- <value>Client.hbm.xml</value> -->
-	<!-- <value>Auth.hbm.xml</value> -->
-	<!-- </list> -->
-	<!-- </property> -->
-	<!-- <property name="hibernateProperties"> -->
-	<!-- <props> -->
-	<!-- <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> -->
-	<!-- <prop key="hibernate.show_sql">true</prop> -->
-	<!-- </props> -->
-	<!-- </property> -->
-	<!-- </bean> -->
-
-
-<!--	<bean id="banqueHibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">-->
-<!--		<property name="sessionFactory" ref="banqueSessionFactory" />-->
-<!--	</bean>-->
-<!---->
-<!--	<bean id="clientDao" class="com.excilys.projet.banque.dao.impl.ClientDAOImpl">-->
-<!--		<property name="hibernateTemplate" ref="banqueHibernateTemplate" />-->
-<!--	</bean>-->
-<!---->
-<!--	<bean id="compteDao" class="com.excilys.projet.banque.dao.impl.CompteDAOImpl">-->
-<!--		<property name="hibernateTemplate" ref="banqueHibernateTemplate" />-->
-<!--	</bean>-->
-
-<!--	<bean id="authDao" class="com.excilys.projet.banque.dao.impl.AuthDAOImpl">-->
-<!--		<property name="hibernateTemplate" ref="banqueHibernateTemplate" />-->
-<!--	</bean>-->
+	<!-- Chargement d'un bean PostProcessor pour les configurations plus fines -->
+	<bean id="postProcessor" class="com.excilys.projet.banque.web.PostProcessor"></bean>
 </beans>
