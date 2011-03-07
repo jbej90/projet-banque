@@ -38,7 +38,7 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
-	public List<Operation> recupererOperations(Compte compte) throws ServiceException {
+	public List<Operation> recupererOperations(Compte compte) {
 		return recupererOperations(compte, new Date());
 
 	}
@@ -103,7 +103,7 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
-	public void effectuerVirementInterne(Compte compteEmetteur, Compte compteDestinataire, float montant) throws ServiceException {
+	public void effectuerVirementInterne(Compte compteEmetteur, Compte compteDestinataire, float montant) {
 		Operation operationSource = new Operation();
 		operationSource.setCompte(compteEmetteur);
 		operationSource.setMontant(-montant);
