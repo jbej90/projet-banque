@@ -43,8 +43,6 @@ public class OperationServiceImplTest {
 
 	@Resource(name = "operationService")
 	private OperationService operationService;
-	@Resource(name = "operationDao")
-	private OperationDAOImpl operationDAO;
 	@Resource(name = "compteDao")
 	private CompteDAOImpl compteDao;
 
