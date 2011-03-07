@@ -8,9 +8,8 @@
 		$('#compte_dest_loading').removeClass('hidden');
 		
 		$.getJSON(
-			'<c:url value="/private/ajax/comptes.htm"/>', {
-				client: ${idclient},
-				compte: idCompte
+			'<c:url value="/private/ajax/comptes/${idclient}.htm"/>', {
+				exclude: idCompte
 			}, function(data) {
 				$('#compte_dest_loading').addClass('hidden');
 				$('#compte_dest').empty();

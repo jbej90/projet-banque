@@ -48,7 +48,7 @@ public class PrivateController {
 	/**
 	 * Map l'url de type /private/home.htm
 	 */
-	@RequestMapping(value = "home" + BASE_URL_SUFFIX)
+	@RequestMapping(value = "home" + BASE_URL_SUFFIX, method = RequestMethod.GET)
 	public String showHome(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 
@@ -79,7 +79,7 @@ public class PrivateController {
 	/**
 	 * Map l'url de type /private/compte/{id}/operations.htm
 	 */
-	@RequestMapping(value = "compte/{id}" + BASE_URL_SUFFIX)
+	@RequestMapping(value = "compte/{id}" + BASE_URL_SUFFIX, method = {RequestMethod.GET, RequestMethod.POST})
 	public String showCompte(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
@@ -110,30 +110,10 @@ public class PrivateController {
 				listTypeCarte.add(Type.OP_CARTE_DIFF);
 				listTypeCarte.add(Type.OP_CARTE_IMM);
 
-				try {
 					operations 		= operationService.recupererOperationsSansType(selectedCompte, cal.getTime(), listTypeCarte);
-				}
-				catch (ServiceException e) {
-					e.printStackTrace();
-				}
-				try {
 					operationsCarte = operationService.recupererOperations(selectedCompte, cal.getTime(), listTypeCarte);
-				}
-				catch (ServiceException e) {
-					e.printStackTrace();
-				}
-				try {
 					total 			= operationService.totalOperations(operations);
-				}
-				catch (ServiceException e) {
-					e.printStackTrace();
-				}
-				try {
 					totalCarte 		= operationService.totalOperations(operationsCarte);
-				}
-				catch (ServiceException e) {
-					e.printStackTrace();
-				}
 
 				model.addAttribute("compte", selectedCompte);
 				model.addAttribute("operations", operations);
@@ -155,7 +135,7 @@ public class PrivateController {
 	/**
 	 * Map l'url de type /private/compte/{id}/operations/carte.htm
 	 */
-	@RequestMapping(value = "compte/{id}/operations/carte" + BASE_URL_SUFFIX)
+	@RequestMapping(value = "compte/{id}/operations/carte" + BASE_URL_SUFFIX, method = {RequestMethod.GET, RequestMethod.POST})
 	public String showCompteCarte(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
@@ -178,19 +158,12 @@ public class PrivateController {
 				return "redirect:/error/error.htm";
 			} else {
 				// Récupère les opérations de ce compte
-				List<Operation> operationsCarte = null;
-				float totalCarte = 0;
-				try {
-					List<Type> listTypeCarte = new LinkedList<Type>();
-					listTypeCarte.add(Type.OP_CARTE_DIFF);
-					listTypeCarte.add(Type.OP_CARTE_IMM);
+				List<Type> listTypeCarte = new LinkedList<Type>();
+				listTypeCarte.add(Type.OP_CARTE_DIFF);
+				listTypeCarte.add(Type.OP_CARTE_IMM);
 
-					operationsCarte = operationService.recupererOperations(selectedCompte, cal.getTime(), listTypeCarte);
-					totalCarte 		= operationService.totalOperations(operationsCarte);
-				}
-				catch (ServiceException e) {
-					e.printStackTrace();
-				}
+				List<Operation> operationsCarte = operationService.recupererOperations(selectedCompte, cal.getTime(), listTypeCarte);
+				float totalCarte 				= operationService.totalOperations(operationsCarte);
 
 				model.addAttribute("compte", selectedCompte);
 				model.addAttribute("operationscarte", operationsCarte);
@@ -208,7 +181,7 @@ public class PrivateController {
 	/**
 	 * Map l'url de type /private/virement.htm
 	 */
-	@RequestMapping(value = "virement" + BASE_URL_SUFFIX)
+	@RequestMapping(value = "virement" + BASE_URL_SUFFIX, method = RequestMethod.GET)
 	public String showVirementHome(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 
@@ -221,16 +194,9 @@ public class PrivateController {
 		model.addAttribute("montant", request.getSession().getAttribute("montant"));
 
 		List<Operation> virements = new LinkedList<Operation>();
-		try {
-			virements.addAll(operationService.recupererOperations(Type.VIREMENT_INT));
-		} catch (ServiceException e) {
-			e.printStackTrace();
-		}
-		try {
-			virements.addAll(operationService.recupererOperations(Type.VIREMENT_EXT));
-		} catch (ServiceException e) {
-			e.printStackTrace();
-		}
+		virements.addAll(operationService.recupererOperations(Type.VIREMENT_INT));
+		virements.addAll(operationService.recupererOperations(Type.VIREMENT_EXT));
+		
 		model.addAttribute("virements", virements);
 
 		return BASE_DIR + "virement";
@@ -239,7 +205,7 @@ public class PrivateController {
 	/**
 	 * Map l'url de type /private/virement/{srcId}.htm
 	 */
-	@RequestMapping(value = "virement/{srcId}" + BASE_URL_SUFFIX)
+	@RequestMapping(value = "virement/{srcId}" + BASE_URL_SUFFIX, method = RequestMethod.GET)
 	public String showVirementHome(@PathVariable int srcId, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		String res = showVirementHome(request, response, model);
 		
@@ -255,16 +221,15 @@ public class PrivateController {
 	/**
 	 * Map l'url d'action de type POST /private/virement.do
 	 */
-	@RequestMapping(value = "virement.do")
+	@RequestMapping(value = "virement.do", method = RequestMethod.POST)
 	public String doVirement(HttpServletRequest request, HttpServletResponse response, RequestMethod method, ModelMap model) {
-		// Opération de controle sur le type de requete demandé
-		//		if (method != RequestMethod.POST) {
-		//			return "redirect:/error/405.htm";
-		//		}
-
+		Compte compte_src = null;
+		Compte compte_dest = null;
 		int compte_src_id = 0;
 		int compte_dest_id = 0;
 		float montant = 0;
+		
+		// Récupération des données du formulaire
 		try {
 			compte_src_id = Integer.parseInt(request.getParameter("compte_src"));
 			compte_dest_id = Integer.parseInt(request.getParameter("compte_dest"));
@@ -274,15 +239,13 @@ public class PrivateController {
 			MessageStack.getInstance(request).addError("Valeurs non correctes");
 		}
 
+		// Récupère le client actuel
 		Client client = getActualClient(request);
-		Compte compte_src = null;
-		Compte compte_dest = null;
 
 		// Vérifie que les deux comptes sélectionnés soient bien différents
 		if (compte_src_id == compte_dest_id) {
 			MessageStack.getInstance(request).addError("Les comptes sources et destinations doivent être différents");
-		}
-		else {
+		} else {
 			// Récupère les compte source et destination du client et vérifie qu'ils lui appartiennent
 			compte_src 	= getCompteClient(compte_src_id, client);
 			compte_dest = getCompteClient(compte_dest_id, client);

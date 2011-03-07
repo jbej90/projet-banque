@@ -45,6 +45,9 @@ a {
 	color: #444;
 	font-weight: bold;
 }
+a:hover {
+	text-decoration: underline;
+}
 
 /* Messages */
 ul#messages {
@@ -277,6 +280,7 @@ table tfoot tr td.total {
 }
 #menu .item a:hover {
 	background: #cfe7ff;
+	text-decoration: none;
 }
 
 
