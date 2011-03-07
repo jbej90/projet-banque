@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.excilys.projet.banque.dao.api.CompteDAO;
 import com.excilys.projet.banque.model.Compte;
@@ -13,7 +13,7 @@ import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 
-@Repository("compteService")
+@Service("compteService")
 public class CompteServiceImpl implements CompteService {
 
 	@Autowired

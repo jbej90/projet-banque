@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.excilys.projet.banque.dao.api.AuthDAO;
 import com.excilys.projet.banque.dao.api.ClientDAO;
 import com.excilys.projet.banque.dao.api.CompteDAO;
-
 import com.excilys.projet.banque.model.Auth;
 import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 
-@Repository("clientService")
+@Service("clientService")
 public class ClientServiceImpl implements ClientService {
 
 	@Autowired
