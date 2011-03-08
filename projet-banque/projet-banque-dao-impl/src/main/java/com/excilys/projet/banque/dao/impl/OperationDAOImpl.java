@@ -2,6 +2,7 @@ package com.excilys.projet.banque.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.excilys.projet.banque.dao.api.OperationDAO;
+import com.excilys.projet.banque.dao.api.exceptions.DAOException;
 import com.excilys.projet.banque.dao.utils.CalculDateMois;
 import com.excilys.projet.banque.model.Carte;
 import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
+import com.excilys.projet.banque.model.EtatOperation;
 import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.model.Type;
 
@@ -43,6 +46,56 @@ public class OperationDAOImpl extends HibernateDaoSupport implements OperationDA
 	public List<Operation> findAll() {
 		return getHibernateTemplate().find("From Operation order by dateOp desc");
 	}
+	
+	
+	
+
+	public List<Operation> findAllByCompte(int idCompte, Type[] types, EtatOperation[] etats, Date dateDebut, Date dateFin) throws DAOException {
+		// Test de pré-taitement
+		if (idCompte <= 0) {
+			throw new DAOException("Id compte incorrect");
+		}
+		if (dateDebut.after(dateFin)) {
+			throw new DAOException("La date de début ne peut être après la date de fin");
+		}
+		
+		// Construction de la clause WHERE
+		String requete = "From Operation o left join fetch o.compte c where c.id = ?";
+		if (types != null && types.length > 0) {
+			requete += " type in ('"+StringUtils.arrayToDelimitedString(types, "', '")+"') and";
+		}
+		if (etats != null && etats.length > 0) {
+			requete += " etat in ('"+StringUtils.arrayToDelimitedString(etats, "', '")+"') and";
+		}
+		requete += " o.dateOp between ? and ?";
+		
+		return getHibernateTemplate().find(requete, idCompte, dateDebut, dateFin);
+	}
+	
+	public List<Operation> findAllByClient(int idClient, Type[] types, EtatOperation[] etats, Date dateDebut, Date dateFin) throws DAOException {
+		// Test de pré-taitement
+		if (idClient <= 0) {
+			throw new DAOException("Id client incorrect");
+		}
+		if (dateDebut.after(dateFin)) {
+			throw new DAOException("La date de début ne peut être après la date de fin");
+		}
+
+		// Construction de la requete
+		String requete = "From Operation o left join fetch o.compte c left join fetch c.client ci where ci.id = ?";
+		if (types != null && types.length > 0) {
+			requete += " type in ('"+StringUtils.arrayToDelimitedString(types, "', '")+"') and";
+		}
+		if (etats != null && etats.length > 0) {
+			requete += " etat in ('"+StringUtils.arrayToDelimitedString(etats, "', '")+"') and";
+		}
+		requete += " o.dateOp between ? and ?";
+		
+		return getHibernateTemplate().find(requete, dateDebut, dateFin);
+	}
+	
+	
+	
 
 	@SuppressWarnings("unchecked")
 	@Override
