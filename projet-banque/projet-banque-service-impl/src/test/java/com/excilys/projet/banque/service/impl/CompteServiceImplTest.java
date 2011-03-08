@@ -79,7 +79,6 @@ public class CompteServiceImplTest {
 		assertTrue(true);
 	}
 
-	
 	@Test
 	@ExpectedException(ServiceException.class)
 	public void verifierAvantVirementTestCompteIdentique() throws ServiceException {
@@ -89,7 +88,7 @@ public class CompteServiceImplTest {
 		Compte compteDestinataire = lesCompte.get(0);
 		compteService.verifierAvantVirement(compteEmetteur, compteDestinataire, 100f);
 	}
-	
+
 	@Test
 	@ExpectedException(ServiceException.class)
 	public void verifierAvantVirementTestCompteDestinataireNull() throws ServiceException {
@@ -99,7 +98,7 @@ public class CompteServiceImplTest {
 		Compte compteDestinataire = null;
 		compteService.verifierAvantVirement(compteEmetteur, compteDestinataire, 100f);
 	}
-	
+
 	@Test
 	@ExpectedException(ServiceException.class)
 	public void verifierAvantVirementTestCompteEmetteurNull() throws ServiceException {
@@ -112,7 +111,7 @@ public class CompteServiceImplTest {
 
 	@Test
 	@ExpectedException(ServiceException.class)
-	//Implique que le compte serait en dessous de Zero, hors on ne veut pas
+	// Implique que le compte serait en dessous de Zero, hors on ne veut pas
 	public void verifierAvantVirementTestMantantTropEleve() throws ServiceException {
 		List<Compte> lesCompte = compteDAO.findAllByClient(clientDAO.findById(1));
 		// Solde MAx 3330

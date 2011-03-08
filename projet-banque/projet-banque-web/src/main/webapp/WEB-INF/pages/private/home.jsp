@@ -1,5 +1,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 		
 <div class="box">
 	<div class="icon">
@@ -14,8 +15,8 @@
 	<table>
 		<thead>
 			<tr>
-				<th width="50%">Libelle</th>
-				<th width="50%">Solde courant</th>
+				<th width="60%">Libelle</th>
+				<th width="40%">Solde courant</th>
 			</tr>
 		</thead>
 		
@@ -24,7 +25,7 @@
 			<c:forEach items="${comptes}" var="compte">
 				<tr class="line<%= i++ % 2 %>">
 					<td><a href="<c:url value="/private/compte/${compte.id}.htm"/>">${compte.libelle}</a></td>
-					<td align="right"<c:if test="${compte.solde < 0}"> class="decouvert"</c:if>>${compte.solde}€</td>
+					<td align="right"<c:if test="${compte.solde < 0}"> class="decouvert"</c:if>><fmt:formatNumber maxFractionDigits="2">${compte.solde}</fmt:formatNumber>€</td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -32,7 +33,7 @@
 		<tfoot>
 			<tr>
 				<td></td>
-				<td align="right" class="total<c:if test="${total < 0}"> decouvert</c:if>">${total}€</td>
+				<td align="right" class="total<c:if test="${total < 0}"> decouvert</c:if>"><fmt:formatNumber maxFractionDigits="2">${total}</fmt:formatNumber>€</td>
 			</tr>
 		</tfoot>
 	</table>

@@ -30,7 +30,7 @@
 		<input type="submit" value="Afficher" />
 	</form>
 	
-	<p>Ci-dessous, la liste des opérations de ce compte pour le mois sélectionné.</p>
+	<p>Ci-dessous, la liste des opérations de ce compte pour le mois de ${listemois[moiscourant]} ${anneeselectionnee}.</p>
 	<p>Les opérations par carte sont regroupées en une seule ligne dans le sous-total.</p>
 	
 	<table>
@@ -83,10 +83,9 @@
 				<td align="right"><c:if test="${soustotalCarte >= 0}"><fmt:formatNumber maxFractionDigits="2">${soustotalCarte}</fmt:formatNumber>€</c:if></td>
 			</tr>
 			<tr>
-				<td colspan="3">Total des opérations</td>
+				<td colspan="3">Total des opérations de ${listemois[moiscourant]} ${anneeselectionnee}</td>
 				<td align="right" class="total decouvert"><c:if test="${total<0}" ><fmt:formatNumber maxFractionDigits="2">${total}</fmt:formatNumber>€</c:if></td>
 				<td align="right" class="total"><c:if test="${total>=0}"><fmt:formatNumber maxFractionDigits="2">${total}</fmt:formatNumber>€</c:if></td>
-				
 			</tr>
 		</tfoot>
 	</table>

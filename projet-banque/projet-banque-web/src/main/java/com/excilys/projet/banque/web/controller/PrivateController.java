@@ -73,17 +73,17 @@ public class PrivateController {
 			Map<Integer, Float> soldePrevisionnel = new HashMap<Integer, Float>();
 			Set<Compte> comptes = client.getComptes();
 			float total = compteService.totalComptes(comptes);
-			
+
 			// On se place au 1er du mois avant de changer de mois (évite les soucis de passage d'un mois de 31 jours à un mois de 30)
 			cal.set(Calendar.DATE, 1);
 			cal.add(Calendar.MONTH, 1);
-			
+
 			// TODO : Récupèrer le total des opérations à venir pour chaque compte
 			for (Compte compte : comptes) {
 				operations = operationService.recupererOperationsCompte(compte.getId(), cal.getTime(), null, OperationService.ETATS_EN_COURS);
-				soldePrevisionnel.put(compte.getId(), operationService.totalOperations(operations));
+				System.out.println(operationService.totalOperations(operations));
 			}
-			
+
 			model.addAttribute("client", client);
 			model.addAttribute("comptes", comptes);
 			model.addAttribute("soldeprevisionnel", soldePrevisionnel);
@@ -213,10 +213,16 @@ public class PrivateController {
 		model.addAttribute("compte_dest", request.getSession().getAttribute("compte_dest"));
 		model.addAttribute("montant", request.getSession().getAttribute("montant"));
 
-		List<Operation> virements = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT,
-				OperationService.ETATS_EFFECTUE);
+		// on supprime les données probablement stockées en session (pour la gestion d'erreurs)
+		request.getSession().removeAttribute("compte_src");
+		request.getSession().removeAttribute("compte_dest");
+		request.getSession().removeAttribute("montant");
+
+		List<Operation> virements = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT, OperationService.ETATS_EFFECTUE);
+		List<Operation> virementsEnCours = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT, OperationService.ETATS_EN_COURS);
 
 		model.addAttribute("virements", virements);
+		model.addAttribute("virementsencours", virementsEnCours);
 
 		return BASE_DIR + "virement";
 	}
@@ -252,7 +258,7 @@ public class PrivateController {
 		try {
 			compte_src_id = Integer.parseInt(request.getParameter("compte_src"));
 			compte_dest_id = Integer.parseInt(request.getParameter("compte_dest"));
-			montant = Float.parseFloat(request.getParameter("montant"));
+			montant = Float.parseFloat(request.getParameter("montant").replace(',', '.'));
 		}
 		catch (NumberFormatException e) {
 			MessageStack.getInstance(request).addError("Valeurs non correctes");
@@ -295,18 +301,13 @@ public class PrivateController {
 			catch (ServiceException e) {
 				MessageStack.getInstance(request).addError(e.getMessage());
 			}
+		}
 
-			// on supprime les données probablement stockées en session (pour la gestion d'erreurs)
-			request.getSession().removeAttribute("compte_src");
-			request.getSession().removeAttribute("compte_dest");
-			request.getSession().removeAttribute("montant");
-		}
-		else {
-			// Si la pile d'erreur n'est pas vide, on stock les valeurs entrées pour les restituer
-			request.getSession().setAttribute("compte_src", compte_src_id);
-			request.getSession().setAttribute("compte_dest", compte_dest_id);
-			request.getSession().setAttribute("montant", montant);
-		}
+		// Si la pile d'erreur n'est pas vide, on stock les valeurs entrées pour les restituer
+		request.getSession().setAttribute("compte_src", compte_src_id);
+		request.getSession().setAttribute("compte_dest", compte_dest_id);
+		request.getSession().setAttribute("montant", montant);
+
 		return "redirect:/private/virement" + BASE_URL_SUFFIX;
 	}
 
@@ -372,6 +373,11 @@ public class PrivateController {
 			try {
 				int month = Integer.parseInt(request.getParameter("filter_month"));
 				int year = Integer.parseInt(request.getParameter("filter_year"));
+
+				// Bride l'historique à 3 ans en arrière
+				if (year < cal.get(Calendar.YEAR) - 3 || year > cal.get(Calendar.YEAR)) {
+					throw new NumberFormatException();
+				}
 
 				cal.set(Calendar.DATE, 1);
 				cal.set(Calendar.MONTH, month);
