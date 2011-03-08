@@ -126,12 +126,12 @@ public class Client implements Serializable {
 		this.auth = auth;
 	}
 
-	//
-	// public float getTotalSoldeComptes() {
-	// return totalSoldeComptes;
-	// }
-	//
-	// public void setTotalSoldeComptes(float totalSoldeCompte) {
-	// this.totalSoldeComptes = totalSoldeCompte;
-	// }
+	public Compte getCompte(int id) {
+		for (Compte compte : comptes) {
+			if (compte.getId() == id) {
+				return compte;
+			}
+		}
+		return null;
+	}
 }

@@ -1,7 +1,15 @@
 package com.excilys.projet.banque.web.ajax;
 
 /**
- * POJO utilisé uniquement pour la sérialisation en JSON. Elle est utilisée pour les méthodes AJAX et ne doit donc envoyer que les attributs nécessaires
+ * <p>
+ * POJO utilisé uniquement pour la sérialisation en JSON.
+ * </p>
+ * <p>
+ * Cette classe est utilisée pour les méthodes AJAX et ne doit donc envoyer que les attributs nécessaires
+ * </p>
+ * <p>
+ * Elle contient les informations d'un compte
+ * </p>
  * 
  * @author excilys
  * 

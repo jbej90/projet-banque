@@ -8,16 +8,23 @@
 		$('#compte_dest_loading').removeClass('hidden');
 		
 		$.getJSON(
-			'<c:url value="/private/ajax/comptes/${idclient}.htm"/>', {
+			'<c:url value="/private/ajax/${idclient}/comptes.htm"/>', {
 				exclude: idCompte
 			}, function(data) {
 				$('#compte_dest_loading').addClass('hidden');
 				$('#compte_dest').empty();
-				$.each(data, function (index, value) {
-					$('#compte_dest').append('<option value="'+value.id+'">'+value.libelle+' ('+value.solde+'€)'+'</option>');
+				
+				if (data.length > 0) {
+					$.each(data, function (index, value) {
+						$('#compte_dest').append('<option value="'+value.id+'">'+value.libelle+' ('+value.solde+'€)'+'</option>');
+					});
+				} else {
+					$('#compte_dest').append('<option value="">Aucun autre compte trouvé</option>');
+					$('#compte_dest').attr('disabled', 'disabled');
+					$('#submitVirement').attr('disabled', 'disabled');
 				}
-			);
-		});
+			}
+		);
 	}
 	
 	$(document).ready(function () {
@@ -58,7 +65,7 @@
 		</div>
 		
 		<div class="buttons">
-			<input value="Valider" type="submit" />
+			<input value="Valider" type="submit" id="submitVirement" />
 		</div>
 	</form>
 </div>
