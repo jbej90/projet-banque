@@ -51,7 +51,7 @@ public class OperationServiceImpl implements OperationService {
 
 	@Override
 	public List<Operation> recupererOperationsClient(int idClient, Date date) {
-		return recupererOperationsClient(idClient, date, null);
+		return recupererOperationsClient(idClient, date, null, null);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class OperationServiceImpl implements OperationService {
 
 	@Override
 	public List<Operation> recupererOperationsCompte(int idCompte, Date date) {
-		return recupererOperationsCompte(idCompte, date, null);
+		return recupererOperationsCompte(idCompte, date, null, null);
 	}
 
 	@Override
