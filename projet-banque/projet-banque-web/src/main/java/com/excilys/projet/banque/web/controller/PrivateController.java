@@ -2,9 +2,11 @@ package com.excilys.projet.banque.web.controller;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.Operation;
-import com.excilys.projet.banque.model.Type;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
-import com.excilys.projet.banque.service.impl.OperationServiceImpl;
 import com.excilys.projet.banque.web.utils.MessageStack;
 
 /**
@@ -68,13 +68,25 @@ public class PrivateController {
 		}
 		// Sinon on stock les données dans le modele
 		else {
+			Calendar cal = Calendar.getInstance();
+			List<Operation> operations;
+			Map<Integer, Float> soldePrevisionnel = new HashMap<Integer, Float>();
 			Set<Compte> comptes = client.getComptes();
 			float total = compteService.totalComptes(comptes);
 			
+			// On se place au 1er du mois avant de changer de mois (évite les soucis de passage d'un mois de 31 jours à un mois de 30)
+			cal.set(Calendar.DATE, 1);
+			cal.add(Calendar.MONTH, 1);
+			
 			// TODO : Récupèrer le total des opérations à venir pour chaque compte
+			for (Compte compte : comptes) {
+				operations = operationService.recupererOperationsCompte(compte.getId(), cal.getTime(), null, OperationService.ETATS_EN_COURS);
+				soldePrevisionnel.put(compte.getId(), operationService.totalOperations(operations));
+			}
 			
 			model.addAttribute("client", client);
 			model.addAttribute("comptes", comptes);
+			model.addAttribute("soldeprevisionnel", soldePrevisionnel);
 			model.addAttribute("total", total);
 		}
 
@@ -113,8 +125,8 @@ public class PrivateController {
 				float total = 0;
 				float totalCarte = 0;
 
-				operations = operationService.recupererOperationsCompteNonCarte(selectedCompte.getId(), cal.getTime(), OperationServiceImpl.ETATS_EFFECTUE);
-				operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationServiceImpl.ETATS_EFFECTUE);
+				operations = operationService.recupererOperationsCompteNonCarte(selectedCompte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
+				operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
 				total = operationService.totalOperations(operations);
 				totalCarte = operationService.totalOperations(operationsCarte);
 
@@ -161,7 +173,7 @@ public class PrivateController {
 				return "redirect:/error/error.htm";
 			}
 			else {
-				List<Operation> operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationServiceImpl.ETATS_EFFECTUE);
+				List<Operation> operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
 				float totalCarte = operationService.totalOperations(operationsCarte);
 
 				model.addAttribute("compte", selectedCompte);
@@ -201,8 +213,8 @@ public class PrivateController {
 		model.addAttribute("compte_dest", request.getSession().getAttribute("compte_dest"));
 		model.addAttribute("montant", request.getSession().getAttribute("montant"));
 
-		List<Operation> virements = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationServiceImpl.TYPES_VIREMENT,
-				OperationServiceImpl.ETATS_EFFECTUE);
+		List<Operation> virements = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT,
+				OperationService.ETATS_EFFECTUE);
 
 		model.addAttribute("virements", virements);
 
