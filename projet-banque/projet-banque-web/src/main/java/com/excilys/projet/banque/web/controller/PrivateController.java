@@ -31,7 +31,7 @@ import com.excilys.projet.banque.web.utils.MessageStack;
  * Controller de la partie privée (ie: toutes url de type /private/*)
  * 
  * @author excilys
- *
+ * 
  */
 @Controller
 @RequestMapping("/private/")
@@ -191,9 +191,18 @@ public class PrivateController {
 	/**
 	 * Map l'url de type /private/virement.htm
 	 */
-	@RequestMapping(value = "virement" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	@RequestMapping(value = "virement" + BASE_URL_SUFFIX, method = { RequestMethod.GET, RequestMethod.POST })
 	public String showVirementHome(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
+
+		// Essaye de parser la date pour le filtre d'opérations
+		Calendar cal = getMonthYearFilter(request);
+		Calendar calNow = Calendar.getInstance();
+
+		model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
+		model.addAttribute("moiscourant", cal.get(Calendar.MONTH));
+		model.addAttribute("anneecourante", calNow.get(Calendar.YEAR));
+		model.addAttribute("anneeselectionnee", cal.get(Calendar.YEAR));
 
 		model.addAttribute("comptes", client.getComptes());
 		model.addAttribute("idclient", client.getId());
@@ -204,8 +213,8 @@ public class PrivateController {
 		model.addAttribute("montant", request.getSession().getAttribute("montant"));
 
 		List<Operation> virements = new LinkedList<Operation>();
-		virements.addAll(operationService.recupererOperations(Type.VIREMENT_INT));
-		virements.addAll(operationService.recupererOperations(Type.VIREMENT_EXT));
+		virements.addAll(operationService.recupererOperations(client, Type.VIREMENT_INT, cal.getTime()));
+		virements.addAll(operationService.recupererOperations(client, Type.VIREMENT_EXT, cal.getTime()));
 
 		model.addAttribute("virements", virements);
 
