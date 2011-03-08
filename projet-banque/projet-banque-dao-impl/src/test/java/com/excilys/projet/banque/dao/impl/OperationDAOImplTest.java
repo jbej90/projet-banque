@@ -71,120 +71,120 @@ public class OperationDAOImplTest {
 		assertTrue(operationDAOImpl.findAll().size() == 3);
 	}
 
-	@Test
-	public void findAllByClientByTypeTest() {
-		Operation operation = operationDAOImpl.findById(1);
-		Client client = operation.getCompte().getClient();
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		Date date = null;
-		try {
-			date = sdf.parse("2011-01-05");
-		}
-		catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		assertTrue(operationDAOImpl.findAllByClientByType(date, client, operation.getType()).get(0).getId() == 1);
-	}
-
-	@Test
-	public void findAllByCompteTest() {
-		Operation operation = operationDAOImpl.findById(0);
-		Compte compte = operation.getCompte();
-		assertNotNull(compte);
-		assertTrue(compte.getId() == 1);
-		assertTrue(operationDAOImpl.findAllByCompte(compte).size() == 2);
-	}
-
-	@Test
-	public void findAllByCarteTest() {
-		Carte carte = operationDAOImpl.findById(1).getCarte();
-		assertNull(carte);
-		Operation operation = operationDAOImpl.findById(0);
-		Carte carte2 = operation.getCarte();
-		assertTrue(carte2.getId() == 1);
-		assertTrue(operationDAOImpl.findAllByCarte(carte2).size() == 2);
-	}
+//	@Test
+//	public void findAllByClientByTypeTest() {
+//		Operation operation = operationDAOImpl.findById(1);
+//		Client client = operation.getCompte().getClient();
+//
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+//		Date date = null;
+//		try {
+//			date = sdf.parse("2011-01-05");
+//		}
+//		catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//
+//		assertTrue(operationDAOImpl.findAllByClientByType(date, client, operation.getType()).get(0).getId() == 1);
+//	}
+//
+//	@Test
+//	public void findAllByCompteTest() {
+//		Operation operation = operationDAOImpl.findById(0);
+//		Compte compte = operation.getCompte();
+//		assertNotNull(compte);
+//		assertTrue(compte.getId() == 1);
+//		assertTrue(operationDAOImpl.findAllByCompte(compte).size() == 2);
+//	}
+//
+//	@Test
+//	public void findAllByCarteTest() {
+//		Carte carte = operationDAOImpl.findById(1).getCarte();
+//		assertNull(carte);
+//		Operation operation = operationDAOImpl.findById(0);
+//		Carte carte2 = operation.getCarte();
+//		assertTrue(carte2.getId() == 1);
+//		assertTrue(operationDAOImpl.findAllByCarte(carte2).size() == 2);
+//	}
 
 	@Test
 	public void findByIdTest() {
 		assertNotNull(operationDAOImpl.findById(0));
 	}
 
-	@Test
-	public void findByAllByMoisByCompteTest() {
-		Operation operation = operationDAOImpl.findById(1);
-		Compte compte = operation.getCompte();
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		Date date = null;
-		try {
-			date = sdf.parse("2011-01-05");
-		}
-		catch (ParseException e) {
-			e.printStackTrace();
-		}
-		assertFalse(operationDAOImpl.findAllByMoisByCompte(date, compte).isEmpty());
-		assertTrue(operationDAOImpl.findAllByMoisByCompte(date, compte).size() == 1);
-	}
-
-	@Test
-	public void findByAllByMoisByCompteByTypeTest() {
-		Operation operation = operationDAOImpl.findById(1);
-		Compte compte = operation.getCompte();
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		Date date = null;
-		try {
-			date = sdf.parse("2011-01-05");
-		}
-		catch (ParseException e) {
-			e.printStackTrace();
-		}
-		assertFalse(operationDAOImpl.findAllByMoisByCompteAndByType(date, compte, Type.OP_CARTE_IMM).isEmpty());
-		assertTrue(operationDAOImpl.findAllByMoisByCompteAndByType(date, compte, Type.OP_CARTE_IMM).size() == 1);
-	}
-
-	@Test
-	public void findByAllByMoisByCompteByTypesTest() {
-		Operation operation = operationDAOImpl.findById(1);
-		Compte compte = operation.getCompte();
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		Date date = null;
-		try {
-			date = sdf.parse("2011-01-05");
-		}
-		catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		List<Type> types = new ArrayList<Type>();
-		types.add(Type.OP_CARTE_IMM);
-		types.add(Type.OP_CARTE_DIFF);
-
-		assertFalse(operationDAOImpl.findAllByMoisByCompteAndByTypes(date, compte, types).isEmpty());
-		assertTrue(operationDAOImpl.findAllByMoisByCompteAndByTypes(date, compte, types).size() == 1);
-	}
-
-	@Test
-	public void findByAllByMoisByCompteByNotInTypesTest() {
-		Operation operation = operationDAOImpl.findById(1);
-		Compte compte = operation.getCompte();
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		Date date = null;
-		try {
-			date = sdf.parse("2011-01-05");
-		}
-		catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		List<Type> types = new ArrayList<Type>();
-		types.add(Type.OP_CARTE_IMM);
-
-		assertTrue(operationDAOImpl.findAllByMoisByCompteAndNotInTypes(date, compte, types).isEmpty());
-	}
+//	@Test
+//	public void findByAllByMoisByCompteTest() {
+//		Operation operation = operationDAOImpl.findById(1);
+//		Compte compte = operation.getCompte();
+//
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+//		Date date = null;
+//		try {
+//			date = sdf.parse("2011-01-05");
+//		}
+//		catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//		assertFalse(operationDAOImpl.findAllByMoisByCompte(date, compte).isEmpty());
+//		assertTrue(operationDAOImpl.findAllByMoisByCompte(date, compte).size() == 1);
+//	}
+//
+//	@Test
+//	public void findByAllByMoisByCompteByTypeTest() {
+//		Operation operation = operationDAOImpl.findById(1);
+//		Compte compte = operation.getCompte();
+//
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+//		Date date = null;
+//		try {
+//			date = sdf.parse("2011-01-05");
+//		}
+//		catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//		assertFalse(operationDAOImpl.findAllByMoisByCompteAndByType(date, compte, Type.OP_CARTE_IMM).isEmpty());
+//		assertTrue(operationDAOImpl.findAllByMoisByCompteAndByType(date, compte, Type.OP_CARTE_IMM).size() == 1);
+//	}
+//
+//	@Test
+//	public void findByAllByMoisByCompteByTypesTest() {
+//		Operation operation = operationDAOImpl.findById(1);
+//		Compte compte = operation.getCompte();
+//
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+//		Date date = null;
+//		try {
+//			date = sdf.parse("2011-01-05");
+//		}
+//		catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//
+//		List<Type> types = new ArrayList<Type>();
+//		types.add(Type.OP_CARTE_IMM);
+//		types.add(Type.OP_CARTE_DIFF);
+//
+//		assertFalse(operationDAOImpl.findAllByMoisByCompteAndByTypes(date, compte, types).isEmpty());
+//		assertTrue(operationDAOImpl.findAllByMoisByCompteAndByTypes(date, compte, types).size() == 1);
+//	}
+//
+//	@Test
+//	public void findByAllByMoisByCompteByNotInTypesTest() {
+//		Operation operation = operationDAOImpl.findById(1);
+//		Compte compte = operation.getCompte();
+//
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+//		Date date = null;
+//		try {
+//			date = sdf.parse("2011-01-05");
+//		}
+//		catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+//
+//		List<Type> types = new ArrayList<Type>();
+//		types.add(Type.OP_CARTE_IMM);
+//
+//		assertTrue(operationDAOImpl.findAllByMoisByCompteAndNotInTypes(date, compte, types).isEmpty());
+//	}
 }

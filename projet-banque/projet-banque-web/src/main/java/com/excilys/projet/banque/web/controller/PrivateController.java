@@ -25,6 +25,7 @@ import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
+import com.excilys.projet.banque.service.impl.OperationServiceImpl;
 import com.excilys.projet.banque.web.utils.MessageStack;
 
 /**
@@ -115,12 +116,9 @@ public class PrivateController {
 				List<Operation> operationsCarte = new LinkedList<Operation>();
 				float total = 0;
 				float totalCarte = 0;
-				List<Type> listTypeCarte = new LinkedList<Type>();
-				listTypeCarte.add(Type.OP_CARTE_DIFF);
-				listTypeCarte.add(Type.OP_CARTE_IMM);
-
-				operations = operationService.recupererOperationsSansType(selectedCompte, cal.getTime(), listTypeCarte);
-				operationsCarte = operationService.recupererOperations(selectedCompte, cal.getTime(), listTypeCarte);
+				
+				operations = operationService.recupererOperationsCompteNonCarte(selectedCompte.getId(), cal.getTime(), OperationServiceImpl.ETATS_EFFECTUE);
+				operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationServiceImpl.ETATS_EFFECTUE);
 				total = operationService.totalOperations(operations);
 				totalCarte = operationService.totalOperations(operationsCarte);
 
@@ -167,12 +165,7 @@ public class PrivateController {
 				return "redirect:/error/error.htm";
 			}
 			else {
-				// Récupère les opérations de ce compte
-				List<Type> listTypeCarte = new LinkedList<Type>();
-				listTypeCarte.add(Type.OP_CARTE_DIFF);
-				listTypeCarte.add(Type.OP_CARTE_IMM);
-
-				List<Operation> operationsCarte = operationService.recupererOperations(selectedCompte, cal.getTime(), listTypeCarte);
+				List<Operation> operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationServiceImpl.ETATS_EFFECTUE);
 				float totalCarte = operationService.totalOperations(operationsCarte);
 
 				model.addAttribute("compte", selectedCompte);
@@ -212,9 +205,7 @@ public class PrivateController {
 		model.addAttribute("compte_dest", request.getSession().getAttribute("compte_dest"));
 		model.addAttribute("montant", request.getSession().getAttribute("montant"));
 
-		List<Operation> virements = new LinkedList<Operation>();
-		virements.addAll(operationService.recupererOperations(client, Type.VIREMENT_INT, cal.getTime()));
-		virements.addAll(operationService.recupererOperations(client, Type.VIREMENT_EXT, cal.getTime()));
+		List<Operation> virements = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationServiceImpl.TYPES_VIREMENT, OperationServiceImpl.ETATS_EFFECTUE);
 
 		model.addAttribute("virements", virements);
 
