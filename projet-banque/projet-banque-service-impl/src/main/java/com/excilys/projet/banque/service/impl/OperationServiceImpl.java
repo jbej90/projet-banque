@@ -21,15 +21,6 @@ import com.excilys.projet.banque.service.api.utils.CalculDateMois;
 @Service("operationService")
 public class OperationServiceImpl implements OperationService {
 
-	public final static Type[]			TYPES_NON_CARTE	= { Type.VIREMENT_EXT, Type.VIREMENT_INT, Type.DEPOT, Type.RETRAIT };
-	public final static Type[]			TYPES_CARTE		= { Type.OP_CARTE_DIFF, Type.OP_CARTE_IMM };
-	public final static Type[]			TYPES_VIREMENT	= { Type.VIREMENT_EXT, Type.VIREMENT_INT };
-	public final static Type[]			TYPES_ESPECE	= { Type.DEPOT, Type.RETRAIT };
-
-	public final static EtatOperation[]	ETATS_EN_COURS	= { EtatOperation.EN_COURS };
-	public final static EtatOperation[]	ETATS_EFFECTUE	= { EtatOperation.EFFECTUE };
-	public final static EtatOperation[]	ETATS_REFUSE	= { EtatOperation.REFUSE };
-
 	@Autowired
 	private OperationDAO				operationDao;
 
