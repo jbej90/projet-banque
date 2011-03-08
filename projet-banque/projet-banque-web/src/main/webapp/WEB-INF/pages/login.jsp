@@ -4,6 +4,7 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('#username').focus();
+		$('#username').select();
 	});
 </script>
 
