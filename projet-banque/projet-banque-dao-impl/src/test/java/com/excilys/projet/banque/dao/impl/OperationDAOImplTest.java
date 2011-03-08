@@ -68,7 +68,7 @@ public class OperationDAOImplTest {
 	@Test
 	public void findAllTest() {
 		assertFalse(operationDAOImpl.findAll().isEmpty());
-		assertTrue(operationDAOImpl.findAll().size() == 2);
+		assertTrue(operationDAOImpl.findAll().size() == 3);
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class OperationDAOImplTest {
 		Compte compte = operation.getCompte();
 		assertNotNull(compte);
 		assertTrue(compte.getId() == 1);
-		assertTrue(operationDAOImpl.findAllByCompte(compte).size() == 1);
+		assertTrue(operationDAOImpl.findAllByCompte(compte).size() == 2);
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class OperationDAOImplTest {
 		Operation operation = operationDAOImpl.findById(0);
 		Carte carte2 = operation.getCarte();
 		assertTrue(carte2.getId() == 1);
-		assertTrue(operationDAOImpl.findAllByCarte(carte2).size() == 1);
+		assertTrue(operationDAOImpl.findAllByCarte(carte2).size() == 2);
 	}
 
 	@Test
