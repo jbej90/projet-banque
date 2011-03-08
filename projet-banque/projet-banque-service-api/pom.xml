@@ -16,6 +16,10 @@
 			<groupId>com.excilys.projet.banque</groupId>
 			<artifactId>projet-banque-model</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
 	</dependencies>
-	
 </project>

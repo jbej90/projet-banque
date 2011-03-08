@@ -29,6 +29,7 @@ import com.excilys.projet.banque.model.Type;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
+import com.excilys.projet.banque.service.impl.OperationServiceImpl;
 import com.excilys.projet.banque.web.ajax.AjaxCompte;
 import com.excilys.projet.banque.web.ajax.AjaxOperations;
 
@@ -134,8 +135,13 @@ public class AjaxPrivateController {
 			cal = getMonthYearFilter(month, year);
 
 			// Récupération des opérations du mois sélectionné
-			List<Operation> ops = operationService.recupererOperationsSansType(compte, cal.getTime(), typesCarte);
-			List<Operation> opsCarte = operationService.recupererOperations(compte, cal.getTime(), typesCarte);
+//			List<Operation> ops = operationService.recupererOperationsSansType(compte, cal.getTime(), typesCarte);
+//			List<Operation> opsCarte = operationService.recupererOperations(compte, cal.getTime(), typesCarte);
+			
+			// TODO : Refacto
+			List<Operation> ops = operationService.recupererOperationsCompteNonCarte(compte.getId(), cal.getTime(), OperationServiceImpl.ETATS_EFFECTUE);
+			List<Operation> opsCarte = operationService.recupererOperationsCompteCarte(compte.getId(), cal.getTime(), OperationServiceImpl.ETATS_EFFECTUE);
+			
 			
 			float sousTotal = operationService.totalOperations(ops);
 			float sousTotalCarte = operationService.totalOperations(opsCarte);
