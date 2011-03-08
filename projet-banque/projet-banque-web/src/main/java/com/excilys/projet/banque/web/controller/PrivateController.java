@@ -64,21 +64,17 @@ public class PrivateController {
 		// Si l'instance est nulle, le client est introuvable
 		if (client == null) {
 			MessageStack.getInstance(request).addError("Client introuvable");
+			return "redirect:/error/error.htm";
 		}
 		// Sinon on stock les données dans le modele
 		else {
-			Set<Compte> comptes = null;
-			float total = 0;
-			try {
-				comptes = client.getComptes();
-				total = compteService.totalComptes(comptes);
-			}
-			catch (ServiceException e) {
-				e.printStackTrace();
-			}
-
+			Set<Compte> comptes = client.getComptes();
+			float total = compteService.totalComptes(comptes);
+			
+			// TODO : Récupèrer le total des opérations à venir pour chaque compte
+			
 			model.addAttribute("client", client);
-			model.addAttribute("comptes", client.getComptes());
+			model.addAttribute("comptes", comptes);
 			model.addAttribute("total", total);
 		}
 
@@ -116,7 +112,7 @@ public class PrivateController {
 				List<Operation> operationsCarte = new LinkedList<Operation>();
 				float total = 0;
 				float totalCarte = 0;
-				
+
 				operations = operationService.recupererOperationsCompteNonCarte(selectedCompte.getId(), cal.getTime(), OperationServiceImpl.ETATS_EFFECTUE);
 				operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationServiceImpl.ETATS_EFFECTUE);
 				total = operationService.totalOperations(operations);
@@ -205,7 +201,8 @@ public class PrivateController {
 		model.addAttribute("compte_dest", request.getSession().getAttribute("compte_dest"));
 		model.addAttribute("montant", request.getSession().getAttribute("montant"));
 
-		List<Operation> virements = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationServiceImpl.TYPES_VIREMENT, OperationServiceImpl.ETATS_EFFECTUE);
+		List<Operation> virements = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationServiceImpl.TYPES_VIREMENT,
+				OperationServiceImpl.ETATS_EFFECTUE);
 
 		model.addAttribute("virements", virements);
 

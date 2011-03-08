@@ -123,7 +123,7 @@ public class AjaxPrivateController {
 		catch (ServiceException e) {
 			e.printStackTrace();
 		}
-		
+
 		// Si les deux variables sont non nulles, les données sont valides (ie: compte existant et appartenant au client)
 		if (client != null && compte != null) {
 			// configuration des types d'opération à exclure de la recherche
@@ -135,14 +135,9 @@ public class AjaxPrivateController {
 			cal = getMonthYearFilter(month, year);
 
 			// Récupération des opérations du mois sélectionné
-//			List<Operation> ops = operationService.recupererOperationsSansType(compte, cal.getTime(), typesCarte);
-//			List<Operation> opsCarte = operationService.recupererOperations(compte, cal.getTime(), typesCarte);
-			
-			// TODO : Refacto
 			List<Operation> ops = operationService.recupererOperationsCompteNonCarte(compte.getId(), cal.getTime(), OperationServiceImpl.ETATS_EFFECTUE);
 			List<Operation> opsCarte = operationService.recupererOperationsCompteCarte(compte.getId(), cal.getTime(), OperationServiceImpl.ETATS_EFFECTUE);
-			
-			
+
 			float sousTotal = operationService.totalOperations(ops);
 			float sousTotalCarte = operationService.totalOperations(opsCarte);
 

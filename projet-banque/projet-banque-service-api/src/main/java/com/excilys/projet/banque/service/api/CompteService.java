@@ -12,12 +12,12 @@ public interface CompteService {
 
 	List<Compte> recupererComptes() throws ServiceException;
 
-	float totalComptes(List<Compte> comptes) throws ServiceException;
+	float totalComptes(List<Compte> comptes);
 
-	float totalComptes(Set<Compte> comptes) throws ServiceException;
+	float totalComptes(Set<Compte> comptes);
 
-	boolean virer(Compte source, Compte destination, float montant) throws ServiceException;
+	void virer(Compte source, Compte destination, float montant) throws ServiceException;
 
-	boolean verifierAvantVirement(Compte source, Compte destination, float montant) throws ServiceException;
+	void verifierAvantVirement(Compte source, Compte destination, float montant) throws ServiceException;
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 @DataSet("classpath:context/projet-banque-service-impl-dataSet.xml")
 @ContextConfiguration({ "classpath*:context/applicationContext.xml" })
@@ -62,10 +64,9 @@ public class CompteServiceImplTest {
 	}
 
 	@Test
-	@ExpectedException(ServiceException.class)
-	public void totalComptesTestListNull() throws ServiceException {
+	public void totalComptesTestListNull() {
 		List<Compte> lesCompte = null;
-		compteService.totalComptes(lesCompte);
+		assertTrue(compteService.totalComptes(lesCompte) == 0);
 	}
 
 	@Test
@@ -74,7 +75,7 @@ public class CompteServiceImplTest {
 		// Solde MAx 3330
 		Compte compteEmetteur = lesCompte.get(0);
 		Compte compteDestinataire = lesCompte.get(1);
-		assertTrue(compteService.verifierAvantVirement(compteEmetteur, compteDestinataire, 100f));
+		compteService.verifierAvantVirement(compteEmetteur, compteDestinataire, 100f);
 	}
 
 	
@@ -85,7 +86,7 @@ public class CompteServiceImplTest {
 		// Solde MAx 3330
 		Compte compteEmetteur = lesCompte.get(0);
 		Compte compteDestinataire = lesCompte.get(0);
-		assertTrue(compteService.verifierAvantVirement(compteEmetteur, compteDestinataire, 100f));
+		compteService.verifierAvantVirement(compteEmetteur, compteDestinataire, 100f);
 	}
 	
 	@Test
@@ -95,7 +96,7 @@ public class CompteServiceImplTest {
 		// Solde MAx 3330
 		Compte compteEmetteur = lesCompte.get(0);
 		Compte compteDestinataire = null;
-		assertTrue(compteService.verifierAvantVirement(compteEmetteur, compteDestinataire, 100f));
+		compteService.verifierAvantVirement(compteEmetteur, compteDestinataire, 100f);
 	}
 	
 	@Test
@@ -105,7 +106,7 @@ public class CompteServiceImplTest {
 		// Solde MAx 3330
 		Compte compteEmetteur = null;
 		Compte compteDestinataire = lesCompte.get(0);
-		assertTrue(compteService.verifierAvantVirement(compteEmetteur, compteDestinataire, 100f));
+		compteService.verifierAvantVirement(compteEmetteur, compteDestinataire, 100f);
 	}
 
 	@Test
