@@ -76,6 +76,7 @@ public class CompteServiceImplTest {
 		Compte compteEmetteur = lesCompte.get(0);
 		Compte compteDestinataire = lesCompte.get(1);
 		compteService.verifierAvantVirement(compteEmetteur, compteDestinataire, 100f);
+		assertTrue(true);
 	}
 
 	
