@@ -28,7 +28,9 @@
 	<authentication-manager>
 		<!-- Connexion utilisateur -->
 		<authentication-provider>
-			<password-encoder hash="sha" />
+			<password-encoder hash="sha">
+<!--				<salt-source system-wide="projet-banque" />-->
+			</password-encoder>
 			
 			<jdbc-user-service id="auth" data-source-ref="dataSource" 
 						users-by-username-query="SELECT login AS username, password, enabled FROM auth WHERE login = ?" 
