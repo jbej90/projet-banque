@@ -68,6 +68,24 @@
 <div class="box">
 	<h3>Historique de mes virements</h3>
 	
+	<form action="<c:url value="/private/virement.htm"></c:url>" method="post" class="filter">
+		<select name="filter_month" id="filter_month">
+			<c:forEach items="${listemois}" var="mois" varStatus="status">
+				<c:if test="${mois != ''}">
+					<option value="${status.index}"<c:if test="${moiscourant == status.index}"> selected="selected"</c:if>>${mois}</option>
+				</c:if>
+			</c:forEach>
+		</select>
+		
+		<select name="filter_year" id="filter_year">
+			<c:forEach begin="${anneecourante-3}" end="${anneecourante}" var="annee">
+				<option value="${annee}"<c:if test="${anneeselectionnee == annee}"> selected="selected"</c:if>>${annee}</option>
+			</c:forEach>
+		</select>
+		
+		<input type="submit" value="Afficher" />
+	</form>
+	
 	<p>Ce tableau présente la liste de vos virements.</p>
 	
 	<table>

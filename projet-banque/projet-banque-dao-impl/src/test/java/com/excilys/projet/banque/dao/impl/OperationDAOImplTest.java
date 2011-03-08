@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.excilys.projet.banque.dao.utils.DataSet;
 import com.excilys.projet.banque.dao.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Carte;
+import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.EtatOperation;
 import com.excilys.projet.banque.model.Operation;
@@ -38,11 +39,11 @@ import com.excilys.projet.banque.model.Type;
 public class OperationDAOImplTest {
 
 	@Resource(name = "operationDao")
-	private OperationDAOImpl operationDAOImpl;
+	private OperationDAOImpl	operationDAOImpl;
 	@Resource(name = "compteDao")
-	private CompteDAOImpl compteDAOImpl;
+	private CompteDAOImpl		compteDAOImpl;
 	@Resource(name = "carteDao")
-	private CarteDAOImpl carteDAOImpl;
+	private CarteDAOImpl		carteDAOImpl;
 
 	@Test
 	public void saveTest() {
@@ -71,9 +72,20 @@ public class OperationDAOImplTest {
 	}
 
 	@Test
-	public void findAllByTypeTest() {
-		Operation operation = operationDAOImpl.findById(0);
-		assertTrue(operationDAOImpl.findAllByType(operation.getType()).get(0).getId() == 0);
+	public void findAllByClientByTypeTest() {
+		Operation operation = operationDAOImpl.findById(1);
+		Client client = operation.getCompte().getClient();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		Date date = null;
+		try {
+			date = sdf.parse("2011-01-05");
+		}
+		catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		assertTrue(operationDAOImpl.findAllByClientByType(date, client, operation.getType()).get(0).getId() == 1);
 	}
 
 	@Test
@@ -102,7 +114,6 @@ public class OperationDAOImplTest {
 
 	@Test
 	public void findByAllByMoisByCompteTest() {
-
 		Operation operation = operationDAOImpl.findById(1);
 		Compte compte = operation.getCompte();
 
@@ -110,18 +121,16 @@ public class OperationDAOImplTest {
 		Date date = null;
 		try {
 			date = sdf.parse("2011-01-05");
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (ParseException e) {
 			e.printStackTrace();
 		}
 		assertFalse(operationDAOImpl.findAllByMoisByCompte(date, compte).isEmpty());
 		assertTrue(operationDAOImpl.findAllByMoisByCompte(date, compte).size() == 1);
-
 	}
 
 	@Test
 	public void findByAllByMoisByCompteByTypeTest() {
-
 		Operation operation = operationDAOImpl.findById(1);
 		Compte compte = operation.getCompte();
 
@@ -129,18 +138,16 @@ public class OperationDAOImplTest {
 		Date date = null;
 		try {
 			date = sdf.parse("2011-01-05");
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (ParseException e) {
 			e.printStackTrace();
 		}
 		assertFalse(operationDAOImpl.findAllByMoisByCompteAndByType(date, compte, Type.OP_CARTE_IMM).isEmpty());
 		assertTrue(operationDAOImpl.findAllByMoisByCompteAndByType(date, compte, Type.OP_CARTE_IMM).size() == 1);
-
 	}
 
 	@Test
 	public void findByAllByMoisByCompteByTypesTest() {
-
 		Operation operation = operationDAOImpl.findById(1);
 		Compte compte = operation.getCompte();
 
@@ -148,8 +155,8 @@ public class OperationDAOImplTest {
 		Date date = null;
 		try {
 			date = sdf.parse("2011-01-05");
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (ParseException e) {
 			e.printStackTrace();
 		}
 
@@ -159,12 +166,10 @@ public class OperationDAOImplTest {
 
 		assertFalse(operationDAOImpl.findAllByMoisByCompteAndByTypes(date, compte, types).isEmpty());
 		assertTrue(operationDAOImpl.findAllByMoisByCompteAndByTypes(date, compte, types).size() == 1);
-
 	}
 
 	@Test
 	public void findByAllByMoisByCompteByNotInTypesTest() {
-
 		Operation operation = operationDAOImpl.findById(1);
 		Compte compte = operation.getCompte();
 
@@ -172,7 +177,8 @@ public class OperationDAOImplTest {
 		Date date = null;
 		try {
 			date = sdf.parse("2011-01-05");
-		} catch (ParseException e) {
+		}
+		catch (ParseException e) {
 			e.printStackTrace();
 		}
 
@@ -180,6 +186,5 @@ public class OperationDAOImplTest {
 		types.add(Type.OP_CARTE_IMM);
 
 		assertTrue(operationDAOImpl.findAllByMoisByCompteAndNotInTypes(date, compte, types).isEmpty());
-
 	}
 }

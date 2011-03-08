@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.projet.banque.dao.api.OperationDAO;
 import com.excilys.projet.banque.model.Carte;
+import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.EtatOperation;
 import com.excilys.projet.banque.model.Operation;
@@ -75,14 +76,14 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
-	public List<Operation> recupererOperations(Type type) {
-		return recupererOperations(type, new Date());
+	public List<Operation> recupererOperations(Client client, Type type) {
+		return recupererOperations(client, type, new Date());
 	}
 
 	@Override
 	// TODO REVOIR CETTE METHODE ET ACTIVER LE TEST
-	public List<Operation> recupererOperations(Type type, Date date) {
-		return operationDao.findAllByType(type);
+	public List<Operation> recupererOperations(Client client, Type type, Date date) {
+		return operationDao.findAllByClientByType(date, client, type);
 	}
 
 	@Override

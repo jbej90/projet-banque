@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "operation")
-public class Operation implements Serializable {
+public class Operation implements Serializable, Comparable<Operation> {
 	private Integer id;
 	private Type type;
 	private Compte compte;
@@ -112,4 +112,8 @@ public class Operation implements Serializable {
 		this.type = type;
 	}
 
+	@Override
+	public int compareTo(Operation o) {
+		return getDateOp().compareTo(o.getDateOp());
+	}
 }

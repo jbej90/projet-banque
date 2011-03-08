@@ -21,10 +21,12 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.excilys.projet.banque.dao.impl.ClientDAOImpl;
 import com.excilys.projet.banque.dao.impl.CompteDAOImpl;
 import com.excilys.projet.banque.dao.utils.DataSet;
 import com.excilys.projet.banque.dao.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Carte;
+import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.model.Type;
@@ -42,6 +44,8 @@ public class OperationServiceImplTest {
 	private OperationService	operationService;
 	@Resource(name = "compteDao")
 	private CompteDAOImpl		compteDao;
+	@Resource(name = "clientDao")
+	private ClientDAOImpl		clientDao;
 
 	@Test
 	@ExpectedException(ServiceException.class)
@@ -50,7 +54,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsParamCompteDateTest() throws ServiceException {
+	public void recupererOperationsParamCompteDateTest() {
 		Compte compte = compteDao.findById(1);
 		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
 		Date date = dateJoda.toDate();
@@ -60,7 +64,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsParamCompteDateTestMauvaiseDate() throws ServiceException {
+	public void recupererOperationsParamCompteDateTestMauvaiseDate() {
 		Compte compte = compteDao.findById(1);
 		DateTime dateJoda = new DateTime(1000, 10, 9, 0, 0, 0, 0);
 		Date date = dateJoda.toDate();
@@ -68,7 +72,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsParamCompteDateTypeTest() throws ServiceException {
+	public void recupererOperationsParamCompteDateTypeTest() {
 		Compte compte = compteDao.findById(1);
 		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
 		Date date = dateJoda.toDate();
@@ -78,7 +82,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsParamCompteDateTypeTestTypeMauvais() throws ServiceException {
+	public void recupererOperationsParamCompteDateTypeTestTypeMauvais() {
 		Compte compte = compteDao.findById(1);
 		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
 		Date date = dateJoda.toDate();
@@ -87,7 +91,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsParamCompteDateTypeTestDateMauvaise() throws ServiceException {
+	public void recupererOperationsParamCompteDateTypeTestDateMauvaise() {
 		Compte compte = compteDao.findById(1);
 		DateTime dateJoda = new DateTime(1000, 10, 9, 0, 0, 0, 0);
 		Date date = dateJoda.toDate();
@@ -96,7 +100,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsParamCompteDateListTypeTest() throws ServiceException {
+	public void recupererOperationsParamCompteDateListTypeTest() {
 		List<Type> lesTypes = new ArrayList<Type>();
 		lesTypes.add(Type.DEPOT);
 		lesTypes.add(Type.OP_CARTE_DIFF);
@@ -105,21 +109,19 @@ public class OperationServiceImplTest {
 		Date date = dateJoda.toDate();
 		List<Operation> operations = operationService.recupererOperations(compte, date, lesTypes);
 		assertTrue("Il n'y a pas deux opérations trouvées", operations.size() == 1);
-
 	}
 
 	@Test
-	public void recupererOperationsParamCompteDateListTypeTestListTypeVide() throws ServiceException {
+	public void recupererOperationsParamCompteDateListTypeTestListTypeVide() {
 		List<Type> lesTypes = new ArrayList<Type>();
 		Compte compte = compteDao.findById(1);
 		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
 		Date date = dateJoda.toDate();
 		assertTrue(operationService.recupererOperations(compte, date, lesTypes).size()==0);
-
 	}
 
 	@Test
-	public void recupererOperationsParamCompteDateListTypeTestListTypeMauvais() throws ServiceException {
+	public void recupererOperationsParamCompteDateListTypeTestListTypeMauvais() {
 		List<Type> lesTypes = new ArrayList<Type>();
 		lesTypes.add(Type.DEPOT);
 		lesTypes.add(Type.VIREMENT_EXT);
@@ -131,7 +133,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsParamCompteDateListTypeTestDateMauvaise() throws ServiceException {
+	public void recupererOperationsParamCompteDateListTypeTestDateMauvaise() {
 		List<Type> lesTypes = new ArrayList<Type>();
 		lesTypes.add(Type.DEPOT);
 		lesTypes.add(Type.OP_CARTE_DIFF);
@@ -143,7 +145,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsSansType() throws ServiceException {
+	public void recupererOperationsSansType() {
 		List<Type> lesTypes = new ArrayList<Type>();
 		lesTypes.add(Type.DEPOT);
 		lesTypes.add(Type.RETRAIT);
@@ -155,7 +157,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsSansTypeAucunResultat() throws ServiceException {
+	public void recupererOperationsSansTypeAucunResultat() {
 		List<Type> lesTypes = new ArrayList<Type>();
 		lesTypes.add(Type.RETRAIT);
 		lesTypes.add(Type.OP_CARTE_DIFF);
@@ -166,7 +168,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsSansTypeMauvaiseDate() throws ServiceException {
+	public void recupererOperationsSansTypeMauvaiseDate() {
 		List<Type> lesTypes = new ArrayList<Type>();
 		lesTypes.add(Type.DEPOT);
 		lesTypes.add(Type.OP_CARTE_DIFF);
@@ -177,7 +179,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsParCarteEtDateTest() throws ServiceException {
+	public void recupererOperationsParCarteEtDateTest() {
 
 		Set<Carte> cartes = compteDao.findById(1).getCarte();
 		Carte carte1 = null;
@@ -193,7 +195,7 @@ public class OperationServiceImplTest {
 
 	@Test
 	@Ignore //Car pour le moment on utilise pas la date pour le moment
-	public void recupererOperationsParCarteEtDateTestMauvaiseDate() throws ServiceException {
+	public void recupererOperationsParCarteEtDateTestMauvaiseDate() {
 
 		Set<Carte> cartes = compteDao.findById(1).getCarte();
 		Carte carte1 = null;
@@ -208,7 +210,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsParCarteEtDateTestCarteNExistePas() throws ServiceException {
+	public void recupererOperationsParCarteEtDateTestCarteNExistePas() {
 		Carte carte1 = new Carte();
 		carte1.setId(15);
 		DateTime dateJoda = new DateTime(1000, 10, 9, 0, 0, 0, 0);
@@ -218,41 +220,48 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void recupererOperationsParTypeTest() throws ServiceException {
-		List<Operation> operations = operationService.recupererOperations(Type.RETRAIT);
+	public void recupererOperationsParClientEtTypeTest() {
+		Client client = clientDao.findById(1);
+		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
+		Date date = dateJoda.toDate();
+		List<Operation> operations = operationService.recupererOperations(client, Type.OP_CARTE_DIFF, date);
 		assertTrue("Il y a trop d'opération trouvées", operations.size() == 1);
 	}
 
 	@Test
-	public void recupererOperationsParTypeTestMaisPasCeTypeDansLaBase() throws ServiceException {
-		assertTrue(operationService.recupererOperations(Type.VIREMENT_EXT).size()==0);
+	public void recupererOperationsParTypeTestMaisPasCeTypeDansLaBase() {
+		Client client = clientDao.findById(1);
+		assertTrue(operationService.recupererOperations(client, Type.VIREMENT_EXT).size()==0);
 	}
 
 	@Test
-	public void recupererOperationsParTypeEtDateTest() throws ServiceException {
+	public void recupererOperationsParTypeEtDateTest() {
+		Client client = clientDao.findById(1);
 		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
 		Date date = dateJoda.toDate();
-		List<Operation> operations = operationService.recupererOperations(Type.RETRAIT, date);
+		List<Operation> operations = operationService.recupererOperations(client, Type.RETRAIT, date);
 		assertTrue("Il y a trop d'opération trouvées", operations.size() == 1);
 	}
 
 	@Test
 	@Ignore //Pour le moment la date n'est pas utilisée
-	public void recupererOperationsParTypeEtDateTestDateMauvaise() throws ServiceException {
+	public void recupererOperationsParTypeEtDateTestDateMauvaise() {
+		Client client = clientDao.findById(1);
 		DateTime dateJoda = new DateTime(1000, 10, 9, 0, 0, 0, 0);
 		Date date = dateJoda.toDate();
-		assertTrue(operationService.recupererOperations(Type.RETRAIT, date).size()==0);
+		assertTrue(operationService.recupererOperations(client, Type.RETRAIT, date).size()==0);
 	}
 
 	@Test
-	public void recupererOperationsParTypeEtDateTestAucunTypeTrouve() throws ServiceException {
+	public void recupererOperationsParTypeEtDateTestAucunTypeTrouve() {
+		Client client = clientDao.findById(1);
 		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
 		Date date = dateJoda.toDate();
-		assertTrue(operationService.recupererOperations(Type.VIREMENT_INT, date).size()==0);
+		assertTrue(operationService.recupererOperations(client, Type.VIREMENT_INT, date).size()==0);
 	}
 
 	@Test
-	public void totalOperationsTest() throws ServiceException {
+	public void totalOperationsTest() {
 
 		DateTime dateJoda = new DateTime(2010, 10, 9, 0, 0, 0, 0);
 		Date date = dateJoda.toDate();
@@ -262,7 +271,7 @@ public class OperationServiceImplTest {
 	}
 
 	@Test
-	public void totalOperationsTestListOperationNull() throws ServiceException {
+	public void totalOperationsTestListOperationNull() {
 		List<Operation> lesOperations = null;
 		assertTrue(operationService.totalOperations(lesOperations)==0);
 	}

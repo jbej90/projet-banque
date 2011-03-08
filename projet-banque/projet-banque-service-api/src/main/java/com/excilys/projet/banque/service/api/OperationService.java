@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.excilys.projet.banque.model.Carte;
+import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.model.Type;
@@ -29,9 +30,9 @@ public interface OperationService {
 
 	List<Operation> recupererOperations(Carte carte, Date date);
 
-	List<Operation> recupererOperations(Type type);
+	List<Operation> recupererOperations(Client client, Type type);
 
-	List<Operation> recupererOperations(Type type, Date date);
+	List<Operation> recupererOperations(Client client, Type type, Date date);
 
 	float totalOperations(List<Operation> operations);
 
