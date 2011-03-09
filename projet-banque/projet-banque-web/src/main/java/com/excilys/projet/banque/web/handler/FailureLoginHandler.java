@@ -1,6 +1,7 @@
 package com.excilys.projet.banque.web.handler;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,16 @@ public class FailureLoginHandler implements AuthenticationFailureHandler {
 
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+//		System.out.println("LOGIN");
+//		System.err.println(exception);
+//		System.err.println(request.getSession());
+//		
+//		Enumeration<String> e = request.getSession().getAttributeNames();
+//		while (e.hasMoreElements()) {
+//			String aa = e.nextElement();
+//			System.err.println(aa+" = "+request.getSession().getAttribute(aa));
+//		}
+		
 		if (exception instanceof BadCredentialsException) {
 			MessageStack.getInstance(request).addError("Login ou mot de passe erroné");
 		}

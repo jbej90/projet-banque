@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,27 +52,24 @@ public class AjaxPrivateController {
 	@Autowired
 	private OperationService	operationService;
 
+	// =====================================================================================================================
+	// ~ Mapping Ajax Methods ==============================================================================================
+	// =====================================================================================================================
+
 	/**
-	 * Map l'url de type /private/ajax/{client}/comptes.htm
+	 * Map l'url de type /private/ajax/comptes.htm
 	 * 
-	 * @param client
-	 *            : client courant
 	 * @param exclude
 	 *            : compte à exclure
-	 * @return Liste de comptes sans celui à exclure
+	 * @return Liste de comptes du client courant sans celui à exclure
 	 */
-	@RequestMapping(value = "{client}/comptes" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	@Secured({ "ROLE_USER" })
+	@RequestMapping(value = "comptes" + BASE_URL_SUFFIX, method = RequestMethod.GET)
 	public @ResponseBody
-	void getComptes(@PathVariable("client") int idClient, @RequestParam(value = "exclude", required = false, defaultValue = "-1") int exclude, HttpServletResponse response) {
+	void getComptes(@RequestParam(value = "exclude", required = false, defaultValue = "-1") int exclude, HttpServletRequest request,
+			HttpServletResponse response) {
 		Set<AjaxCompte> listComptes = new TreeSet<AjaxCompte>();
-		Client client = null;
-
-		try {
-			client = clientService.recupererClient(idClient);
-		}
-		catch (ServiceException e) {
-			e.printStackTrace();
-		}
+		Client client = getActualClient(request);
 
 		if (client != null) {
 			// Récupération de la liste des comptes du client excluant celui indiqué
@@ -99,28 +98,24 @@ public class AjaxPrivateController {
 	}
 
 	/**
-	 * Map l'url de type /private/ajax/{client}/compte/${compte}.htm
+	 * Map l'url de type /private/ajax/compte/${compte}.htm
 	 * 
-	 * @param client
-	 *            : client courant
 	 * @param exclude
 	 *            : compte à exclure
-	 * @return Liste de comptes sans celui à exclure
+	 * @return Liste des opérations d'un des comptes du client courant
 	 */
-	@RequestMapping(value = "{client}/compte/{compte}" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	@Secured({ "ROLE_USER" })
+	@RequestMapping(value = "compte/{compte}" + BASE_URL_SUFFIX, method = RequestMethod.GET)
 	public @ResponseBody
-	void getOperationsComptes(@PathVariable("client") int idClient, @PathVariable("compte") int idCompte,
+	void getOperationsComptes(@PathVariable("compte") int idCompte,
 			@RequestParam(value = "year", required = false, defaultValue = "-1") int year, @RequestParam(value = "month", required = false, defaultValue = "-1") int month,
-			HttpServletResponse response) {
+			HttpServletRequest request, HttpServletResponse response) {
 		Calendar cal = Calendar.getInstance(Locale.FRANCE);
-		Client client = null;
+
 		Compte compte = null;
-		try {
-			client = clientService.recupererClient(idClient);
+		Client client = getActualClient(request);
+		if (client != null) {
 			compte = client.getCompte(idCompte);
-		}
-		catch (ServiceException e) {
-			e.printStackTrace();
 		}
 
 		// Si les deux variables sont non nulles, les données sont valides (ie: compte existant et appartenant au client)
@@ -157,6 +152,33 @@ public class AjaxPrivateController {
 				}
 			}
 		}
+	}
+
+	// =====================================================================================================================
+	// ~ Generic Methods ===================================================================================================
+	// =====================================================================================================================
+
+	/**
+	 * Récupère l'instance du client actuellement connecté. La méthode utilise l'identifiant client stocké en session.
+	 * 
+	 * @param request
+	 *            : la requete passée aux méthodes du controlleur
+	 * @return une instance du client actuel; null sinon
+	 */
+	private Client getActualClient(HttpServletRequest request) {
+		// Récupère l'instance Client de l'utilisateur connecté
+		Client client = null;
+		try {
+			Integer idClient = (Integer) request.getSession().getAttribute("idClient");
+			client = clientService.recupererClient(idClient);
+		}
+		catch (ServiceException e) {
+			e.printStackTrace();
+		}
+		catch (NullPointerException e) {
+			e.printStackTrace();
+		}
+		return client;
 	}
 
 	/**
