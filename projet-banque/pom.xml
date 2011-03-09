@@ -58,148 +58,179 @@
 		<mysql-connector.version>5.1.14</mysql-connector.version>
 		<javassist.version>3.12.1.GA</javassist.version>
 		<javax-transaction.version>1.1</javax-transaction.version>
-		<jcl-over-slf4j.version>1.6.1</jcl-over-slf4j.version>
 		<slf4j.version>1.6.1</slf4j.version>
-
 		<servlet-api.version>2.5</servlet-api.version>
 		<jsp-api.version>2.1</jsp-api.version>
 		<el-api.version>2.2</el-api.version>
 		<jstl-impl.version>1.2</jstl-impl.version>
 		<joda-time.version>1.6.2</joda-time.version>
-		
+		<tiles.version>2.2.2</tiles.version>
+		<jackson-mapper-asl>1.7.0</jackson-mapper-asl>
 		<selenium.version>1.0.1</selenium.version>
+		<dbunit.version>2.4.8</dbunit.version>
+		<hsqldb.version>1.8.0.10</hsqldb.version>
+		<commons-lang.version>2.6</commons-lang.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Projets fils -->
 			<dependency>
 				<groupId>com.excilys.projet.banque</groupId>
 				<artifactId>projet-banque-service-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.excilys.projet.banque</groupId>
 				<artifactId>projet-banque-service-impl</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.excilys.projet.banque</groupId>
 				<artifactId>projet-banque-dao-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.excilys.projet.banque</groupId>
 				<artifactId>projet-banque-dao-impl</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.excilys.projet.banque</groupId>
 				<artifactId>projet-banque-model</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.excilys.projet.banque</groupId>
 				<artifactId>projet-banque-web</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>${hibernate.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.hibernate.javax.persistence</groupId>
-				<artifactId>hibernate-jpa-2.0-api</artifactId>
-				<version>${hibernate-jpa.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>${mysql-connector.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>javassist</groupId>
-				<artifactId>javassist</artifactId>
-				<version>${javassist.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>javax.transaction</groupId>
-				<artifactId>jta</artifactId>
-				<version>${javax-transaction.version}</version>
-			</dependency>
-
+			<!-- Spring -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-core</artifactId>
 				<version>${spring-security.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-acl</artifactId>
 				<version>${spring-security.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-taglibs</artifactId>
 				<version>${spring-security.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
 				<version>${spring-security.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
 				<version>${spring-security.version}</version>
 			</dependency>
 
+			<!-- Hibernate -->
 			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-context</artifactId>
-				<version>${spring.version}</version>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>${hibernate-validator.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate.javax.persistence</groupId>
+				<artifactId>hibernate-jpa-2.0-api</artifactId>
+				<version>${hibernate-jpa.version}</version>
 			</dependency>
 
+			<!-- Servlet/JSP -->
 			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-orm</artifactId>
-				<version>${spring.version}</version>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${servlet-api.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet.jsp</groupId>
+				<artifactId>jsp-api</artifactId>
+				<version>${jsp-api.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.el</groupId>
+				<artifactId>el-api</artifactId>
+				<version>${el-api.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.web</groupId>
+				<artifactId>jstl-impl</artifactId>
+				<version>${jstl-impl.version}</version>
+				<scope>runtime</scope>
 			</dependency>
 
+			<!-- Template -->
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
+				<groupId>org.apache.tiles</groupId>
+				<artifactId>tiles-template</artifactId>
+				<version>${tiles.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tiles</groupId>
+				<artifactId>tiles-jsp</artifactId>
+				<version>${tiles.version}</version>
 			</dependency>
 
+			<!-- Ajax -->
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-asl</artifactId>
+				<version>${jackson-mapper-asl}</version>
+			</dependency>
 
+			<!-- SLF4J -->
 			<!-- Jar vide de même artifactId/groupId que commons-logging. On évite 
 				ainsi qu'il soit inclut automatiquement via les dépendances de spring. Cela 
 				permet d'éviter les fuites mémoires de cette librairie. On utilisera plutôt 
@@ -210,23 +241,24 @@
 				<artifactId>commons-logging</artifactId>
 				<version>99.0-does-not-exist</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jcl-over-slf4j</artifactId>
-				<version>${jcl-over-slf4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-validator</artifactId>
-				<version>${hibernate-validator.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>joda-time</groupId>
-				<artifactId>joda-time</artifactId>
-				<version>${joda-time.version}</version>
+				<version>${slf4j.version}</version>
 			</dependency>
 
+			<!-- Tests -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
 			<dependency>
 				<groupId>org.seleniumhq.selenium.client-drivers</groupId>
 				<artifactId>selenium-java-client-driver</artifactId>
@@ -234,12 +266,44 @@
 				<scope>test</scope>
 			</dependency>
 
+			<!-- BDD Utils -->
 			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>${slf4j.version}</version>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql-connector.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>${javassist.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.transaction</groupId>
+				<artifactId>jta</artifactId>
+				<version>${javax-transaction.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.dbunit</groupId>
+				<artifactId>dbunit</artifactId>
+				<version>${dbunit.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>${hsqldb.version}</version>
 			</dependency>
 
+			<!-- Utilitaires -->
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>${joda-time.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>${commons-lang.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -253,12 +317,11 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
 		</dependency>
-
 	</dependencies>
 
 	<build>
