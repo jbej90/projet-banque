@@ -70,6 +70,7 @@
 		<dbunit.version>2.4.8</dbunit.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<commons-lang.version>2.6</commons-lang.version>
+		<cxf.version>2.3.3</cxf.version>
 	</properties>
 
 	<dependencyManagement>
@@ -103,6 +104,11 @@
 			<dependency>
 				<groupId>com.excilys.projet.banque</groupId>
 				<artifactId>projet-banque-web</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.excilys.projet.banque</groupId>
+				<artifactId>projet-banque-webservice</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -304,6 +310,19 @@
 				<artifactId>commons-lang</artifactId>
 				<version>${commons-lang.version}</version>
 			</dependency>
+
+			<!-- Service Web -->
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -391,5 +410,6 @@
 		<module>projet-banque-dao-impl</module>
 		<module>projet-banque-model</module>
 		<module>projet-banque-web</module>
+		<module>projet-banque-webservice</module>
 	</modules>
 </project>
