@@ -60,7 +60,7 @@ public class RoleAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
 				return;
 			}
 		}
-
+		
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
 }

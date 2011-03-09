@@ -322,7 +322,7 @@ public class PrivateController {
 	 *            : la requete passée aux méthodes du controlleur
 	 * @return une instance du client actuel; null sinon
 	 */
-	private Client getActualClient(HttpServletRequest request) {
+	public Client getActualClient(HttpServletRequest request) {
 		// Récupère l'instance Client de l'utilisateur connecté
 		Client client = null;
 		try {
@@ -337,7 +337,7 @@ public class PrivateController {
 		}
 		return client;
 	}
-
+	
 	/**
 	 * Récupère une instance de compte à partir de son identifiant. La méthode vérifie également que ce compte appartient bien à un client donnée
 	 * 
