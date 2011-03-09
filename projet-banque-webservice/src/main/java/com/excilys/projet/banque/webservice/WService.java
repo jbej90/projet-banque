@@ -1,17 +1,21 @@
 package com.excilys.projet.banque.webservice;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.jws.WebService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
+import com.excilys.projet.banque.webservice.dto.CompteDTO;
+import com.excilys.projet.banque.webservice.dto.OperationDTO;
 
-@WebService(endpointInterface="com.excilys.projet.banque.webservice.IWService")
+@WebService(endpointInterface = "com.excilys.projet.banque.webservice.IWService")
 public class WService implements IWService {
 
 	@Autowired
@@ -20,32 +24,41 @@ public class WService implements IWService {
 	private OperationService operationService;
 	@Autowired
 	private ClientService clientService;
-	
+	@Autowired
+	private ConversionService converter;
+
 	public WService() {
 	}
+
+	@Override
+	public List<CompteDTO> consultationComptes(int idClient, String login, String password) {
+		ArrayList<CompteDTO> comptes = new ArrayList<CompteDTO>();
+		
+		for (Compte compte : clientService.recupererListeComptes(idClient))
+			comptes.add(converter.convert(compte, CompteDTO.class));
 	
-	@Override
-	public String consultationOperations(int idCompte, int idClient) {
-		return "toto";
+		return comptes;
 	}
 
 	@Override
-	public String passerOperation(int idCompte, float montant) {
+	public List<OperationDTO> consultationOperations(int idCompte, int idClient) {
+		// TODO Tester que le compte appartient bien au client (idClient)
+		Compte compte = null;
+//		operationService.recupererOperations(compte);
 		return null;
 	}
 
 	@Override
-	public String consultationComptes(int idClient) {
-		ArrayList<Compte> comptes = (ArrayList<Compte>) clientService.recupererListeComptes(idClient);
-		return null;
+	public void passerOperation(int idCompteSource, int idCompteDestination,
+			float montant) {
 	}
 
 	@Override
-	public String consultationCompte(int idClient, int idCompte) {
-//		for (Compte c : clientService.recupererListeComptes(idClient)) {
-//			if (c.getId()==idCompte)
-//				return c;
-//		}
+	public CompteDTO consultationCompte(int idClient, int idCompte) {
+		// for (Compte c : clientService.recupererListeComptes(idClient)) {
+		// if (c.getId()==idCompte)
+		// return c;
+		// }
 		return null;
 	}
 
@@ -60,5 +73,5 @@ public class WService implements IWService {
 	public void setClientService(ClientService clientService) {
 		this.clientService = clientService;
 	}
-	
+
 }
