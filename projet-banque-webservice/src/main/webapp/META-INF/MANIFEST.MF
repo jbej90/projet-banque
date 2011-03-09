@@ -1,30 +1,27 @@
 Manifest-Version: 1.0
-Class-Path: antlr-2.7.6.jar aopalliance-1.0.jar asm-2.2.3.jar aspectjr
- t-1.6.8.jar aspectjweaver-1.6.8.jar commons-collections-3.1.jar commo
- ns-lang-2.6.jar commons-logging-99.0-does-not-exist.jar cxf-api-2.2.6
- .jar cxf-common-schemas-2.2.6.jar cxf-common-utilities-2.2.6.jar cxf-
- rt-bindings-soap-2.2.6.jar cxf-rt-bindings-xml-2.2.6.jar cxf-rt-core-
- 2.2.6.jar cxf-rt-databinding-jaxb-2.2.6.jar cxf-rt-frontend-jaxws-2.2
- .6.jar cxf-rt-frontend-simple-2.2.6.jar cxf-rt-transports-http-2.2.6.
- jar cxf-rt-ws-addr-2.2.6.jar cxf-tools-common-2.2.6.jar dbunit-2.4.8.
- jar dom4j-1.6.1.jar geronimo-activation_1.1_spec-1.0.2.jar geronimo-a
- nnotation_1.0_spec-1.1.1.jar geronimo-javamail_1.4_spec-1.6.jar geron
- imo-jaxws_2.1_spec-1.0.jar geronimo-stax-api_1.0_spec-1.0.1.jar geron
- imo-ws-metadata_2.0_spec-1.1.2.jar hibernate-commons-annotations-3.2.
- 0.Final.jar hibernate-core-3.6.1.Final.jar hibernate-jpa-2.0-api-1.0.
- 0.Final.jar hibernate-validator-4.1.0.Final.jar hsqldb-1.8.0.10.jar j
- avassist-3.12.1.GA.jar jaxb-api-2.1.jar jaxb-impl-2.1.12.jar jcl-over
- -slf4j-1.6.1.jar joda-time-1.6.2.jar jta-1.1.jar mysql-connector-java
- -5.1.14.jar neethi-2.0.4.jar projet-banque-dao-api.jar projet-banque-
- dao-impl.jar projet-banque-model.jar projet-banque-service-api.jar pr
- ojet-banque-service-impl.jar saaj-api-1.3.jar saaj-impl-1.3.2.jar slf
- 4j-api-1.6.1.jar spring-aop-3.0.5.RELEASE.jar spring-asm-3.0.5.RELEAS
- E.jar spring-beans-3.0.5.RELEASE.jar spring-context-3.0.5.RELEASE.jar
-  spring-context-support-3.0.5.RELEASE.jar spring-core-3.0.5.RELEASE.j
- ar spring-expression-3.0.5.RELEASE.jar spring-jdbc-3.0.5.RELEASE.jar 
- spring-orm-3.0.5.RELEASE.jar spring-security-core-3.0.5.RELEASE.jar s
- pring-test-3.0.5.RELEASE.jar spring-tx-3.0.5.RELEASE.jar spring-web-3
- .0.5.RELEASE.jar spring-webmvc-3.0.5.RELEASE.jar validation-api-1.0.0
- .GA.jar wsdl4j-1.6.2.jar wstx-asl-3.2.9.jar xml-resolver-1.2.jar XmlS
- chema-1.4.5.jar
+Class-Path: antlr-2.7.6.jar aopalliance-1.0.jar asm-3.3.jar aspectjrt-
+ 1.6.8.jar aspectjweaver-1.6.8.jar commons-collections-3.1.jar commons
+ -lang-2.6.jar commons-logging-99.0-does-not-exist.jar cxf-api-2.3.3.j
+ ar cxf-common-schemas-2.3.3.jar cxf-common-utilities-2.3.3.jar cxf-rt
+ -bindings-soap-2.3.3.jar cxf-rt-bindings-xml-2.3.3.jar cxf-rt-core-2.
+ 3.3.jar cxf-rt-databinding-jaxb-2.3.3.jar cxf-rt-frontend-jaxws-2.3.3
+ .jar cxf-rt-frontend-simple-2.3.3.jar cxf-rt-transports-common-2.3.3.
+ jar cxf-rt-transports-http-2.3.3.jar cxf-rt-ws-addr-2.3.3.jar cxf-too
+ ls-common-2.3.3.jar dbunit-2.4.8.jar dom4j-1.6.1.jar geronimo-javamai
+ l_1.4_spec-1.7.1.jar hibernate-commons-annotations-3.2.0.Final.jar hi
+ bernate-core-3.6.1.Final.jar hibernate-jpa-2.0-api-1.0.0.Final.jar hi
+ bernate-validator-4.1.0.Final.jar hsqldb-1.8.0.10.jar javassist-3.12.
+ 1.GA.jar jaxb-impl-2.1.13.jar jcl-over-slf4j-1.6.1.jar joda-time-1.6.
+ 2.jar jta-1.1.jar mysql-connector-java-5.1.14.jar neethi-2.0.4.jar pr
+ ojet-banque-dao-api.jar projet-banque-dao-impl.jar projet-banque-mode
+ l.jar projet-banque-service-api.jar projet-banque-service-impl.jar sl
+ f4j-api-1.6.1.jar spring-aop-3.0.5.RELEASE.jar spring-asm-3.0.5.RELEA
+ SE.jar spring-beans-3.0.5.RELEASE.jar spring-context-3.0.5.RELEASE.ja
+ r spring-context-support-3.0.5.RELEASE.jar spring-core-3.0.5.RELEASE.
+ jar spring-expression-3.0.5.RELEASE.jar spring-jdbc-3.0.5.RELEASE.jar
+  spring-orm-3.0.5.RELEASE.jar spring-security-core-3.0.5.RELEASE.jar 
+ spring-test-3.0.5.RELEASE.jar spring-tx-3.0.5.RELEASE.jar spring-web-
+ 3.0.5.RELEASE.jar spring-webmvc-3.0.5.RELEASE.jar stax2-api-3.0.2.jar
+  validation-api-1.0.0.GA.jar woodstox-core-asl-4.0.8.jar wsdl4j-1.6.2
+ .jar xml-resolver-1.2.jar XmlSchema-1.4.7.jar
 

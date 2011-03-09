@@ -70,20 +70,6 @@
                         <version>${cxf.version}</version>
                     </dependency>
                 </dependencies>
-                <executions>
-                    <execution>
-                        <id>process-classes</id>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <className>com.unitedcoders.demo.PersonService</className>
-                            <genWsdl>true</genWsdl>
-                            <verbose>true</verbose>
-                        </configuration>
-                        <goals>
-                            <goal>java2ws</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 		</plugins>
 		<finalName>projet-banque-webservice</finalName>
