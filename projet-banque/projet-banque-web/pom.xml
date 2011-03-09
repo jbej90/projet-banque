@@ -95,7 +95,7 @@
 	</dependencies>
 	
 	<build>
-		<finalName>web</finalName>
+		<finalName>projet-banque-web</finalName>
 
 		<plugins>
 			<plugin>

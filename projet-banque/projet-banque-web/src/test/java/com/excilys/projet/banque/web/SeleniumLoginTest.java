@@ -13,7 +13,7 @@ import com.thoughtworks.selenium.SeleneseTestCase;
 //@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class, DataSetTestExecutionListener.class })
 //@Transactional
 //TODO CLASSNOTFOUND
-public class SeleniumTest extends SeleneseTestCase {
+public class SeleniumLoginTest extends SeleneseTestCase {
 
 	@Before
 	public void setUp() throws Exception {
@@ -42,12 +42,22 @@ public class SeleniumTest extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Identification"));
 	}
+	
+	@Test
+	public void testLoginErrones() throws Exception {
+		selenium.open("/projet-banque-web/login.htm");
+		selenium.type("username", "test1");
+		selenium.type("password", "aaaaa");
+		selenium.click("//input[@value='Valider']");
+		selenium.waitForPageToLoad("30000");
+		assertTrue(selenium.isTextPresent("Login ou mot de passe erroné"));
+	}
 
 	@Test
-	public void testLoginMdpErrones() throws Exception {
+	public void testMdpErrones() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
 		selenium.type("username", "aaaaa");
-		selenium.type("password", "aaaaa");
+		selenium.type("password", "test1");
 		selenium.click("//input[@value='Valider']");
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Login ou mot de passe erroné"));
