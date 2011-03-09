@@ -14,18 +14,24 @@
 		<welcome-file>index.htm</welcome-file>
 	</welcome-file-list>
 
-
-	<!-- Chargement du context spring pour le projet web -->
+	
+	<!-- Ajout des écouteurs -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+	<listener>
+		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+	</listener>
+	
+	
+	<!-- Chargement du context spring pour le projet web -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath*:/context/applicationContext.xml</param-value>
 	</context-param>
 
 
-	<!-- déclare le dispatcher MVC et le configure pour mapper les url en *.htm -->
+	<!-- déclare le dispatcher MVC et le configure pour mapper les url en *.htm et *.do -->
 	<servlet>
 		<servlet-name>spring-mvc</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -39,7 +45,19 @@
 
 
 
+	<!-- déclare le dispatcher XLS et le configure pour mapper les url en *.xls -->
+	<servlet>
+		<servlet-name>spring-xls</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>spring-xls</servlet-name>
+		<url-pattern>*.xls</url-pattern>
+	</servlet-mapping>
+	
 
+	<!-- Ajout d'un filtre sur les pages pour activer la gestion du menu -->
 	<filter>
 		<filter-name>menuFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -50,8 +68,7 @@
 	</filter-mapping>
 
 
-	<!-- Chargement du proxy Spring-security et le configure pour filtrer toutes 
-		les url -->
+	<!-- Chargement du proxy Spring-security et le configure pour filtrer toutes les url -->
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>

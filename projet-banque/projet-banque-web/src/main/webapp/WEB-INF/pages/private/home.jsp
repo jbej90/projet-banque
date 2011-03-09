@@ -15,8 +15,9 @@
 	<table>
 		<thead>
 			<tr>
-				<th width="60%">Libelle</th>
-				<th width="40%">Solde courant</th>
+				<th width="50%">Libelle</th>
+				<th width="25%">Solde courant</th>
+				<th width="25%">Solde prévisionnel</th>
 			</tr>
 		</thead>
 		
@@ -26,6 +27,7 @@
 				<tr class="line<%= i++ % 2 %>">
 					<td><a href="<c:url value="/private/compte/${compte.id}.htm"/>">${compte.libelle}</a></td>
 					<td align="right"<c:if test="${compte.solde < 0}"> class="decouvert"</c:if>><fmt:formatNumber maxFractionDigits="2">${compte.solde}</fmt:formatNumber>€</td>
+					<td align="right"<c:if test="${compte.soldePrevisionnel < 0}"> class="decouvert"</c:if>><fmt:formatNumber maxFractionDigits="2">${compte.soldePrevisionnel}</fmt:formatNumber>€</td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -34,6 +36,7 @@
 			<tr>
 				<td></td>
 				<td align="right" class="total<c:if test="${total < 0}"> decouvert</c:if>"><fmt:formatNumber maxFractionDigits="2">${total}</fmt:formatNumber>€</td>
+				<td></td>
 			</tr>
 		</tfoot>
 	</table>

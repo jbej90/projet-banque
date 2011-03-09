@@ -35,7 +35,6 @@ public class SeleniumComptesTest extends SeleneseTestCase {
 	}
 
 
-	@Test
 	public void testCDR_1() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
 		selenium.type("username", "test1");
@@ -43,13 +42,18 @@ public class SeleniumComptesTest extends SeleneseTestCase {
 		selenium.click("//input[@value='Valider']");
 		selenium.waitForPageToLoad("30000");
 		selenium.click("link=user1, compte2");
-		selenium.open("/projet-banque-web/private/compte/3.htm");
-		selenium.waitForPageToLoad("30000");
 		verifyTrue(selenium.isTextPresent("Compte non valide"));
 		selenium.click("link=Retour à l'accueil");
 		selenium.waitForPageToLoad("30000");
 		selenium.click("link=Déconnexion");
 		selenium.waitForPageToLoad("30000");
+	}
+	
+	@Test
+	public void testClientNonProprioCompte() throws Exception {
+		selenium.open("/projet-banque-web/private/compte/350.htm");
+		selenium.waitForPageToLoad("30000");
+		assertTrue(selenium.isTextPresent("Compte non valide"));
 	}
 
 	@After
