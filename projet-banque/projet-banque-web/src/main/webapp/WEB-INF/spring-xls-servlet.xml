@@ -27,28 +27,7 @@
 	<!-- Ceci est le view resolver, il permet de définir la technologie de vue 
 		utilisée et comment sélectionner une vue. Ici on utilisera le moteur de template Tiles
 		le nom retourné par les controlleur sera alors le nom du template à utiliser -->
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.tiles2.TilesViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView" />
-		
-		<!-- Ajoute un attribut de nom "menuFilter" contenant une instance de MenuManager.
-			Cela permet d'avoir acces à ce bean sur les pages JSP sans avoir à l'ajouter manuellement --> 
-		<property name="attributesMap">
-			<map>
-				<entry key="menu" >
-					<ref bean="menuManager" />
-				</entry>
-			</map>
-		</property>
-	</bean>
-	
-	<bean id="excelView" class="com.excilys.projet.banque.web.view.ExcelCompteView"></bean>
-	
-	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
-		<property name="definitions">
-			<list>
-				<value>/WEB-INF/template/template.xml</value>
-				<value>/WEB-INF/template/template-error.xml</value>
-			</list>
-		</property>
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename" value="xls"/>
 	</bean>
 </beans>

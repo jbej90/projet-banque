@@ -18,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
@@ -74,14 +75,10 @@ public class PrivateController {
 			Set<Compte> comptes = client.getComptes();
 			float total = compteService.totalComptes(comptes);
 
-			// On se place au 1er du mois avant de changer de mois (évite les soucis de passage d'un mois de 31 jours à un mois de 30)
-			cal.set(Calendar.DATE, 1);
-			cal.add(Calendar.MONTH, 1);
-
-			// TODO : Récupèrer le total des opérations à venir pour chaque compte
+			// Récupération du total des opérations à venir pour chaque compte
 			for (Compte compte : comptes) {
 				operations = operationService.recupererOperationsCompte(compte.getId(), cal.getTime(), null, OperationService.ETATS_EN_COURS);
-				System.out.println(operationService.totalOperations(operations));
+				compte.setSoldePrevisionnel(compte.getSolde() + operationService.totalOperations(operations));
 			}
 
 			model.addAttribute("client", client);
@@ -219,7 +216,8 @@ public class PrivateController {
 		request.getSession().removeAttribute("montant");
 
 		List<Operation> virements = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT, OperationService.ETATS_EFFECTUE);
-		List<Operation> virementsEnCours = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT, OperationService.ETATS_EN_COURS);
+		List<Operation> virementsEnCours = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT,
+				OperationService.ETATS_EN_COURS);
 
 		model.addAttribute("virements", virements);
 		model.addAttribute("virementsencours", virementsEnCours);
@@ -247,7 +245,7 @@ public class PrivateController {
 	 * Map l'url d'action de type POST /private/virement.do
 	 */
 	@RequestMapping(value = "virement.do", method = RequestMethod.POST)
-	public String doVirement(HttpServletRequest request, HttpServletResponse response, RequestMethod method, ModelMap model) {
+	public String doVirement(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Compte compte_src = null;
 		Compte compte_dest = null;
 		int compte_src_id = 0;
@@ -311,6 +309,20 @@ public class PrivateController {
 		return "redirect:/private/virement" + BASE_URL_SUFFIX;
 	}
 
+	
+	// =====================================================================================================================
+	// ~ Mapping download Methods ==========================================================================================
+	// =====================================================================================================================
+	@RequestMapping(value = "compte/{id}.xls", method = { RequestMethod.GET, RequestMethod.POST })
+	public ModelAndView downloadCompteExcel(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+		model.addAttribute("compteId", id);
+		
+		System.out.println("==> Mapping excel");
+		
+		return new ModelAndView("compte", model);
+	}
+	
+
 	// =====================================================================================================================
 	// ~ Generic Methods ===================================================================================================
 	// =====================================================================================================================
@@ -322,7 +334,7 @@ public class PrivateController {
 	 *            : la requete passée aux méthodes du controlleur
 	 * @return une instance du client actuel; null sinon
 	 */
-	public Client getActualClient(HttpServletRequest request) {
+	private Client getActualClient(HttpServletRequest request) {
 		// Récupère l'instance Client de l'utilisateur connecté
 		Client client = null;
 		try {
@@ -337,7 +349,7 @@ public class PrivateController {
 		}
 		return client;
 	}
-	
+
 	/**
 	 * Récupère une instance de compte à partir de son identifiant. La méthode vérifie également que ce compte appartient bien à un client donnée
 	 * 

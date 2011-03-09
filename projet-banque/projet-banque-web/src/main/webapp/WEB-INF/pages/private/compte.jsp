@@ -93,4 +93,7 @@
 	<p>
 		<a href="<c:url value="/private/virement/${compte.id}.htm"/>">Effectuer un virement</a>
 	</p>
+	<p>
+		<a href="<c:url value="/private/compte/${compte.id}.xls"/>">Exporter au format Excel</a>
+	</p>
 </div>

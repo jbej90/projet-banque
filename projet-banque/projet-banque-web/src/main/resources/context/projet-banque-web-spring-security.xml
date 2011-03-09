@@ -2,26 +2,31 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
-						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/beans/spring-beans.xsd
 				        http://www.springframework.org/schema/context 
-				        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+				        http://www.springframework.org/schema/context/spring-context.xsd
 						http://www.springframework.org/schema/security
-						http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+						http://www.springframework.org/schema/security/spring-security.xsd
+				        http://www.springframework.org/schema/util 
+				        http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<http>
 		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
 		<intercept-url pattern="/private/**" access="ROLE_USER" />
 
 		<intercept-url pattern="/**" filters="none" />
-		
-		<form-login login-page="/login.htm" authentication-success-handler-ref="roleAuthenticationHandler" authentication-failure-handler-ref="failureLoginHandler" />
-		<logout logout-success-url="/" />
-		
-<!--		<session-management>-->
-<!--			<concurrency-control max-sessions="1" expired-url="/login.htm" error-if-maximum-exceeded="true" />-->
-<!--		</session-management>-->
+
+		<form-login login-page="/login.htm" login-processing-url="/login.do"
+			authentication-success-handler-ref="roleAuthenticationHandler"
+			authentication-failure-handler-ref="failureLoginHandler" />
+
+		<logout logout-url="/logout.do" logout-success-url="/" />
+
+		<session-management>
+			 <concurrency-control max-sessions="1" expired-url="/login.htm" error-if-maximum-exceeded="true" /> 
+		</session-management>
 	</http>
 
 
@@ -29,36 +34,38 @@
 		<!-- Connexion utilisateur -->
 		<authentication-provider>
 			<password-encoder hash="sha">
-<!--				<salt-source system-wide="projet-banque" />-->
+				<!-- <salt-source system-wide="projet-banque" /> -->
 			</password-encoder>
-			
-			<jdbc-user-service id="auth" data-source-ref="dataSource" 
-						users-by-username-query="SELECT login AS username, password, enabled FROM auth WHERE login = ?" 
-						authorities-by-username-query="SELECT login AS username, 'USER' AS authority FROM auth WHERE login = ?" 
-						role-prefix="ROLE_" />
+
+			<jdbc-user-service id="auth" data-source-ref="dataSource"
+				users-by-username-query="SELECT login AS username, password, enabled FROM auth WHERE login = ?"
+				authorities-by-username-query="SELECT login AS username, 'USER' AS authority FROM auth WHERE login = ?"
+				role-prefix="ROLE_" />
 		</authentication-provider>
-		
+
 		<!-- Connexion administrateur -->
 		<authentication-provider>
 			<password-encoder hash="sha" />
-			
-			<jdbc-user-service id="admin" data-source-ref="dataSource" 
-						users-by-username-query="SELECT login AS username, password, enabled FROM admin WHERE login = ?" 
-						authorities-by-username-query="SELECT login AS username, role AS authority FROM admin WHERE login = ?" 
-						role-prefix="ROLE_" />
+
+			<jdbc-user-service id="admin" data-source-ref="dataSource"
+				users-by-username-query="SELECT login AS username, password, enabled FROM admin WHERE login = ?"
+				authorities-by-username-query="SELECT login AS username, role AS authority FROM admin WHERE login = ?"
+				role-prefix="ROLE_" />
 		</authentication-provider>
 	</authentication-manager>
-	
+
 
 	<!-- TODO : A déplacer dans un projet "env" -->
-	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<beans:bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<beans:property name="driverClassName" value="${datasource.classname}" />
 		<beans:property name="url" value="${datasource.url}" />
 		<beans:property name="username" value="${datasource.username}" />
 		<beans:property name="password" value="${datasource.password}" />
 	</beans:bean>
-	
-	<beans:bean id="roleAuthenticationHandler" class="com.excilys.projet.banque.web.handler.RoleAuthenticationSuccessHandler"></beans:bean>
-	<beans:bean id="failureLoginHandler" class="com.excilys.projet.banque.web.handler.FailureLoginHandler"></beans:bean>
-	<beans:bean id="myLogoutSuccessHandler" class="com.excilys.projet.banque.web.handler.MyLogoutSuccessHandler"></beans:bean>
+
+	<beans:bean id="roleAuthenticationHandler"
+		class="com.excilys.projet.banque.web.handler.RoleAuthenticationSuccessHandler"></beans:bean>
+	<beans:bean id="failureLoginHandler"
+		class="com.excilys.projet.banque.web.handler.FailureLoginHandler"></beans:bean>
 </beans:beans>

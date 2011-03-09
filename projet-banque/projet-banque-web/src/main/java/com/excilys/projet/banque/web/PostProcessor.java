@@ -24,18 +24,11 @@ public class PostProcessor implements BeanPostProcessor {
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		// si le bean est celui qui gère le formulaire d'authentification
-		// on le reconfigure pour utiliser des champs et une URI de mapping différents
+		// on le reconfigure pour utiliser des champs différents
 		if (bean instanceof UsernamePasswordAuthenticationFilter) {
 			UsernamePasswordAuthenticationFilter filter = (UsernamePasswordAuthenticationFilter) bean;
 			filter.setUsernameParameter("username");
 			filter.setPasswordParameter("password");
-			filter.setFilterProcessesUrl("/login.do");
-		}
-		// Si le bean est celui qui gère la déconnexion de l'utilisateur
-		// on le reconfigure pour utiliser une URI de mapping différente
-		else if (bean instanceof LogoutFilter) {
-			LogoutFilter filter = (LogoutFilter) bean;
-			filter.setFilterProcessesUrl("/logout.do");
 		}
 		return bean;
 	}
