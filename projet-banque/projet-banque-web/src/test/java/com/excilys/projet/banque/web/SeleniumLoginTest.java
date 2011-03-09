@@ -42,7 +42,7 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Identification"));
 	}
-	
+
 	@Test
 	public void testLoginErrones() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");

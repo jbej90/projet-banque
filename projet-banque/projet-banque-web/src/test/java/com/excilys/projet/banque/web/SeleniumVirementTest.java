@@ -7,47 +7,47 @@ import org.junit.Test;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleneseTestCase;
 
-//@DataSet("classpath:context/dataSet-selenium.xml")
-//@ContextConfiguration({ "classpath*:context/applicationContext-selenium.xml" })
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class, DataSetTestExecutionListener.class })
-//@Transactional
-//TODO CLASSNOTFOUND
-public class SeleniumComptesTest extends SeleneseTestCase {
+public class SeleniumVirementTest extends SeleneseTestCase {
 
 	@Before
 	public void setUp() throws Exception {
 		selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");
 		selenium.start();
-
-		selenium.open("/projet-banque-web/login.htm");
-		selenium.type("username", "test1");
-		selenium.type("password", "test1");
-		selenium.click("//input[@value='Valider']");
-		selenium.waitForPageToLoad("30000");
 	}
 
 	@Test
-	public void testClientProprioCompte() throws Exception {
-		selenium.open("/projet-banque-web/private/compte/1.htm");
-		selenium.waitForPageToLoad("30000");
-		assertTrue(selenium.isTextPresent("Détail de mon compte"));
-	}
-
-
-	@Test
-	public void testCDR_1() throws Exception {
+	public void testCDR_3() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
 		selenium.type("username", "test1");
 		selenium.type("password", "test1");
 		selenium.click("//input[@value='Valider']");
 		selenium.waitForPageToLoad("30000");
 		selenium.click("link=user1, compte2");
-		selenium.open("/projet-banque-web/private/compte/3.htm");
 		selenium.waitForPageToLoad("30000");
-		verifyTrue(selenium.isTextPresent("Compte non valide"));
-		selenium.click("link=Retour à l'accueil");
+		selenium.click("link=Effectuer un virement");
 		selenium.waitForPageToLoad("30000");
+		selenium.type("montant", "5000");
+		selenium.click("submitVirement");
+		selenium.waitForPageToLoad("100000");
+		verifyTrue(selenium.isTextPresent("Solde du compte insuffisant."));
+		selenium.click("link=Déconnexion");
+		selenium.waitForPageToLoad("30000");
+	}
+
+	@Test
+	public void testCDR_4() throws Exception {
+		selenium.open("/projet-banque-web/login.htm");
+		selenium.type("username", "test1");
+		selenium.type("password", "test1");
+		selenium.click("//input[@value='Valider']");
+		selenium.waitForPageToLoad("30000");
+		selenium.click("link=user1, compte2");
+		selenium.waitForPageToLoad("30000");
+		selenium.click("link=Effectuer un virement");
+		selenium.waitForPageToLoad("30000");
+		verifyTrue(selenium.isTextPresent("Destination : user1, compte1"));
+		verifyTrue(selenium.isTextPresent("user1, compte3"));
+		verifyTrue(!selenium.isTextPresent("user1, compte2"));
 		selenium.click("link=Déconnexion");
 		selenium.waitForPageToLoad("30000");
 	}
@@ -56,4 +56,5 @@ public class SeleniumComptesTest extends SeleneseTestCase {
 	public void tearDown() throws Exception {
 		selenium.stop();
 	}
+
 }
