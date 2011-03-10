@@ -1,5 +1,6 @@
 package com.excilys.projet.banque.web.controller;
 
+import java.io.IOException;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -18,7 +19,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
@@ -28,6 +28,7 @@ import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 import com.excilys.projet.banque.web.utils.MessageStack;
+import com.excilys.projet.banque.web.utils.WebUtils;
 
 /**
  * Controller de la partie privée (ie: toutes url de type /private/*)
@@ -36,13 +37,8 @@ import com.excilys.projet.banque.web.utils.MessageStack;
  * 
  */
 @Controller
-@RequestMapping("/private/")
+@RequestMapping("/" + WebUtils.BASE_DIR_PRIVATE)
 public class PrivateController {
-
-	/** prefix ajouté sur les retours des méthodes de mapping */
-	private static final String	BASE_DIR		= "private/";
-	/** Suffix des URI à mapper */
-	private static final String	BASE_URL_SUFFIX	= ".htm";
 
 	@Autowired
 	private ClientService		clientService;
@@ -58,14 +54,14 @@ public class PrivateController {
 	/**
 	 * Map l'url de type /private/home.htm
 	 */
-	@RequestMapping(value = "home" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	@RequestMapping(value = "home" + WebUtils.URL_SUFFIX_PAGE, method = RequestMethod.GET)
 	public String showHome(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 
 		// Si l'instance est nulle, le client est introuvable
 		if (client == null) {
 			MessageStack.getInstance(request).addError("Client introuvable");
-			return "redirect:/error/error.htm";
+			return "redirect:" + WebUtils.getFormatPageUri("/error/error");
 		}
 		// Sinon on stock les données dans le modele
 		else {
@@ -87,13 +83,13 @@ public class PrivateController {
 			model.addAttribute("total", total);
 		}
 
-		return BASE_DIR + "home";
+		return WebUtils.BASE_DIR_PRIVATE + "home";
 	}
 
 	/**
 	 * Map l'url de type /private/compte/{id}/operations.htm
 	 */
-	@RequestMapping(value = "compte/{id}" + BASE_URL_SUFFIX, method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "compte/{id}" + WebUtils.URL_SUFFIX_PAGE, method = { RequestMethod.GET, RequestMethod.POST })
 	public String showCompte(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
@@ -105,7 +101,7 @@ public class PrivateController {
 		// Si l'instance est nulle, le client est introuvable
 		if (client == null) {
 			MessageStack.getInstance(request).addError("Client introuvable");
-			return "redirect:/error/error.htm";
+			return "redirect:" + WebUtils.getFormatPageUri("/error/error");
 		}
 		else {
 			// Vérifie que le client est bien le propriétaire du compte
@@ -113,7 +109,7 @@ public class PrivateController {
 
 			if (selectedCompte == null) {
 				MessageStack.getInstance(request).addError("Compte non valide");
-				return "redirect:/error/error.htm";
+				return "redirect:" + WebUtils.getFormatPageUri("/error/error");
 			}
 			else {
 				// Récupère les opérations de ce compte
@@ -141,13 +137,13 @@ public class PrivateController {
 			}
 		}
 
-		return BASE_DIR + "compte";
+		return WebUtils.BASE_DIR_PRIVATE + "compte";
 	}
 
 	/**
 	 * Map l'url de type /private/compte/{id}/operations/carte.htm
 	 */
-	@RequestMapping(value = "compte/{id}/operations/carte" + BASE_URL_SUFFIX, method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "compte/{id}/operations/carte" + WebUtils.URL_SUFFIX_PAGE, method = { RequestMethod.GET, RequestMethod.POST })
 	public String showCompteCarte(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
@@ -159,7 +155,7 @@ public class PrivateController {
 		// Si l'instance est nulle, le client est introuvable
 		if (client == null) {
 			MessageStack.getInstance(request).addError("Client introuvable");
-			return "redirect:/error/error.htm";
+			return "redirect:" + WebUtils.getFormatPageUri("/error/error");
 		}
 		else {
 			// Récupère le compte du client et vérifie qu'il lui appartient
@@ -167,7 +163,7 @@ public class PrivateController {
 
 			if (selectedCompte == null) {
 				MessageStack.getInstance(request).addError("Compte non valide");
-				return "redirect:/error/error.htm";
+				return "redirect:" + WebUtils.getFormatPageUri("/error/error");
 			}
 			else {
 				List<Operation> operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
@@ -183,13 +179,13 @@ public class PrivateController {
 			}
 		}
 
-		return BASE_DIR + "compte-carte";
+		return WebUtils.BASE_DIR_PRIVATE + "compte-carte";
 	}
 
 	/**
 	 * Map l'url de type /private/virement.htm
 	 */
-	@RequestMapping(value = "virement" + BASE_URL_SUFFIX, method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "virement" + WebUtils.URL_SUFFIX_PAGE, method = { RequestMethod.GET, RequestMethod.POST })
 	public String showVirementHome(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 
@@ -222,13 +218,13 @@ public class PrivateController {
 		model.addAttribute("virements", virements);
 		model.addAttribute("virementsencours", virementsEnCours);
 
-		return BASE_DIR + "virement";
+		return WebUtils.BASE_DIR_PRIVATE + "virement";
 	}
 
 	/**
 	 * Map l'url de type /private/virement/{srcId}.htm
 	 */
-	@RequestMapping(value = "virement/{srcId}" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	@RequestMapping(value = "virement/{srcId}" + WebUtils.URL_SUFFIX_PAGE, method = RequestMethod.GET)
 	public String showVirementHome(@PathVariable int srcId, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		String res = showVirementHome(request, response, model);
 
@@ -244,7 +240,7 @@ public class PrivateController {
 	/**
 	 * Map l'url d'action de type POST /private/virement.do
 	 */
-	@RequestMapping(value = "virement.do", method = RequestMethod.POST)
+	@RequestMapping(value = "virement" + WebUtils.URL_SUFFIX_FORM, method = RequestMethod.POST)
 	public String doVirement(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Compte compte_src = null;
 		Compte compte_dest = null;
@@ -306,22 +302,61 @@ public class PrivateController {
 		request.getSession().setAttribute("compte_dest", compte_dest_id);
 		request.getSession().setAttribute("montant", montant);
 
-		return "redirect:/private/virement" + BASE_URL_SUFFIX;
+		return "redirect:/" + WebUtils.getFormatPageUri("/private/virement");
 	}
 
-	
 	// =====================================================================================================================
 	// ~ Mapping download Methods ==========================================================================================
 	// =====================================================================================================================
-	@RequestMapping(value = "compte/{id}.xls", method = { RequestMethod.GET, RequestMethod.POST })
-	public ModelAndView downloadCompteExcel(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-		model.addAttribute("compteId", id);
-		
-		System.out.println("==> Mapping excel");
-		
-		return new ModelAndView("compte", model);
+
+	/**
+	 * Map l'url d'action de type GET compte/{idCompte}_{month}-{year}.xls
+	 * 
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "compte/{idCompte}_{month}-{year}" + WebUtils.URL_SUFFIX_XLS, method = { RequestMethod.GET, RequestMethod.POST })
+	public String downloadCompteExcel(@PathVariable int idCompte, @PathVariable int month, @PathVariable int year, HttpServletRequest request, HttpServletResponse response,
+			ModelMap model) throws IOException {
+		// Essaye de parser la date pour le filtre d'opérations
+		Calendar cal = getMonthYearFilter(month, year);
+
+		// Récupère le client actuel
+		Client client = getActualClient(request);
+		if (client == null) {
+			MessageStack.getInstance(request).addError("Client introuvable");
+			response.sendRedirect(response.encodeRedirectURL("redirect:" + WebUtils.getFormatPageUri("/error/error")));
+			return null;
+		}
+
+		// Récupère le compte du client
+		Compte compte = client.getCompte(idCompte);
+		if (compte == null) {
+			MessageStack.getInstance(request).addError("Compte non valide");
+			response.sendRedirect(response.encodeRedirectURL("redirect:" + WebUtils.getFormatPageUri("/error/error")));
+			return null;
+		}
+
+		// Récupère les opérations de ce compte
+		List<Operation> operations = new LinkedList<Operation>();
+		List<Operation> operationsCarte = new LinkedList<Operation>();
+		float total = 0;
+		float totalCarte = 0;
+
+		operations = operationService.recupererOperationsCompteNonCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
+		operationsCarte = operationService.recupererOperationsCompteCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
+		total = operationService.totalOperations(operations);
+		totalCarte = operationService.totalOperations(operationsCarte);
+
+		model.addAttribute("compte", compte);
+		model.addAttribute("operations", operations);
+		model.addAttribute("operationsCarte", operationsCarte);
+		model.addAttribute("soustotal", total);
+		model.addAttribute("soustotalCarte", totalCarte);
+		model.addAttribute("total", (total + totalCarte));
+		model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
+
+		return "compte";
 	}
-	
 
 	// =====================================================================================================================
 	// ~ Generic Methods ===================================================================================================
@@ -386,19 +421,31 @@ public class PrivateController {
 				int month = Integer.parseInt(request.getParameter("filter_month"));
 				int year = Integer.parseInt(request.getParameter("filter_year"));
 
-				// Bride l'historique à 3 ans en arrière
-				if (year < cal.get(Calendar.YEAR) - 3 || year > cal.get(Calendar.YEAR)) {
-					throw new NumberFormatException();
-				}
-
-				cal.set(Calendar.DATE, 1);
-				cal.set(Calendar.MONTH, month);
-				cal.set(Calendar.YEAR, year);
+				cal = getMonthYearFilter(month, year);
 			}
 			catch (NumberFormatException e) {
 				MessageStack.getInstance(request).addError("Format de date incorrect");
 			}
 		}
+
+		return cal;
+	}
+
+	private Calendar getMonthYearFilter(int month, int year) {
+		Calendar cal = Calendar.getInstance(Locale.FRANCE);
+
+		if (month < 0 || month > 11) {
+			throw new NumberFormatException("Mois hors limite");
+		}
+
+		// Bride l'historique à 3 ans en arrière
+		if (year < cal.get(Calendar.YEAR) - 3 || year > cal.get(Calendar.YEAR)) {
+			throw new NumberFormatException("Année hors limite");
+		}
+
+		cal.set(Calendar.DATE, 1);
+		cal.set(Calendar.MONTH, month);
+		cal.set(Calendar.YEAR, year);
 
 		return cal;
 	}

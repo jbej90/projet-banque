@@ -39,6 +39,8 @@
 			<div id="body">
 				<div id="content">
 					<tiles:insertAttribute name="content" />
+					
+					<div class="clearer"></div>
 				</div>
 			</div>
 			

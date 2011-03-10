@@ -14,7 +14,7 @@
 		<welcome-file>index.htm</welcome-file>
 	</welcome-file-list>
 
-	
+
 	<!-- Ajout des écouteurs -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -22,8 +22,8 @@
 	<listener>
 		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
 	</listener>
-	
-	
+
+
 	<!-- Chargement du context spring pour le projet web -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -31,7 +31,8 @@
 	</context-param>
 
 
-	<!-- déclare le dispatcher MVC et le configure pour mapper les url en *.htm et *.do -->
+	<!-- déclare le dispatcher MVC et le configure pour mapper les url en *.htm 
+		et *.do -->
 	<servlet>
 		<servlet-name>spring-mvc</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -44,7 +45,6 @@
 	</servlet-mapping>
 
 
-
 	<!-- déclare le dispatcher XLS et le configure pour mapper les url en *.xls -->
 	<servlet>
 		<servlet-name>spring-xls</servlet-name>
@@ -55,7 +55,7 @@
 		<servlet-name>spring-xls</servlet-name>
 		<url-pattern>*.xls</url-pattern>
 	</servlet-mapping>
-	
+
 
 	<!-- Ajout d'un filtre sur les pages pour activer la gestion du menu -->
 	<filter>
@@ -68,7 +68,8 @@
 	</filter-mapping>
 
 
-	<!-- Chargement du proxy Spring-security et le configure pour filtrer toutes les url -->
+	<!-- Chargement du proxy Spring-security et le configure pour filtrer toutes 
+		les url -->
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -78,7 +79,7 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-	
+
 	<!-- Gestion des pages d'erreurs (en prenant en compte le mappage MVC) -->
 	<error-page>
 		<error-code>400</error-code>
@@ -100,4 +101,8 @@
 		<error-code>500</error-code>
 		<location>/error/500.htm</location>
 	</error-page>
+<!--	<error-page>-->
+<!--		<exception-type>java.lang.Throwable</exception-type>-->
+<!--		<location>/error/error.htm</location>-->
+<!--	</error-page>-->
 </web-app>

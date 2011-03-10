@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.excilys.projet.banque.web.utils.MessageStack;
+import com.excilys.projet.banque.web.utils.WebUtils;
 
 /**
  * Controller générique pour les pages d'erreurs (ie: toutes url de type /error/*)
@@ -20,13 +21,10 @@ import com.excilys.projet.banque.web.utils.MessageStack;
 @RequestMapping("/error/")
 public class ErrorController {
 
-	/** Suffix des URI à mapper */
-	private static final String	BASE_URL_SUFFIX	= ".htm";
-
 	/**
 	 * Map l'url de type /error/{code}.htm
 	 */
-	@RequestMapping(value = "{code}" + BASE_URL_SUFFIX)
+	@RequestMapping(value = "{code}" + WebUtils.URL_SUFFIX_PAGE)
 	public String showError(@PathVariable int code, final HttpServletRequest request, final HttpServletResponse response, ModelMap model) {
 		model.addAttribute("title", "Erreur " + code);
 
@@ -51,14 +49,14 @@ public class ErrorController {
 			MessageStack.getInstance(request).addError("Erreur inconnue");
 			break;
 		}
-
+		
 		return "utils/error";
 	}
 
 	/**
 	 * Map l'url de type /error/error.htm
 	 */
-	@RequestMapping(value = "error" + BASE_URL_SUFFIX)
+	@RequestMapping(value = "error" + WebUtils.URL_SUFFIX_PAGE)
 	public String showError(final HttpServletRequest request, final HttpServletResponse response, ModelMap model) {
 		model.addAttribute("title", "Erreur");
 
