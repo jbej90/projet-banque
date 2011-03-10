@@ -73,8 +73,8 @@ public class SeleniumComptesTest extends SeleneseTestCase {
 
 	@After
 	public void tearDown() throws Exception {
-		selenium.click("link=Déconnexion");
-		selenium.waitForPageToLoad("30000");
+		// selenium.click("link=Déconnexion");
+		// selenium.waitForPageToLoad("30000");
 		selenium.stop();
 
 	}
