@@ -12,6 +12,7 @@ import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
+import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 import com.excilys.projet.banque.webservice.dto.CompteDTO;
 import com.excilys.projet.banque.webservice.dto.OperationDTO;
 
@@ -19,13 +20,13 @@ import com.excilys.projet.banque.webservice.dto.OperationDTO;
 public class WService implements IWService {
 
 	@Autowired
-	private CompteService compteService;
+	private CompteService		compteService;
 	@Autowired
-	private OperationService operationService;
+	private OperationService	operationService;
 	@Autowired
-	private ClientService clientService;
+	private ClientService		clientService;
 	@Autowired
-	private ConversionService converter;
+	private ConversionService	converter;
 
 	public WService() {
 	}
@@ -33,10 +34,15 @@ public class WService implements IWService {
 	@Override
 	public List<CompteDTO> consultationComptes(int idClient, String login, String password) {
 		ArrayList<CompteDTO> comptes = new ArrayList<CompteDTO>();
-		
-		for (Compte compte : clientService.recupererListeComptes(idClient))
-			comptes.add(converter.convert(compte, CompteDTO.class));
-	
+
+		try {
+			for (Compte compte : clientService.recupererListeComptes(idClient))
+				comptes.add(converter.convert(compte, CompteDTO.class));
+		}
+		catch (ServiceException e) {
+			e.printStackTrace();
+		}
+
 		return comptes;
 	}
 
@@ -44,13 +50,12 @@ public class WService implements IWService {
 	public List<OperationDTO> consultationOperations(int idCompte, int idClient) {
 		// TODO Tester que le compte appartient bien au client (idClient)
 		Compte compte = null;
-//		operationService.recupererOperations(compte);
+		// operationService.recupererOperations(compte);
 		return null;
 	}
 
 	@Override
-	public void passerOperation(int idCompteSource, int idCompteDestination,
-			float montant) {
+	public void passerOperation(int idCompteSource, int idCompteDestination, float montant) {
 	}
 
 	@Override

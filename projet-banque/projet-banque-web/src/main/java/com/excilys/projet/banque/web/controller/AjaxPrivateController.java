@@ -33,6 +33,7 @@ import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 import com.excilys.projet.banque.web.ajax.AjaxCompte;
 import com.excilys.projet.banque.web.ajax.AjaxOperations;
+import com.excilys.projet.banque.web.utils.WebUtils;
 
 /**
  * Controller des requêtes AJAX de la partie privée (ie: toutes url de type /private/ajax/*)
@@ -41,11 +42,8 @@ import com.excilys.projet.banque.web.ajax.AjaxOperations;
  * 
  */
 @Controller
-@RequestMapping("/private/ajax/")
+@RequestMapping("/" + WebUtils.BASE_DIR_PRIVATE_AJAX)
 public class AjaxPrivateController {
-
-	/** Suffix des URI à mapper */
-	private static final String	BASE_URL_SUFFIX	= ".htm";
 
 	@Autowired
 	private ClientService		clientService;
@@ -64,7 +62,7 @@ public class AjaxPrivateController {
 	 * @return Liste de comptes du client courant sans celui à exclure
 	 */
 	@Secured({ "ROLE_USER" })
-	@RequestMapping(value = "comptes" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	@RequestMapping(value = "comptes" + WebUtils.URL_SUFFIX_PAGE, method = RequestMethod.GET)
 	public @ResponseBody
 	void getComptes(@RequestParam(value = "exclude", required = false, defaultValue = "-1") int exclude, HttpServletRequest request,
 			HttpServletResponse response) {
@@ -105,7 +103,7 @@ public class AjaxPrivateController {
 	 * @return Liste des opérations d'un des comptes du client courant
 	 */
 	@Secured({ "ROLE_USER" })
-	@RequestMapping(value = "compte/{compte}" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	@RequestMapping(value = "compte/{compte}" + WebUtils.URL_SUFFIX_PAGE, method = RequestMethod.GET)
 	public @ResponseBody
 	void getOperationsComptes(@PathVariable("compte") int idCompte,
 			@RequestParam(value = "year", required = false, defaultValue = "-1") int year, @RequestParam(value = "month", required = false, defaultValue = "-1") int month,

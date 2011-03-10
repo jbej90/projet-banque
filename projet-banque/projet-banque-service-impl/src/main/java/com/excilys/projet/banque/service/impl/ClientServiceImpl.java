@@ -1,6 +1,5 @@
 package com.excilys.projet.banque.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,16 +56,8 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	// TODO CHANGER EN THROWS EXCEPTION SSI LES CONSEQUENCES SONT BENINE EN
-	// MATIERE DE MODIF DE CODE
-	public List<Compte> recupererListeComptes(int idClient) {
-		List<Compte> lesComptes = new ArrayList<Compte>();
-		try {
-			lesComptes = compteDao.findAllByClient(recupererClient(idClient));
-		} catch (ServiceException e) {
-			e.printStackTrace();
-		}
-		return lesComptes;
+	public List<Compte> recupererListeComptes(int idClient) throws ServiceException {
+		return compteDao.findAllByClient(recupererClient(idClient));
 	}
 
 	@Override

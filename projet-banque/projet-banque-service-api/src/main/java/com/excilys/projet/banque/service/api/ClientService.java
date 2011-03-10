@@ -14,7 +14,7 @@ public interface ClientService {
 
 	List<Client> recupererClients() throws ServiceException;
 
-	List<Compte> recupererListeComptes(int idClient);
+	List<Compte> recupererListeComptes(int idClient) throws ServiceException;
 	
 	List<Compte> recupererListeComptes(Client client);
 	

@@ -9,6 +9,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.excilys.projet.banque.web.utils.WebUtils;
+
 /**
  * Controller de la partie admin (ie: toutes url de type /admin/*)
  * 
@@ -16,19 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * 
  */
 @Controller
-@RequestMapping("/admin/")
+@RequestMapping("/" + WebUtils.BASE_DIR_ADMIN)
 public class AdminController {
-
-	/** prefix ajouté sur les retours des méthodes de mapping */
-	private static final String	BASE_DIR		= "admin/";
-	/** Suffix des URI à mapper */
-	private static final String	BASE_URL_SUFFIX	= ".htm";
 
 	/**
 	 * Map l'url de type /admin/index.htm
 	 */
-	@RequestMapping(value = "index" + BASE_URL_SUFFIX, method = RequestMethod.GET)
+	@RequestMapping(value = "index" + WebUtils.URL_SUFFIX_PAGE, method = RequestMethod.GET)
 	public String showHome(final HttpServletRequest request, final HttpServletResponse response, ModelMap model) {
-		return BASE_DIR + "index";
+		return WebUtils.BASE_DIR_ADMIN + "index";
 	}
 }

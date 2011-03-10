@@ -89,11 +89,13 @@
 			</tr>
 		</tfoot>
 	</table>
-	
-	<p>
-		<a href="<c:url value="/private/virement/${compte.id}.htm"/>">Effectuer un virement</a>
-	</p>
-	<p>
-		<a href="<c:url value="/private/compte/${compte.id}.xls"/>">Exporter au format Excel</a>
-	</p>
+</div>
+
+<div class="actions">
+	<a class="action" href="<c:url value="/private/compte/${compte.id}_${moiscourant}-${anneecourante}.xls"/>">
+		<img src="<c:url value="/images/export_excel.png"/>" alt="Exporter au format Excel" title="Exporter au format Excel" />
+	</a>
+	<a class="action" href="<c:url value="/private/virement/${compte.id}.htm"/>">
+		<img src="<c:url value="/images/virement.png"/>" alt="Effectuer un virement" title="Effectuer un virement" />
+	</a>
 </div>
