@@ -1,7 +1,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <script type="text/javascript">
 	function filtrercompte(idCompte) {
@@ -34,7 +34,7 @@
 	});
 </script>
 
-<div class="box">
+<div class="box width-800">
 	<div class="icon">
 		 <img src="<c:url value="/images/virement.png"/>" alt="virement" title="virement" />
 	</div>

@@ -2,6 +2,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr" dir="ltr">
 	<head>
@@ -37,11 +39,22 @@
 			</div>
 		
 			<div id="body">
-				<div id="content">
-					<tiles:insertAttribute name="content" />
+				<c:choose>
+					<c:when test="${fn:length(toolbar.tools) == 0}">
+						<div id="content">
+							<tiles:insertAttribute name="content" />
+						</div>
+					</c:when>
 					
-					<div class="clearer"></div>
-				</div>
+					<c:otherwise>
+						<div id="content-with-tools">
+							<tiles:insertAttribute name="content" />
+							<tiles:insertAttribute name="toolbar" />
+						</div>
+					</c:otherwise>
+				</c:choose>
+				
+				<div class="clearer"></div>
 			</div>
 			
 			<div id="footer">

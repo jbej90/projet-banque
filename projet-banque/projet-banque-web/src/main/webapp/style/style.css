@@ -147,30 +147,12 @@ table tfoot tr td.total {
 	padding: 10px;
 	margin: 0 auto;
 	width: 800px;
-	float: left;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 }
 .box .icon {
 	float: right;
-}
-
-/* Actions */
-.actions {
-	float: left;
-	background: #fff;
-	border: 1px #ccc solid;
-	margin: 30px 0 0 0;
-	padding: 10px 0;
-	border-radius: 0 10px 10px 0;
-	-moz-border-radius: 0 10px 10px 0;
-	-webkit-border-radius: 0 10px 10px 0;
-	border-left: none;
-	width: 40px;
-}
-.actions a {
-	margin: 4px;
 }
 
 /* Utils */
@@ -317,9 +299,31 @@ table tfoot tr td.total {
 	background: #eff7ff;
 }
 #body #content {
-	padding: 0 10px 0 80px;
+	padding: 0 10px;
+}
+#body #content-with-tools {
 	margin: 0 auto;
-	width: 880px;
+	width: 950px;
+}
+#body #content-with-tools .box {
+	float: left;
+}
+#body #content-with-tools #toolbar {
+	float: left;
+	margin: 15px 0 0 0;
+	padding: 8px 4px;
+	width: 32px;
+	
+	background: #fff;
+	border: 1px #ccc solid;
+	border-left: none;
+	border-radius: 0 10px 10px 0;
+	-moz-border-radius: 0 10px 10px 0;
+	-webkit-border-radius: 0 10px 10px 0;
+}
+#body #content-with-tools #toolbar a {
+	display: block;
+	margin: 6px 0;
 }
 
 

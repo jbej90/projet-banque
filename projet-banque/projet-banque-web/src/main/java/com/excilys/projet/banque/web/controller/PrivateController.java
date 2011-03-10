@@ -28,6 +28,8 @@ import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 import com.excilys.projet.banque.web.utils.MessageStack;
+import com.excilys.projet.banque.web.utils.ToolItem;
+import com.excilys.projet.banque.web.utils.ToolbarManager;
 import com.excilys.projet.banque.web.utils.WebUtils;
 
 /**
@@ -134,6 +136,13 @@ public class PrivateController {
 				model.addAttribute("moiscourant", cal.get(Calendar.MONTH));
 				model.addAttribute("anneecourante", calNow.get(Calendar.YEAR));
 				model.addAttribute("anneeselectionnee", cal.get(Calendar.YEAR));
+				
+				// Configuration de la toolbar
+				// TODO : Refacto. Le modèle du menu ne fonctionne pas, puisqu'il nous faut des liens dynamiques :/
+				ToolbarManager toolbarManager = new ToolbarManager();
+				toolbarManager.addTool(new ToolItem("Exporter au format Excel", "/private/compte/"+selectedCompte.getId()+"_"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR)+WebUtils.URL_SUFFIX_XLS, "/images/export_excel.png", "Export excel"));
+				toolbarManager.addTool(new ToolItem("Effectuer un virement", "/private/virement/"+selectedCompte.getId()+WebUtils.URL_SUFFIX_PAGE, "/images/virement.png", "Virement"));
+				model.addAttribute("toolbar", toolbarManager);
 			}
 		}
 
