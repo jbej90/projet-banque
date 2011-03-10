@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 		
-<div class="box">
+<div class="box width-800">
 	<div class="icon">
 		 <img src="<c:url value="/images/home.png"/>" alt="home" title="home" />
 	</div>

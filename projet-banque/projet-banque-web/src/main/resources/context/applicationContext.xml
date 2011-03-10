@@ -19,5 +19,5 @@
 	<import resource="projet-banque-web-*.xml"/> 
 	
 	<!-- Chargement d'un bean PostProcessor pour les configurations plus fines -->
-	<bean id="postProcessor" class="com.excilys.projet.banque.web.PostProcessor"></bean>
+	<bean id="postProcessor" class="com.excilys.projet.banque.web.PostProcessor" />
 </beans>
