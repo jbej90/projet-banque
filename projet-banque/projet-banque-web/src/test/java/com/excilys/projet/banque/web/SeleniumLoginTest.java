@@ -20,7 +20,6 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 		selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");
 		selenium.start();
 	}
-
 	@Test
 	public void testLogin() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
@@ -30,7 +29,6 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Résumé de mes comptes"));
 	}
-
 	@Test
 	public void testLoginDelog() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
@@ -42,7 +40,6 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Identification"));
 	}
-
 	@Test
 	public void testLoginErrones() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
@@ -52,7 +49,6 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Login ou mot de passe erroné"));
 	}
-
 	@Test
 	public void testMdpErrones() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
@@ -62,7 +58,6 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Login ou mot de passe erroné"));
 	}
-
 	@Test
 	public void testLoginChampsVides() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
@@ -70,7 +65,6 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Login ou mot de passe erroné"));
 	}
-
 	@Test
 	public void testLoginNonActif() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
