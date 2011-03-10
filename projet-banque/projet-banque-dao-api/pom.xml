@@ -22,7 +22,7 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 		</dependency>
-		
+
 		<!-- BDD Utils -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -35,6 +35,13 @@
 		<dependency>
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
+		</dependency>
+
+
+		<!-- Utils -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
 		</dependency>
 	</dependencies>
 </project>
