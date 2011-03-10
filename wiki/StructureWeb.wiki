@@ -3,16 +3,10 @@
 
 = Introduction =
 
-Le projet Web s'appuie sur plusieurs technos pour obtenir le résultat attendu. Les principales étant Spring et ses modules (security, MVC). Mais aussi les Servlet, les EL/JSTL, Tiles, POI, Jackson, et enfin Selenium pour les tests.
+Le projet Web est l'une des applications finales du projet bancaire et s'appuie sur plusieurs technos pour obtenir le résultat attendu. Les principales étant Spring et ses modules (security, MVC). Mais aussi les Servlet, les EL/JSTL, Tiles, POI, Jackson, et enfin Selenium pour les tests.
 La première partie de cette page présentera succinctement ces différents outils. Les interactions entre eux seront détaillées dans un deuxième temps.
 
 
 = Présentation des technos =
 
 A venir...
-
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
