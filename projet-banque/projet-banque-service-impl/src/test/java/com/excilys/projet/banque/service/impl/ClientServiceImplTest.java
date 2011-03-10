@@ -17,8 +17,8 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.projet.banque.dao.impl.ClientDAOImpl;
-import com.excilys.projet.banque.dao.utils.DataSet;
-import com.excilys.projet.banque.dao.utils.DataSetTestExecutionListener;
+import com.excilys.projet.banque.dao.impl.utils.DataSet;
+import com.excilys.projet.banque.dao.impl.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;

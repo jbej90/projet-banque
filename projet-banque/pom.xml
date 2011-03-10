@@ -372,13 +372,13 @@
 					<executions>
 						<execution>
 							<phase>pre-integration-test</phase>
+							
 							<goals>
 								<goal>start-server</goal>
 							</goals>
 							<configuration>
-								<background>true</background>
 								<browserSessionReuse>true</browserSessionReuse>
-<!--								<ensureCleanSession>true</ensureCleanSession>-->
+								<background>true</background>
 							</configuration>
 						</execution>
 					</executions>
