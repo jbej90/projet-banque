@@ -9,4 +9,75 @@ La première partie de cette page présentera succinctement ces différents outi
 
 = Présentation des technos =
 
+
+== Spring ==
+
+Utilisé pour l'injection de dépendances
+
+
+=== Spring-Security ===
+
+Utilisé pour la sécurisation de l'application
+
+
+=== Spring-MVC ===
+
+Introduit une structure MVC dans l'application.
+
+Nécessite un (ou plusieurs) dispatcher déclarés dans le _web.xml_. Le nom donné au dispatcher indique le nom du fichier xml à charger pour la configuration de celui-ci. Le fichier sera alors `/WEB-INF/<nom_dispatcher>-servlet.xml`.
+
+Chacun de ces fichier définit le package à scanner à la recherche des controllers ainsi que le moteur de rendu (view resolver) à utiliser.
+
+Chaque méthode d'un controller sera mappée à une URI via l'annotation `@RequestMapping` et indiquera quelle page utiliser pour l'affichage, via la valeur qui sera renvoyée. Dans l'exemple suivant, les requêtes GET sur _/private/home.htm_ seront mappées à cette méthode qui demandera l'utilisation de la page _home.jsp_.
+
+{{{
+@RequestMapping(value = "/private/home.htm", method = RequestMethod.GET)
+public String showHome(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+	// ...
+	
+	return "home.jsp";
+}
+}}}
+
+
+== Servlet/JSP ==
+
+== EL/JSTL ==
+
+=== JSTL ===
+
+Les JSTL permettent de manipuler dynamiquement des données dans les pages JSP sans utiliser de scriptlet (code déclaré par _<% ... %>_). Pour les utiliser il faut déclarer les taglibs correspondantes en début de page JSP.
+
+Ci-dessous, quelques exemples de taglib utiles :
+ * `<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>`
+ * `<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>`
+ * `<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>`
+
+Grâce à cela, on sera en mesure d'effectuer des boucles, de formater des données, etc...
+Voici un exemple de formatage d'un nombre pour ne garder que 2 chiffres après la virgule :
+
+`<fmt:formatNumber maxFractionDigits="2">50.123456</fmt:formatNumber>`
+
+=== EL ===
+
+Les EL permettent de manipuler simplement les données transmises par les controllers via une instance de ModelMap. Par exemple, dans le code suivant le controller transmet un nombre qui sera affiché dans la page JSP.
+
+_*Controller*_
+{{{
+model.addAttribute("nombre", 10);
+}}}
+
+_*Page JSP*_
+{{{
+Le nombre stocké est ${nombre}.
+}}}
+
+== Tiles ==
+
+== POI ==
+
+== Jackson ==
+
+== Selenium ==
+
 A venir...
