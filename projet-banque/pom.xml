@@ -377,6 +377,8 @@
 							</goals>
 							<configuration>
 								<background>true</background>
+								<browserSessionReuse>true</browserSessionReuse>
+<!--								<ensureCleanSession>true</ensureCleanSession>-->
 							</configuration>
 						</execution>
 					</executions>

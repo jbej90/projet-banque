@@ -116,4 +116,63 @@ public class Operation implements Serializable, Comparable<Operation> {
 	public int compareTo(Operation o) {
 		return getDateOp().compareTo(o.getDateOp());
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((carte == null) ? 0 : carte.hashCode());
+		result = prime * result + ((compte == null) ? 0 : compte.hashCode());
+		result = prime * result + ((dateOp == null) ? 0 : dateOp.hashCode());
+		result = prime * result + ((etat == null) ? 0 : etat.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((libelle == null) ? 0 : libelle.hashCode());
+		result = prime * result + Float.floatToIntBits(montant);
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Operation other = (Operation) obj;
+		if (carte == null) {
+			if (other.carte != null)
+				return false;
+		} else if (!carte.equals(other.carte))
+			return false;
+		if (compte == null) {
+			if (other.compte != null)
+				return false;
+		} else if (!compte.equals(other.compte))
+			return false;
+		if (dateOp == null) {
+			if (other.dateOp != null)
+				return false;
+		} else if (!dateOp.equals(other.dateOp))
+			return false;
+		if (etat != other.etat)
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (libelle == null) {
+			if (other.libelle != null)
+				return false;
+		} else if (!libelle.equals(other.libelle))
+			return false;
+		if (Float.floatToIntBits(montant) != Float.floatToIntBits(other.montant))
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
+	}
+
 }
