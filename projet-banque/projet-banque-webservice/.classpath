@@ -10,7 +10,11 @@
   <classpathentry kind="var" path="M2_REPO/asm/asm/3.3/asm-3.3.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/aspectj/aspectjrt/1.6.8/aspectjrt-1.6.8.jar" sourcepath="M2_REPO/org/aspectj/aspectjrt/1.6.8/aspectjrt-1.6.8-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/aspectj/aspectjweaver/1.6.8/aspectjweaver-1.6.8.jar" sourcepath="M2_REPO/org/aspectj/aspectjweaver/1.6.8/aspectjweaver-1.6.8-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1-sources.jar">
+    <attributes>
+      <attribute value="jar:file:/home/excilys/repositoryMaven/commons-collections/commons-collections/3.1/commons-collections-3.1-javadoc.jar!/" name="javadoc_location"/>
+    </attributes>
+  </classpathentry>
   <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/99.0-does-not-exist/commons-logging-99.0-does-not-exist.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/cxf/cxf-api/2.3.3/cxf-api-2.3.3.jar" sourcepath="M2_REPO/org/apache/cxf/cxf-api/2.3.3/cxf-api-2.3.3-sources.jar"/>
