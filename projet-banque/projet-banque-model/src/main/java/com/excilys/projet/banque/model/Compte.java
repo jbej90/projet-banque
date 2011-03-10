@@ -79,7 +79,7 @@ public class Compte implements Comparable<Compte>, Serializable {
 	public void setSolde(float solde) {
 		this.solde = solde;
 	}
-	
+
 	@Transient
 	public float getSoldePrevisionnel() {
 		return soldePrevisionnel;

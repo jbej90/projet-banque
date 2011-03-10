@@ -29,7 +29,7 @@ public class ClientDAOImpl extends HibernateDaoSupport implements ClientDAO {
 		return (Client) getHibernateTemplate().find("From Client c left join fetch c.comptes where c.id=?", idClient).get(0);
 	}
 
-//	@Override
+	// @Override
 	public Client findByUsername(String username) {
 		return (Client) getHibernateTemplate().find("select distinct c From Client c left join fetch c.auth a left join fetch c.comptes where a.login = ?", username).get(0);
 	}

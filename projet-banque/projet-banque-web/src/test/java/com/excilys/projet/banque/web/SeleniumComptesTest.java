@@ -3,7 +3,6 @@ package com.excilys.projet.banque.web;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.Verifier;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleneseTestCase;
@@ -27,6 +26,7 @@ public class SeleniumComptesTest extends SeleneseTestCase {
 		selenium.click("//input[@value='Valider']");
 		selenium.waitForPageToLoad("30000");
 	}
+
 	@Test
 	public void testClientProprioCompte() throws Exception {
 		selenium.open("/projet-banque-web/private/compte/1.htm");
@@ -50,7 +50,7 @@ public class SeleniumComptesTest extends SeleneseTestCase {
 		selenium.click("link=Déconnexion");
 		selenium.waitForPageToLoad("30000");
 	}
-	
+
 	@Test
 	public void testCDR2() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
@@ -60,10 +60,10 @@ public class SeleniumComptesTest extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 		int nbLigneDeCompte = selenium.getXpathCount("//div[@id='content']/div/table/tbody/tr/td[2]").intValue();
 		boolean negatif = false;
-		for (int i = 1; i<=nbLigneDeCompte;i++){
-			String s = selenium.getText("//div[@id='content']/div/table/tbody/tr["+i+"]/td[2]").trim().replace("€", "");
-			if (Float.parseFloat(s)<0){
-				negatif=true;
+		for (int i = 1; i <= nbLigneDeCompte; i++) {
+			String s = selenium.getText("//div[@id='content']/div/table/tbody/tr[" + i + "]/td[2]").trim().replace("€", "");
+			if (Float.parseFloat(s) < 0) {
+				negatif = true;
 			}
 		}
 		verifyTrue(!negatif);
@@ -73,6 +73,9 @@ public class SeleniumComptesTest extends SeleneseTestCase {
 
 	@After
 	public void tearDown() throws Exception {
+		selenium.click("link=Déconnexion");
+		selenium.waitForPageToLoad("30000");
 		selenium.stop();
+
 	}
 }

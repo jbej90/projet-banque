@@ -82,4 +82,50 @@ public class Carte implements Serializable {
 		return "Carte [id=" + id + ", compte=" + compte + ", numCarte=" + numCarte + ", dateLim=" + dateLim + ", type=" + type + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((compte == null) ? 0 : compte.hashCode());
+		result = prime * result + ((dateLim == null) ? 0 : dateLim.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((numCarte == null) ? 0 : numCarte.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Carte other = (Carte) obj;
+		if (compte == null) {
+			if (other.compte != null)
+				return false;
+		} else if (!compte.equals(other.compte))
+			return false;
+		if (dateLim == null) {
+			if (other.dateLim != null)
+				return false;
+		} else if (!dateLim.equals(other.dateLim))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (numCarte == null) {
+			if (other.numCarte != null)
+				return false;
+		} else if (!numCarte.equals(other.numCarte))
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
+	}
+
 }

@@ -75,6 +75,22 @@ public class Auth implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+		return "Auth [id=" + id + ", login=" + login + ", password=" + password + ", enabled=" + enabled + ", client=" + client + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + enabled;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((login == null) ? 0 : login.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -86,11 +102,7 @@ public class Auth implements Serializable {
 		if (client == null) {
 			if (other.client != null)
 				return false;
-		} else if (!(client.getId() == other.client.getId()))
-			return false;
-		if (enabled != other.enabled)
-			return false;
-		if (id != other.id)
+		} else if (!id.equals(other.id))
 			return false;
 		if (login == null) {
 			if (other.login != null)
@@ -103,11 +115,6 @@ public class Auth implements Serializable {
 		} else if (!password.equals(other.password))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Auth [id=" + id + ", login=" + login + ", password=" + password + ", enabled=" + enabled + ", client=" + client + "]";
 	}
 
 }

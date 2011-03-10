@@ -1,5 +1,6 @@
 package com.excilys.projet.banque.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,6 @@ public class ClientServiceImpl implements ClientService {
 	private ClientDAO clientDao;
 	@Autowired
 	private AuthDAO authDao;
-
-	public ClientServiceImpl() {
-	}
-
-	public ClientServiceImpl(CompteDAO compteDao) {
-		this.compteDao = compteDao;
-	}
 
 	@Override
 	public Client recupererClient(int idClient) throws ServiceException {
