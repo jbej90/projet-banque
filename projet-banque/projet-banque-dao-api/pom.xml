@@ -17,13 +17,6 @@
 			<artifactId>projet-banque-model</artifactId>
 		</dependency>
 
-
-		<!-- <dependency> -->
-		<!-- <groupId>javax.transaction</groupId> -->
-		<!-- <artifactId>jta</artifactId> -->
-		<!-- </dependency> -->
-
-
 		<!-- Utils -->
 		<dependency>
 			<groupId>joda-time</groupId>
