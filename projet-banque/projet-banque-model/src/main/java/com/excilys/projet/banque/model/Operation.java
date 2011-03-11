@@ -72,7 +72,7 @@ public class Operation implements Serializable, Comparable<Operation> {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "date_op")
+	@Column(name = "date_op", nullable = false)
 	public Date getDateOp() {
 		return dateOp;
 	}
