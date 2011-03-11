@@ -9,10 +9,9 @@ import com.excilys.projet.banque.webservice.dto.TypeDTO;
 @Component("typeConverter")
 public class TypeToTypeDTO implements Converter<Type, TypeDTO> {
 
-
 	@Override
 	public TypeDTO convert(Type source) {
-		return null;
+		return TypeDTO.fromValue(source.toString());
 	}
 
 }

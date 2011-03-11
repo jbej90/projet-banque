@@ -11,7 +11,7 @@ import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
-import com.excilys.projet.banque.service.api.exception.UnknownAccountException;
+import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 import com.excilys.projet.banque.webservice.dto.CompteDTO;
 import com.excilys.projet.banque.webservice.dto.OperationDTO;
 
@@ -41,14 +41,14 @@ public class SoapService implements IWService {
 	}
 
 	@Override
-	public boolean passerOperation(int idCompteEmetteur, int idCompteDestinataire,
-			float montant) {
-		Compte compteEmetteur;
+	public boolean passerOperation(int idCompteEmetteur, int idCompteDestinataire, float montant) {
+		Compte compteEmetteur = null;
+		Compte compteDestinataire = null;
 		try {
 			compteEmetteur = compteService.recupererCompte(idCompteEmetteur);
-			Compte compteDestinataire = compteService.recupererCompte(idCompteDestinataire);
+			compteDestinataire = compteService.recupererCompte(idCompteDestinataire);
 			operationService.effectuerVirementInterne(compteEmetteur, compteDestinataire, montant);
-		} catch (UnknownAccountException e) {
+		} catch (ServiceException e) {
 			e.printStackTrace();
 			return false;
 		}

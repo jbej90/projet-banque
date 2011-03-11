@@ -8,6 +8,6 @@ http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
     <jaxws:client id="client"
                   serviceClass="com.excilys.projet.banque.webservice.IWService"
-                  address="http://localhost:8080/projet-banque-webservice/ws" />
+                  address="http://localhost:8080/projet-banque-webservice/ss" />
 </beans>
 

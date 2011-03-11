@@ -12,11 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
-import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
-import com.excilys.projet.banque.service.api.UnknownClientException;
 import com.excilys.projet.banque.webservice.dto.CompteDTO;
 import com.excilys.projet.banque.webservice.dto.OperationDTO;
 
@@ -40,46 +38,48 @@ public class RestService implements IWService {
 	public String welcome() {
 		return "Welcome!!!";
 	}
-	
+
 	@Override
-	@Path("/compte/{idClient}/{idCompte}") @GET
+	@Path("/compte/{idClient}/{idCompte}")
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public CompteDTO consultationCompte(@PathParam("idClient") int idClient, @PathParam("idCompte") int idCompte) {
-		try {
-			Client client = clientService.recupererClient(idClient);
-		} catch (UnknownClientException e) {
-			e.printStackTrace();
-			return null;
-		}
+		// try {
+		// Client client = clientService.recupererClient(idClient);
+		// } catch (UnknownClientException e) {
+		// e.printStackTrace();
+		// return null;
+		// }
 		return null;
 	}
 
-	//@Override
-	@Path("/comptes/{idClient}") @GET
+	// @Override
+	@Path("/comptes/{idClient}")
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String test(@PathParam("idClient") int idClient){
-		return "test"+idClient;
+	public String test(@PathParam("idClient") int idClient) {
+		return "test" + idClient;
 	}
-	
-//	public List<CompteDTO> consultationComptes(int idClient) {
-//		ArrayList<CompteDTO> comptes = new ArrayList<CompteDTO>();
-//
-//		for (Compte compte : clientService.recupererListeComptes(idClient))
-//			comptes.add(converter.convert(compte, CompteDTO.class));
-//
-//		return comptes;
-//	}
+
+	// public List<CompteDTO> consultationComptes(int idClient) {
+	// ArrayList<CompteDTO> comptes = new ArrayList<CompteDTO>();
+	//
+	// for (Compte compte : clientService.recupererListeComptes(idClient))
+	// comptes.add(converter.convert(compte, CompteDTO.class));
+	//
+	// return comptes;
+	// }
 
 	@Override
-	@Path("/operations/{idClient}/{idCompte}") @GET
+	@Path("/operations/{idClient}/{idCompte}")
+	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<OperationDTO> consultationOperations(@PathParam("idClient") int idClient, @PathParam("idCompte") int idCompte) {
 		return null;
 	}
 
 	@Override
-	public boolean passerOperation(int idCompteEmetteur,
-			int idCompteDestinataire, float montant) {
+	public boolean passerOperation(int idCompteEmetteur, int idCompteDestinataire, float montant) {
 		return false;
 	}
 
