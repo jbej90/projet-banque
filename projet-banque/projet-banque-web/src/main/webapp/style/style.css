@@ -303,7 +303,8 @@ table tfoot tr td.total {
 }
 #body #content-with-tools {
 	margin: 0 auto;
-	width: 950px;
+	padding: 0 0 0 42px;
+	width: 865px;
 }
 #body #content-with-tools .box {
 	float: left;
