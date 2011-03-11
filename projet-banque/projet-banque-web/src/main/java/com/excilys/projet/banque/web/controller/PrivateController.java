@@ -348,21 +348,21 @@ public class PrivateController {
 		// Récupère les opérations de ce compte
 		List<Operation> operations = new LinkedList<Operation>();
 		List<Operation> operationsCarte = new LinkedList<Operation>();
-		float total = 0;
-		float totalCarte = 0;
 
 		operations = operationService.recupererOperationsCompteNonCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
 		operationsCarte = operationService.recupererOperationsCompteCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
-		total = operationService.totalOperations(operations);
-		totalCarte = operationService.totalOperations(operationsCarte);
+		float total = operationService.totalOperations(operations);
+		float totalCarte = operationService.totalOperations(operationsCarte);
+		
+		String[] mois = DateFormatSymbols.getInstance(Locale.FRANCE).getMonths();
 
+		model.addAttribute("mois", mois[cal.get(Calendar.MONTH)]);
+		model.addAttribute("annee", cal.get(Calendar.YEAR));
 		model.addAttribute("compte", compte);
 		model.addAttribute("operations", operations);
-		model.addAttribute("operationsCarte", operationsCarte);
 		model.addAttribute("soustotal", total);
 		model.addAttribute("soustotalCarte", totalCarte);
 		model.addAttribute("total", (total + totalCarte));
-		model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
 
 		return "compte";
 	}
