@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	 xmlns:jaxrs="http://cxf.apache.org/jaxrs"
 	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context 
-						http://www.springframework.org/schema/context/spring-context.xsd
-						http://cxf.apache.org/jaxws
+						http://www.springframework.org/schema/context/spring-context.xsd  
+						http://cxf.apache.org/jaxrs 
+  						http://cxf.apache.org/schemas/jaxrs.xsd
+						http://cxf.apache.org/jaxws						
 						http://cxf.apache.org/schemas/jaxws.xsd">
 
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-	
-	<context:component-scan base-package="com.excilys.projet.banque.webservice.dto.converter" />
 
-	<bean id="wServ" class="com.excilys.projet.banque.webservice.WService" />
+	<context:component-scan
+		base-package="com.excilys.projet.banque.webservice.dto.converter" />
+	<context:component-scan
+		base-package="com.excilys.projet.banque.webservice.dto" />
 
-	<jaxws:endpoint id="wService" implementor="#wServ"
-		address="/ws" />
+	<bean id="soapServ" class="com.excilys.projet.banque.webservice.SoapService" />
+
+	<jaxws:endpoint id="soapService" implementor="#soapServ"
+		address="/ss" />
 
 	<!-- Chargement du fichier de propriétés -->
 	<bean id="propertyPlaceHolder"
@@ -40,10 +46,15 @@
 			</list>
 		</property>
 	</bean>
+	
 	<!-- A mettre en dans un fichier xml à part -->
-
-
+	<jaxrs:server id="restServer" address="/rs">
+		<jaxrs:serviceBeans>
+			<ref bean="restService"/>
+		</jaxrs:serviceBeans>
+	</jaxrs:server>
 	<!-- Chargement des fichiers du context web -->
+	
 	<!-- <import resource="projet-banque-webservice-*.xml"/> -->
 
 	<!-- <bean id="postProcessor" class="com.excilys.projet.banque.web.PostProcessor"></bean> -->
