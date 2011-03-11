@@ -1,6 +1,5 @@
 package com.excilys.projet.banque.webservice;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebService;
@@ -12,58 +11,52 @@ import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
-import com.excilys.projet.banque.service.api.exceptions.ServiceException;
+import com.excilys.projet.banque.service.api.exception.UnknownAccountException;
 import com.excilys.projet.banque.webservice.dto.CompteDTO;
 import com.excilys.projet.banque.webservice.dto.OperationDTO;
 
 @WebService(endpointInterface = "com.excilys.projet.banque.webservice.IWService")
-public class WService implements IWService {
+public class SoapService implements IWService {
 
 	@Autowired
-	private CompteService		compteService;
+	private CompteService compteService;
 	@Autowired
-	private OperationService	operationService;
+	private OperationService operationService;
 	@Autowired
-	private ClientService		clientService;
+	private ClientService clientService;
 	@Autowired
-	private ConversionService	converter;
+	private ConversionService converter;
 
-	public WService() {
+	public SoapService() {
 	}
 
 	@Override
-	public List<CompteDTO> consultationComptes(int idClient, String login, String password) {
-		ArrayList<CompteDTO> comptes = new ArrayList<CompteDTO>();
-
-		try {
-			for (Compte compte : clientService.recupererListeComptes(idClient))
-				comptes.add(converter.convert(compte, CompteDTO.class));
-		}
-		catch (ServiceException e) {
-			e.printStackTrace();
-		}
-
-		return comptes;
-	}
-
-	@Override
-	public List<OperationDTO> consultationOperations(int idCompte, int idClient) {
-		// TODO Tester que le compte appartient bien au client (idClient)
-		Compte compte = null;
-		// operationService.recupererOperations(compte);
+	public List<CompteDTO> consultationComptes(int idClient) {
 		return null;
 	}
 
 	@Override
-	public void passerOperation(int idCompteSource, int idCompteDestination, float montant) {
+	public List<OperationDTO> consultationOperations(int idCompte, int idClient) {
+		return null;
+	}
+
+	@Override
+	public boolean passerOperation(int idCompteEmetteur, int idCompteDestinataire,
+			float montant) {
+		Compte compteEmetteur;
+		try {
+			compteEmetteur = compteService.recupererCompte(idCompteEmetteur);
+			Compte compteDestinataire = compteService.recupererCompte(idCompteDestinataire);
+			operationService.effectuerVirementInterne(compteEmetteur, compteDestinataire, montant);
+		} catch (UnknownAccountException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public CompteDTO consultationCompte(int idClient, int idCompte) {
-		// for (Compte c : clientService.recupererListeComptes(idClient)) {
-		// if (c.getId()==idCompte)
-		// return c;
-		// }
 		return null;
 	}
 

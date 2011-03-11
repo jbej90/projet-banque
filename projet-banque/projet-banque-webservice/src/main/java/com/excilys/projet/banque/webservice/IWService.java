@@ -10,9 +10,9 @@ import com.excilys.projet.banque.webservice.dto.OperationDTO;
 @WebService
 public interface IWService {
 	
-	List<CompteDTO> consultationComptes(int idClient, String login, String password);
+	List<CompteDTO> consultationComptes(int idClient);
 	CompteDTO consultationCompte(int idClient, int idCompte);
-	List<OperationDTO> consultationOperations(int idCompte, int idClient);
-	void passerOperation(int idCompteSource, int idCompteDestination, float montant);
+	List<OperationDTO> consultationOperations(int idClient, int idCompte);
+	boolean passerOperation(int idCompteEmetteur, int idCompteDestinataire, float montant);
 	
 }
