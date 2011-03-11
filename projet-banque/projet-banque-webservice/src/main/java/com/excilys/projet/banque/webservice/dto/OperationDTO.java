@@ -1,5 +1,6 @@
-
 package com.excilys.projet.banque.webservice.dto;
+
+import java.util.Date;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -7,11 +8,13 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-
 /**
- * <p>Java class for operation complex type.
+ * <p>
+ * Java class for operation complex type.
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * 
  * <pre>
  * &lt;complexType name="operation">
@@ -35,210 +38,199 @@ import javax.xml.datatype.XMLGregorianCalendar;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "operation", propOrder = {
-    "carte",
-    "compte",
-    "dateOp",
-    "etat",
-    "id",
-    "libelle",
-    "montant",
-    "type"
-})
+@XmlType(name = "operation", propOrder = { "carte", "compte", "dateOp", "etat", "id", "libelle", "montant", "type" })
 public class OperationDTO {
 
-    protected CarteDTO carte;
-    protected CompteDTO compte;
-    @XmlSchemaType(name = "dateTime")
-    protected XMLGregorianCalendar dateOp;
-    protected EtatOperationDTO etat;
-    protected Integer id;
-    protected String libelle;
-    protected float montant;
-    protected TypeDTO type;
+	protected CarteDTO carte;
+	protected CompteDTO compte;
+	@XmlSchemaType(name = "dateTime")
+	protected Date dateOp;
+	protected EtatOperationDTO etat;
+	protected Integer id;
+	protected String libelle;
+	protected float montant;
+	protected TypeDTO type;
 
-    /**
-     * Gets the value of the carte property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CarteDTO }
-     *     
-     */
-    public CarteDTO getCarte() {
-        return carte;
-    }
+	public OperationDTO() {
+	}
 
-    /**
-     * Sets the value of the carte property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CarteDTO }
-     *     
-     */
-    public void setCarte(CarteDTO value) {
-        this.carte = value;
-    }
+	/**
+	 * Constructeur pour les converter
+	 */
 
-    /**
-     * Gets the value of the compte property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CompteDTO }
-     *     
-     */
-    public CompteDTO getCompte() {
-        return compte;
-    }
+	public OperationDTO(CarteDTO carte, CompteDTO compte, Date dateOp, EtatOperationDTO etat, Integer id, String libelle, float montant, TypeDTO type) {
+		super();
+		this.carte = carte;
+		this.compte = compte;
+		this.dateOp = dateOp;
+		this.etat = etat;
+		this.id = id;
+		this.libelle = libelle;
+		this.montant = montant;
+		this.type = type;
+	}
 
-    /**
-     * Sets the value of the compte property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CompteDTO }
-     *     
-     */
-    public void setCompte(CompteDTO value) {
-        this.compte = value;
-    }
+	/**
+	 * Gets the value of the carte property.
+	 * 
+	 * @return possible object is {@link CarteDTO }
+	 * 
+	 */
+	public CarteDTO getCarte() {
+		return carte;
+	}
 
-    /**
-     * Gets the value of the dateOp property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public XMLGregorianCalendar getDateOp() {
-        return dateOp;
-    }
+	/**
+	 * Sets the value of the carte property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link CarteDTO }
+	 * 
+	 */
+	public void setCarte(CarteDTO value) {
+		this.carte = value;
+	}
 
-    /**
-     * Sets the value of the dateOp property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link XMLGregorianCalendar }
-     *     
-     */
-    public void setDateOp(XMLGregorianCalendar value) {
-        this.dateOp = value;
-    }
+	/**
+	 * Gets the value of the compte property.
+	 * 
+	 * @return possible object is {@link CompteDTO }
+	 * 
+	 */
+	public CompteDTO getCompte() {
+		return compte;
+	}
 
-    /**
-     * Gets the value of the etat property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link EtatOperationDTO }
-     *     
-     */
-    public EtatOperationDTO getEtat() {
-        return etat;
-    }
+	/**
+	 * Sets the value of the compte property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link CompteDTO }
+	 * 
+	 */
+	public void setCompte(CompteDTO value) {
+		this.compte = value;
+	}
 
-    /**
-     * Sets the value of the etat property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link EtatOperationDTO }
-     *     
-     */
-    public void setEtat(EtatOperationDTO value) {
-        this.etat = value;
-    }
+	/**
+	 * Gets the value of the dateOp property.
+	 * 
+	 * @return possible object is {@link XMLGregorianCalendar }
+	 * 
+	 */
+	public Date getDateOp() {
+		return dateOp;
+	}
 
-    /**
-     * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *     
-     */
-    public Integer getId() {
-        return id;
-    }
+	/**
+	 * Sets the value of the dateOp property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link XMLGregorianCalendar }
+	 * 
+	 */
+	public void setDateOp(Date value) {
+		this.dateOp = value;
+	}
 
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
-     */
-    public void setId(Integer value) {
-        this.id = value;
-    }
+	/**
+	 * Gets the value of the etat property.
+	 * 
+	 * @return possible object is {@link EtatOperationDTO }
+	 * 
+	 */
+	public EtatOperationDTO getEtat() {
+		return etat;
+	}
 
-    /**
-     * Gets the value of the libelle property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getLibelle() {
-        return libelle;
-    }
+	/**
+	 * Sets the value of the etat property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link EtatOperationDTO }
+	 * 
+	 */
+	public void setEtat(EtatOperationDTO value) {
+		this.etat = value;
+	}
 
-    /**
-     * Sets the value of the libelle property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setLibelle(String value) {
-        this.libelle = value;
-    }
+	/**
+	 * Gets the value of the id property.
+	 * 
+	 * @return possible object is {@link Integer }
+	 * 
+	 */
+	public Integer getId() {
+		return id;
+	}
 
-    /**
-     * Gets the value of the montant property.
-     * 
-     */
-    public float getMontant() {
-        return montant;
-    }
+	/**
+	 * Sets the value of the id property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Integer }
+	 * 
+	 */
+	public void setId(Integer value) {
+		this.id = value;
+	}
 
-    /**
-     * Sets the value of the montant property.
-     * 
-     */
-    public void setMontant(float value) {
-        this.montant = value;
-    }
+	/**
+	 * Gets the value of the libelle property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public String getLibelle() {
+		return libelle;
+	}
 
-    /**
-     * Gets the value of the type property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link TypeDTO }
-     *     
-     */
-    public TypeDTO getType() {
-        return type;
-    }
+	/**
+	 * Sets the value of the libelle property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setLibelle(String value) {
+		this.libelle = value;
+	}
 
-    /**
-     * Sets the value of the type property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link TypeDTO }
-     *     
-     */
-    public void setType(TypeDTO value) {
-        this.type = value;
-    }
+	/**
+	 * Gets the value of the montant property.
+	 * 
+	 */
+	public float getMontant() {
+		return montant;
+	}
+
+	/**
+	 * Sets the value of the montant property.
+	 * 
+	 */
+	public void setMontant(float value) {
+		this.montant = value;
+	}
+
+	/**
+	 * Gets the value of the type property.
+	 * 
+	 * @return possible object is {@link TypeDTO }
+	 * 
+	 */
+	public TypeDTO getType() {
+		return type;
+	}
+
+	/**
+	 * Sets the value of the type property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link TypeDTO }
+	 * 
+	 */
+	public void setType(TypeDTO value) {
+		this.type = value;
+	}
 
 }

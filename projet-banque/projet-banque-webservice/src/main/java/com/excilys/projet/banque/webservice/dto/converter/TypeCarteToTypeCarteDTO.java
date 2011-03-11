@@ -11,7 +11,12 @@ public class TypeCarteToTypeCarteDTO implements Converter<TypeCarte, TypeCarteDT
 
 	@Override
 	public TypeCarteDTO convert(TypeCarte source) {
-		return null;
+		return TypeCarteDTO.fromValue(source.toString());
 	}
 
+	// public static void main(String args[]) {
+	// TypeCarteToTypeCarteDTO typeCarteDTO = new TypeCarteToTypeCarteDTO();
+	//
+	// System.out.println(typeCarteDTO.convert(TypeCarte.IMMEDIAT));
+	// }
 }
