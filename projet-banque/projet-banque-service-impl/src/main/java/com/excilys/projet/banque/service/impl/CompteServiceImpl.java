@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.projet.banque.dao.api.CompteDAO;
 import com.excilys.projet.banque.model.Compte;
@@ -14,6 +15,7 @@ import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 
 @Service("compteService")
+@Transactional(readOnly=true)
 public class CompteServiceImpl implements CompteService {
 
 	@Autowired
@@ -65,6 +67,7 @@ public class CompteServiceImpl implements CompteService {
 	}
 
 	@Override
+	@Transactional(readOnly=false)
 	public void virer(Compte source, Compte destination, float montant) throws ServiceException {
 		// Effectue les controles de validité des données
 		verifierAvantVirement(source, destination, montant);

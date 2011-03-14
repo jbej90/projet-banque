@@ -7,6 +7,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.projet.banque.dao.api.OperationDAO;
 import com.excilys.projet.banque.dao.api.exceptions.DAOException;
@@ -19,6 +20,7 @@ import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 
 @Service("operationService")
+@Transactional(readOnly=true)
 public class OperationServiceImpl implements OperationService {
 
 	@Autowired
@@ -139,6 +141,7 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
+	@Transactional(readOnly=false)
 	public void effectuerVirementInterne(Compte compteEmetteur, Compte compteDestinataire, float montant) {
 		Date dateOp = new Date();
 

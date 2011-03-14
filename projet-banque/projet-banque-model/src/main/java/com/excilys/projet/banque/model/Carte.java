@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,7 +39,7 @@ public class Carte implements Serializable {
 		this.id = id;
 	}
 
-	@ManyToOne(targetEntity = Compte.class)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "compte_fk")
 	public Compte getCompte() {
 		return compte;

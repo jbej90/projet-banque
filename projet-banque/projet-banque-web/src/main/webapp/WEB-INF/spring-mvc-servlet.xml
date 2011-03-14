@@ -46,7 +46,7 @@
 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
 		<property name="definitions">
 			<list>
-				<value>/WEB-INF/template/template.xml</value>
+				<value>/WEB-INF/template/template-default.xml</value>
 				<value>/WEB-INF/template/template-error.xml</value>
 			</list>
 		</property>
