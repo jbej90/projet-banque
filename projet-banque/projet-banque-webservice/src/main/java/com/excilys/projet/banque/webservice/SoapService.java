@@ -47,7 +47,10 @@ public class SoapService implements IWService {
 		try {
 			compteEmetteur = compteService.recupererCompte(idCompteEmetteur);
 			compteDestinataire = compteService.recupererCompte(idCompteDestinataire);
-			operationService.effectuerVirementInterne(compteEmetteur, compteDestinataire, montant);
+			compteService.virer(compteEmetteur, compteDestinataire, montant);
+			// operationService.effectuerVirementInterne(compteEmetteur,
+			// compteDestinataire, montant);
+
 		} catch (ServiceException e) {
 			e.printStackTrace();
 			return false;
