@@ -13,23 +13,7 @@
 	<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
 	
 	<form id="form" action="<c:url value="/private/compte/${compte.id}.htm"></c:url>" method="post" class="filter">
-		<noscript>
-			<select name="filter_month" id="filter_month">
-				<c:forEach items="${listemois}" var="mois" varStatus="status">
-					<c:if test="${mois != ''}">
-						<option value="${status.index}"<c:if test="${moiscourant == status.index}"> selected="selected"</c:if>>${mois}</option>
-					</c:if>
-				</c:forEach>
-			</select>
-			
-			<select name="filter_year" id="filter_year">
-				<c:forEach begin="${anneecourante-2}" end="${anneecourante}" var="annee">
-					<option value="${annee}"<c:if test="${anneeselectionnee == annee}"> selected="selected"</c:if>>${annee}</option>
-				</c:forEach>
-			</select>
-			
-			<input type="submit" value="Afficher" />
-		</noscript>
+		<jsp:include page="/WEB-INF/template/module-calendar.jsp" />
 	
 		<p>Ci-dessous, la liste des opérations de ce compte pour le mois de ${listemois[moiscourant]} ${anneeselectionnee}.</p>
 		<p>Les opérations par carte sont regroupées en une seule ligne dans le sous-total.</p>
@@ -37,7 +21,7 @@
 		<table>
 			<thead>
 				<tr>
-					<th width="30%">Date<jsp:include page="/WEB-INF/template/module-calendar.jsp" /></th>
+					<th width="30%">Date<input type="hidden" id="datepicker" name="datepicker" /></th>
 					<th width="30%">Libelle</th>
 					<th width="20%">Type</th>
 					<th width="10%">Débit</th>
