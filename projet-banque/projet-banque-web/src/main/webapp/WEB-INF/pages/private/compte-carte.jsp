@@ -12,70 +12,72 @@
 	
 	<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
 	
-	<form action="<c:url value="/private/compte/${compte.id}/operations/carte.htm"></c:url>" method="post" class="filter">
-		<select name="filter_month" id="filter_month">
-			<c:forEach items="${listemois}" var="mois" varStatus="status">
-				<c:if test="${mois != ''}">
-					<option value="${status.index}"<c:if test="${moiscourant == status.index}"> selected="selected"</c:if>>${mois}</option>
-				</c:if>
-			</c:forEach>
-		</select>
+	<form id="form" action="<c:url value="/private/compte/${compte.id}/operations/carte.htm"></c:url>" method="post" class="filter">
+		<noscript>
+			<select name="filter_month" id="filter_month">
+				<c:forEach items="${listemois}" var="mois" varStatus="status">
+					<c:if test="${mois != ''}">
+						<option value="${status.index}"<c:if test="${moiscourant == status.index}"> selected="selected"</c:if>>${mois}</option>
+					</c:if>
+				</c:forEach>
+			</select>
+			
+			<select name="filter_year" id="filter_year">
+				<c:forEach begin="${anneecourante-2}" end="${anneecourante}" var="annee">
+					<option value="${annee}"<c:if test="${anneeselectionnee == annee}"> selected="selected"</c:if>>${annee}</option>
+				</c:forEach>
+			</select>
+			
+			<input type="submit" value="Afficher" />
+		</noscript>
+	
+		<p>Ci-dessous, la liste des opérations par carte de ce compte pour le mois de ${listemois[moiscourant]} ${anneeselectionnee}.</p>
 		
-		<select name="filter_year" id="filter_year">
-			<c:forEach begin="${anneecourante-2}" end="${anneecourante}" var="annee">
-				<option value="${annee}"<c:if test="${anneeselectionnee == annee}"> selected="selected"</c:if>>${annee}</option>
-			</c:forEach>
-		</select>
+		<table>
+			<thead>
+				<tr>
+					<th width="30%">Date<jsp:include page="/WEB-INF/template/module-calendar.jsp" /></th>
+					<th width="30%">Libelle</th>
+					<th width="20%">Type</th>
+					<th width="10%">Débit</th>
+					<th width="10%">Crédit</th>
+				</tr>
+			</thead>
 		
-		<input type="submit" value="Afficher" />
-	</form>
-	
-	<p>Ci-dessous, la liste des opérations par carte de ce compte pour le mois sélectionné.</p>
-	
-	<table>
-		<thead>
-			<tr>
-				<th width="30%">Date</th>
-				<th width="30%">Libelle</th>
-				<th width="20%">Type</th>
-				<th width="10%">Débit</th>
-				<th width="10%">Crédit</th>
-			</tr>
-		</thead>
-	
-		<tbody>
-			<c:choose>
-				<c:when test="${fn:length(operationscarte) > 0}">
-					<% int i = 0; %>
-					<c:forEach items="${operationscarte}" var="operation">
-						<tr class="line<%=i++ % 2%>">
-							<td><fmt:formatDate value="${operation.dateOp}" type="date" /></td>
-							<td>${operation.libelle}</td>
-							<td>${operation.type}</td>
-							<td align="right" class="decouvert">
-								<c:if test="${operation.montant < 0}">${operation.montant}€</c:if>
-							</td>
-							<td align="right">
-								<c:if test="${operation.montant >= 0}">${operation.montant}€</c:if>
-							</td>
+			<tbody>
+				<c:choose>
+					<c:when test="${fn:length(operationscarte) > 0}">
+						<% int i = 0; %>
+						<c:forEach items="${operationscarte}" var="operation">
+							<tr class="line<%=i++ % 2%>">
+								<td><fmt:formatDate value="${operation.dateOp}" type="date" /></td>
+								<td>${operation.libelle}</td>
+								<td>${operation.type}</td>
+								<td align="right" class="decouvert">
+									<c:if test="${operation.montant < 0}">${operation.montant}€</c:if>
+								</td>
+								<td align="right">
+									<c:if test="${operation.montant >= 0}">${operation.montant}€</c:if>
+								</td>
+							</tr>
+						</c:forEach>
+					</c:when>
+					
+					<c:otherwise>
+						<tr class="line0">
+							<td colspan="5" class="empty">Aucune opération</td>
 						</tr>
-					</c:forEach>
-				</c:when>
-				
-				<c:otherwise>
-					<tr class="line0">
-						<td colspan="5" class="empty">Aucune opération</td>
-					</tr>
-				</c:otherwise>
-			</c:choose>
-		</tbody>
-	
-		<tfoot>
-			<tr>
-				<td colspan="3">Total des opérations</td>
-				<td align="right" class="total decouvert"><c:if test="${totalcarte<0}" ><fmt:formatNumber maxFractionDigits="2">${totalcarte}</fmt:formatNumber>€</c:if></td>
-				<td align="right" class="total"><c:if test="${totalcarte>=0}"><fmt:formatNumber maxFractionDigits="2">${totalcarte}</fmt:formatNumber>€</c:if></td>
-			</tr>
-		</tfoot>
-	</table>
+					</c:otherwise>
+				</c:choose>
+			</tbody>
+		
+			<tfoot>
+				<tr>
+					<td colspan="3">Total des opérations</td>
+					<td align="right" class="total decouvert"><c:if test="${totalcarte<0}" ><fmt:formatNumber maxFractionDigits="2">${totalcarte}</fmt:formatNumber>€</c:if></td>
+					<td align="right" class="total"><c:if test="${totalcarte>=0}"><fmt:formatNumber maxFractionDigits="2">${totalcarte}</fmt:formatNumber>€</c:if></td>
+				</tr>
+			</tfoot>
+		</table>
+	</form>
 </div>

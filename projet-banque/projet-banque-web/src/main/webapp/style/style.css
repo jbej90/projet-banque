@@ -108,11 +108,12 @@ table td.empty {
 	color: #666;
 }
 
-table caption {
+table caption, tr.caption {
 	color: #666;
 	height: 24px;
 	padding: 4px;
 	font-weight: bold;
+	text-align: center;
 }
 
 table thead tr {
@@ -129,7 +130,7 @@ table tbody tr.line1 {
 	background: #fff;
 	border-top: 1px #fff solid;
 }
-table tbody tr:hover {
+table tbody tr.line0:hover, table tbody tr.line1:hover {
 	background: #ffffcf;
 }
 
