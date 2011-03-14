@@ -2,7 +2,10 @@ package com.excilys.projet.banque.web.controller;
 
 import java.io.IOException;
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -424,7 +427,8 @@ public class PrivateController {
 	 */
 	private Calendar getMonthYearFilter(HttpServletRequest request) {
 		Calendar cal = Calendar.getInstance(Locale.FRANCE);
-
+		
+		// Si la requete contient les parametres du formulaire no-script
 		if (request.getParameterMap().containsKey("filter_month") && request.getParameterMap().containsKey("filter_year")) {
 			try {
 				int month = Integer.parseInt(request.getParameter("filter_month"));
@@ -436,10 +440,27 @@ public class PrivateController {
 				MessageStack.getInstance(request).addError("Format de date incorrect");
 			}
 		}
+		// Si la requete contient le parametre du calendrier jQuery
+		else if (request.getParameterMap().containsKey("datepicker")) {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			try {
+				Date date = sdf.parse(request.getParameter("datepicker"));
+				cal.setTime(date);
+				
+				// Vérifie la validité de la date
+				cal = getMonthYearFilter(cal);
+			}
+			catch (ParseException e) {
+				MessageStack.getInstance(request).addError("Format de date incorrect");
+			}
+		}
 
 		return cal;
 	}
 
+	private Calendar getMonthYearFilter(Calendar cal) {
+		return getMonthYearFilter(cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
+	}
 	private Calendar getMonthYearFilter(int month, int year) {
 		Calendar cal = Calendar.getInstance(Locale.FRANCE);
 
@@ -448,6 +469,7 @@ public class PrivateController {
 		}
 
 		// Bride l'historique à 3 ans en arrière
+		// TODO : Ajouter le test pour les 3 ans coulants
 		if (year < cal.get(Calendar.YEAR) - 3 || year > cal.get(Calendar.YEAR)) {
 			throw new NumberFormatException("Année hors limite");
 		}

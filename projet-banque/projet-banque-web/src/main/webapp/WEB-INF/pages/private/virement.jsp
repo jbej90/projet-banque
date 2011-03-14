@@ -76,89 +76,83 @@
 <div class="box">
 	<h3>Historique de mes virements</h3>
 		
-	<form action="<c:url value="/private/virement.htm"></c:url>" method="post" class="filter">
-		<select name="filter_month" id="filter_month">
-			<c:forEach items="${listemois}" var="mois" varStatus="status">
-				<c:if test="${mois != ''}">
-					<option value="${status.index}"<c:if test="${moiscourant == status.index}"> selected="selected"</c:if>>${mois}</option>
-				</c:if>
-			</c:forEach>
-		</select>
+	<form id="form" action="<c:url value="/private/virement.htm"></c:url>" method="post" class="filter">
+		<noscript>
+			<select name="filter_month" id="filter_month">
+				<c:forEach items="${listemois}" var="mois" varStatus="status">
+					<c:if test="${mois != ''}">
+						<option value="${status.index}"<c:if test="${moiscourant == status.index}"> selected="selected"</c:if>>${mois}</option>
+					</c:if>
+				</c:forEach>
+			</select>
+			
+			<select name="filter_year" id="filter_year">
+				<c:forEach begin="${anneecourante-2}" end="${anneecourante}" var="annee">
+					<option value="${annee}"<c:if test="${anneeselectionnee == annee}"> selected="selected"</c:if>>${annee}</option>
+				</c:forEach>
+			</select>
+			
+			<input type="submit" value="Afficher" />
+		</noscript>
 		
-		<select name="filter_year" id="filter_year">
-			<c:forEach begin="${anneecourante-2}" end="${anneecourante}" var="annee">
-				<option value="${annee}"<c:if test="${anneeselectionnee == annee}"> selected="selected"</c:if>>${annee}</option>
-			</c:forEach>
-		</select>
+		<p>Ce tableau présente la liste de vos virements de ${listemois[moiscourant]} ${anneeselectionnee}.</p>
 		
-		<input type="submit" value="Afficher" />
+		<table>
+			<thead>
+				<tr>
+					<th width="30%">Date<jsp:include page="/WEB-INF/template/module-calendar.jsp" /></th>
+					<th width="50%">Libelle</th>
+					<th width="20%">Montant</th>
+				</tr>
+			</thead>
+		
+			<tbody>
+				<tr class="caption">
+					<td colspan="3">Virements effectués</td>
+				</tr>
+				
+				<c:choose>
+					<c:when test="${fn:length(virements) > 0}">
+						<% int i = 0; %>
+						<c:forEach items="${virements}" var="operation">
+							<tr class="line<%=i++ % 2%>">
+								<td><fmt:formatDate value="${operation.dateOp}" type="both" /></td>
+								<td>${operation.libelle}</td>
+								<td align="right"<c:if test="${operation.montant < 0}"> class="decouvert"</c:if>>${operation.montant}€</td>
+							</tr>
+						</c:forEach>
+					</c:when>
+						
+					<c:otherwise>
+						<tr class="line0">
+							<td colspan="3" class="empty">Aucun virement</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
+
+				<tr class="caption">
+					<td colspan="3">Virements en cours</td>
+				</tr>
+				
+				<c:choose>
+					<c:when test="${fn:length(virementsencours) > 0}">
+						<% int i = 0; %>
+						<c:forEach items="${virementsencours}" var="operation">
+							<tr class="line<%=i++ % 2%>">
+								<td><fmt:formatDate value="${operation.dateOp}" type="both" /></td>
+								<td>${operation.libelle}</td>
+								<td align="right"<c:if test="${operation.montant < 0}"> class="decouvert"</c:if>>${operation.montant}€</td>
+							</tr>
+						</c:forEach>
+					</c:when>
+						
+					<c:otherwise>
+						<tr class="line0">
+							<td colspan="3" class="empty">Aucun virement</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
+			</tbody>
+		</table>
 	</form>
-	
-	<p>Ce tableau présente la liste de vos virements de ${listemois[moiscourant]} ${anneeselectionnee}.</p>
-	
-	<table>
-		<caption>Virements effectués</caption>
-		
-		<thead>
-			<tr>
-				<th width="30%">Date</th>
-				<th width="50%">Libelle</th>
-				<th width="20%">Montant</th>
-			</tr>
-		</thead>
-	
-		<tbody>
-			<c:choose>
-				<c:when test="${fn:length(virements) > 0}">
-					<% int i = 0; %>
-					<c:forEach items="${virements}" var="operation">
-						<tr class="line<%=i++ % 2%>">
-							<td><fmt:formatDate value="${operation.dateOp}" type="both" /></td>
-							<td>${operation.libelle}</td>
-							<td align="right"<c:if test="${operation.montant < 0}"> class="decouvert"</c:if>>${operation.montant}€</td>
-						</tr>
-					</c:forEach>
-				</c:when>
-					
-				<c:otherwise>
-					<tr class="line0">
-						<td colspan="3" class="empty">Aucun virement</td>
-					</tr>
-				</c:otherwise>
-			</c:choose>
-		</tbody>
-	</table>
-	
-	<table>
-		<caption>Virements en cours</caption>
-		
-		<thead>
-			<tr>
-				<th width="30%">Date</th>
-				<th width="50%">Libelle</th>
-				<th width="20%">Montant</th>
-			</tr>
-		</thead>
-	
-		<tbody>
-			<c:choose>
-				<c:when test="${fn:length(virementsencours) > 0}">
-					<% int i = 0; %>
-					<c:forEach items="${virementsencours}" var="operation">
-						<tr class="line<%=i++ % 2%>">
-							<td><fmt:formatDate value="${operation.dateOp}" type="both" /></td>
-							<td>${operation.libelle}</td>
-							<td align="right"<c:if test="${operation.montant < 0}"> class="decouvert"</c:if>>${operation.montant}€</td>
-						</tr>
-					</c:forEach>
-				</c:when>
-					
-				<c:otherwise>
-					<tr class="line0">
-						<td colspan="3" class="empty">Aucun virement</td>
-					</tr>
-				</c:otherwise>
-			</c:choose>
-		</tbody>
-	</table>
 </div>

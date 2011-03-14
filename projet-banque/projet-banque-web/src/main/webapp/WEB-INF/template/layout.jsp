@@ -13,8 +13,23 @@
 		
 		<link rel="icon" type="image/png" href="<c:url value="/images/favicon.png"/>" />
 		<link rel="stylesheet" type="text/css" href="<c:url value="/style/style.css"/>" />
+		<link rel="stylesheet" type="text/css" href="<c:url value="/style/jquery-ui.css"/>" />
 		
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+		<script type="text/javascript" src="<c:url value="/javascript/jquery-ui.min.js"/>"></script>
+		<script type="text/javascript" src="<c:url value="/javascript/jquery-ui.datepicker-fr.js"/>"></script>
+		<script type="text/javascript" src="<c:url value="/javascript/jquery-ui.monthpicker.js"/>"></script>
+		
+		<script type="text/javascript">
+			$.datepicker.setDefaults({
+				minDate: '-3Y', 
+				maxDate: 0,
+				showAnim: 'fold',
+				showOn: 'button',
+				buttonImage: '<c:url value="/images/calendar_month.png"/>',
+				buttonImageOnly: true
+			});
+		</script>
 	</head>
 	
 	<body>
