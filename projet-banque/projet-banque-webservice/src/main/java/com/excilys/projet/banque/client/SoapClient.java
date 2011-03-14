@@ -13,7 +13,7 @@ public class SoapClient {
 	public static void main(String args[]) {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:/context/applicationContext-Client.xml");
 		IWService iwServiceClient = applicationContext.getBean("client", IWService.class);
-		iwServiceClient.passerOperation(1, 2, 5);
+		iwServiceClient.passerOperation(1, 2, 20);
 	}
 
 }
