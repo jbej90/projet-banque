@@ -9,6 +9,12 @@
 	<import resource="classpath*:context/applicationContext-dao-impl-hibernate.xml" />
 	<context:annotation-config />
 	<context:component-scan base-package="com.excilys.projet.banque.service.impl" />
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<constructor-arg>
+			<ref bean="sessionFactory"/>
+		</constructor-arg>
+	</bean>
 
 	<!-- <bean id="clientService" -->
 	<!-- class="com.excilys.projet.banque.service.impl.ClientServiceImpl"> -->

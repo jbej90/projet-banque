@@ -1,10 +1,10 @@
 package com.excilys.projet.banque.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.projet.banque.dao.api.AuthDAO;
 import com.excilys.projet.banque.dao.api.ClientDAO;
@@ -16,6 +16,7 @@ import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.exceptions.ServiceException;
 
 @Service("clientService")
+@Transactional(readOnly=true)
 public class ClientServiceImpl implements ClientService {
 
 	@Autowired

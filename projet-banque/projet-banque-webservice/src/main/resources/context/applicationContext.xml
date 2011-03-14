@@ -27,15 +27,13 @@
 		address="/ss" />
 
 	<!-- Client -->
-	<jaxws:client id="soapClient" serviceClass="com.excilys.projet.banque.webservice.IWService" 
-		address="http://localhost:8080/projet-banque-webservice/" />
+	<jaxws:client id="soapClient"
+		serviceClass="com.excilys.projet.banque.webservice.IWService" address="http://localhost:8080/projet-banque-webservice/" />
 
 
 	<!-- Chargement du fichier de propriétés -->
-	<bean id="propertyPlaceHolder"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location"
-			value="classpath:/context/projet-banque-webservice.properties" />
+	<bean id="propertyPlaceHolder" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:/context/projet-banque-webservice.properties" />
 	</bean>
 
 	<!-- A mettre en dans un fichier xml à part -->
@@ -60,9 +58,8 @@
 			<ref bean="restService" />
 		</jaxrs:serviceBeans>
 	</jaxrs:server>
+
 	<!-- Chargement des fichiers du context web -->
+	<import resource="projet-banque-webservice-*.xml" />
 
-	<!-- <import resource="projet-banque-webservice-*.xml"/> -->
-
-	<!-- <bean id="postProcessor" class="com.excilys.projet.banque.web.PostProcessor"></bean> -->
 </beans>
