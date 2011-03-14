@@ -27,7 +27,8 @@
 				showAnim: 'fold',
 				showOn: 'button',
 				buttonImage: '<c:url value="/images/calendar_month.png"/>',
-				buttonImageOnly: true
+				buttonImageOnly: true,
+				buttonText: 'Filtrer par mois'
 			});
 		</script>
 	</head>

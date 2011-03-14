@@ -468,9 +468,8 @@ public class PrivateController {
 			throw new NumberFormatException("Mois hors limite");
 		}
 
-		// Bride l'historique à 3 ans en arrière
-		// TODO : Ajouter le test pour les 3 ans coulants
-		if (year < cal.get(Calendar.YEAR) - 3 || year > cal.get(Calendar.YEAR)) {
+		// Bride l'historique à 3 ans coulantes (de mois à mois) en arrière
+		if (year < cal.get(Calendar.YEAR) - 3 || (year == cal.get(Calendar.YEAR)-3 && month < cal.get(Calendar.MONTH)) || year > cal.get(Calendar.YEAR)) {
 			throw new NumberFormatException("Année hors limite");
 		}
 

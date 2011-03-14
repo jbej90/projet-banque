@@ -56,7 +56,18 @@
 		</div>
 		<div class="row">
 			<label for="compte_dest">Destination :</label>
-			<select name="compte_dest" id="compte_dest"></select>
+			<script type="text/javascript">
+				//<![CDATA[
+					document.write('<select name="compte_dest" id="compte_dest"></select>');
+				//]]>
+			</script>
+			<noscript>
+				<select name="compte_dest" id="compte_dest">
+					<c:forEach items="${comptes}" var="compte">
+						<option value="${compte.id}"<c:if test="${compte.id == compte_dest}"> selected="selected"</c:if>>${compte.libelle} (${compte.solde}€)</option>
+					</c:forEach>
+				</select>
+			</noscript>
 			
 			<img id="compte_dest_loading" src="<c:url value="/images/loading.gif"/>" alt="Chargement" title="Chargement" class="hidden" />
 		</div>
@@ -77,30 +88,14 @@
 	<h3>Historique de mes virements</h3>
 		
 	<form id="form" action="<c:url value="/private/virement.htm"></c:url>" method="post" class="filter">
-		<noscript>
-			<select name="filter_month" id="filter_month">
-				<c:forEach items="${listemois}" var="mois" varStatus="status">
-					<c:if test="${mois != ''}">
-						<option value="${status.index}"<c:if test="${moiscourant == status.index}"> selected="selected"</c:if>>${mois}</option>
-					</c:if>
-				</c:forEach>
-			</select>
-			
-			<select name="filter_year" id="filter_year">
-				<c:forEach begin="${anneecourante-2}" end="${anneecourante}" var="annee">
-					<option value="${annee}"<c:if test="${anneeselectionnee == annee}"> selected="selected"</c:if>>${annee}</option>
-				</c:forEach>
-			</select>
-			
-			<input type="submit" value="Afficher" />
-		</noscript>
+		<jsp:include page="/WEB-INF/template/module-calendar.jsp" />
 		
 		<p>Ce tableau présente la liste de vos virements de ${listemois[moiscourant]} ${anneeselectionnee}.</p>
 		
 		<table>
 			<thead>
 				<tr>
-					<th width="30%">Date<jsp:include page="/WEB-INF/template/module-calendar.jsp" /></th>
+					<th width="30%">Date<input type="hidden" id="datepicker" name="datepicker" /></th>
 					<th width="50%">Libelle</th>
 					<th width="20%">Montant</th>
 				</tr>
