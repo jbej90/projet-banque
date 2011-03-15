@@ -99,6 +99,8 @@ public class PrivateController {
 	public String showCompte(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
+		
+		System.out.println(client);
 
 		// Essaye de parser la date pour le filtre d'opérations
 		Calendar cal = getMonthYearFilter(request);
@@ -387,16 +389,13 @@ public class PrivateController {
 	 */
 	private Client getActualClient(HttpServletRequest request) {
 		// Récupère l'instance Client de l'utilisateur connecté
-		Client client = null;
 		try {
 			Integer idClient = (Integer) request.getSession().getAttribute("idClient");
-			client = clientService.recupererClient(idClient);
+			return clientService.recupererClient(idClient);
 		}
-		//TODO @Damien: définir les actions associées à la réception des exceptions
 		catch (NullPointerException e) {
-			e.printStackTrace();
+			return null;
 		}
-		return client;
 	}
 
 	/**

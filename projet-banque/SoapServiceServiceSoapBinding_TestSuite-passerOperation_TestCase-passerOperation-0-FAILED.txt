@@ -1,0 +1,48 @@
+Status: FAILED
+Time Taken: 1424
+Size: 1034
+Timestamp: Tue Mar 15 17:50:48 CET 2011
+TestStep: passerOperation
+
+----------------- Messages ------------------------------
+[Schema Compliance] error: </body> does not close tag <HR>.
+[Schema Compliance] </body> does not close tag <HR>.
+[SOAP Response] error: </body> does not close tag <HR>.
+[SOAP Response] </body> does not close tag <HR>.
+[XPath Match] XPathContains assertion failed for path [declare namespace soap='http://schemas.xmlsoap.org/soap/envelope/';
+declare namespace ns2='http://webservice.banque.projet.excilys.com/';
+//ns2:passerOperationResponse/return] : NullPointerException:null
+
+----------------- Properties ------------------------------
+Encoding: UTF-8
+Endpoint: http://localhost:8080/projet-banque-webservice/ss
+
+---------------- Request ---------------------------
+Request Headers: Host : localhost:8080
+Content-Length : 402
+SOAPAction : ""
+Accept-Encoding : gzip,deflate
+User-Agent : Jakarta Commons-HttpClient/3.1
+Content-Type : text/xml;charset=UTF-8
+
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.banque.projet.excilys.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <web:passerOperation>
+         <idCompteEmetteur>1</idCompteEmetteur>
+         <idCompteDestinataire>2</idCompteDestinataire>
+         <montant>1</montant>
+      </web:passerOperation>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+---------------- Response --------------------------
+Response Headers: Date : Tue, 15 Mar 2011 16:50:49 GMT
+#status# : HTTP/1.1 404 Not Found
+Content-Length : 1034
+Content-Type : text/html;charset=utf-8
+Server : Apache-Coyote/1.1
+
+
+<html><head><title>Apache Tomcat/7.0.8 - Error report</title><style><!--H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}HR {color : #525D76;}--></style> </head><body><h1>HTTP Status 404 - /projet-banque-webservice/ss</h1><HR size="1" noshade="noshade"><p><b>type</b> Status report</p><p><b>message</b> <u>/projet-banque-webservice/ss</u></p><p><b>description</b> <u>The requested resource (/projet-banque-webservice/ss) is not available.</u></p><HR size="1" noshade="noshade"><h3>Apache Tomcat/7.0.8</h3></body></html>
