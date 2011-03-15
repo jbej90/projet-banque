@@ -2,7 +2,7 @@
 
 	<script type="text/javascript">
 		//<![CDATA[
-		document.write('Filtrage sur le mois de <strong>${listemois[moiscourant]} ${anneeselectionnee}</strong> ');
+		document.write('<strong>${listemois[moiscourant]} ${anneeselectionnee}</strong> ');
 		document.write('<input type="hidden" id="datepicker" name="datepicker" />');
 		
 		$(function() {
@@ -16,8 +16,6 @@
 	</script>
 	
 	<noscript>
-		Filtrage sur le mois de 
-		
 		<select name="filter_month" id="filter_month">
 			<c:forEach items="${listemois}" var="mois" varStatus="status">
 				<c:if test="${mois != ''}">

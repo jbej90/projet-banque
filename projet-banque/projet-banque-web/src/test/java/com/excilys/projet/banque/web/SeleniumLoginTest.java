@@ -23,8 +23,8 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 	@Test
 	public void testLogin() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
-		selenium.type("username", "test1");
-		selenium.type("password", "test1");
+		selenium.type("username", SeleniumUtil.LOGIN);
+		selenium.type("password", SeleniumUtil.PASS);
 		selenium.click("//input[@value='Valider']");
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Résumé de mes comptes"));
@@ -32,8 +32,8 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 	@Test
 	public void testLoginDelog() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
-		selenium.type("username", "test1");
-		selenium.type("password", "test1");
+		selenium.type("username", SeleniumUtil.LOGIN);
+		selenium.type("password", SeleniumUtil.PASS);
 		selenium.click("//input[@value='Valider']");
 		selenium.waitForPageToLoad("30000");
 		selenium.click("link=Déconnexion");
@@ -43,7 +43,7 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 	@Test
 	public void testLoginErrones() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
-		selenium.type("username", "test1");
+		selenium.type("username", SeleniumUtil.LOGIN);
 		selenium.type("password", "aaaaa");
 		selenium.click("//input[@value='Valider']");
 		selenium.waitForPageToLoad("30000");
@@ -53,7 +53,7 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 	public void testMdpErrones() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
 		selenium.type("username", "aaaaa");
-		selenium.type("password", "test1");
+		selenium.type("password", SeleniumUtil.PASS);
 		selenium.click("//input[@value='Valider']");
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Login ou mot de passe erroné"));
@@ -68,8 +68,8 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 	@Test
 	public void testLoginNonActif() throws Exception {
 		selenium.open("/projet-banque-web/login.htm");
-		selenium.type("username", "test4");
-		selenium.type("password", "test4");
+		selenium.type("username", SeleniumUtil.LOGIN_DISABLED);
+		selenium.type("password", SeleniumUtil.PASS_DISABLED);
 		selenium.click("//input[@value='Valider']");
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Ce compte n'est pas activé"));
