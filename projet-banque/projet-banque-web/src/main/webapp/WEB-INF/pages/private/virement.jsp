@@ -87,12 +87,14 @@
 <div class="box">
 	<h3>Historique de mes virements</h3>
 		
-	<form id="form" action="<c:url value="/private/virement.htm"></c:url>" method="post" class="filter">
-		<jsp:include page="/WEB-INF/template/module-calendar.jsp" />
-		
-		<p>Ce tableau présente la liste de vos virements de ${listemois[moiscourant]} ${anneeselectionnee}.</p>
+	<form id="form" action="<c:url value="/private/virement.htm"></c:url>" method="post">
+		<p>Ce tableau présente la liste de vos virements du mois sélectionné.</p>
 		
 		<table>
+			<caption>
+				<jsp:include page="/WEB-INF/template/module-calendar.jsp" />
+			</caption>
+			
 			<thead>
 				<tr>
 					<th width="30%">Date<input type="hidden" id="datepicker" name="datepicker" /></th>

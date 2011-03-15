@@ -12,16 +12,18 @@
 	
 	<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
 	
-	<form id="form" action="<c:url value="/private/compte/${compte.id}.htm"></c:url>" method="post" class="filter">
-		<jsp:include page="/WEB-INF/template/module-calendar.jsp" />
-	
-		<p>Ci-dessous, la liste des opérations de ce compte pour le mois de ${listemois[moiscourant]} ${anneeselectionnee}.</p>
+	<form id="form" action="<c:url value="/private/compte/${compte.id}.htm"></c:url>" method="post">
+		<p>Ci-dessous, la liste des opérations de ce compte pour le mois sélectionné.</p>
 		<p>Les opérations par carte sont regroupées en une seule ligne dans le sous-total.</p>
 		
 		<table>
+			<caption>
+				<jsp:include page="/WEB-INF/template/module-calendar.jsp" />
+			</caption>
+			
 			<thead>
 				<tr>
-					<th width="30%">Date<input type="hidden" id="datepicker" name="datepicker" /></th>
+					<th width="30%">Date</th>
 					<th width="30%">Libelle</th>
 					<th width="20%">Type</th>
 					<th width="10%">Débit</th>

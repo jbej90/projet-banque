@@ -69,9 +69,6 @@ ul#messages li.info {
 }
 
 /* Forms */
-form.filter {
-	
-}
 form .row {
 	clear: both;
 	margin: 3px 0;
@@ -110,7 +107,6 @@ table td.empty {
 
 table caption, tr.caption {
 	color: #666;
-	height: 24px;
 	padding: 4px;
 	font-weight: bold;
 	text-align: center;
@@ -167,6 +163,8 @@ table tfoot tr td.total {
 	display: block;
 	height: 10px;
 }
+
+/* Tailles */
 .width-25 {
 	width: 25%;
 }
@@ -200,6 +198,8 @@ table tfoot tr td.total {
 .decouvert {
 	color: #e00;
 }
+
+/* Messages */
 .error {
 	color: #e00;
 }
