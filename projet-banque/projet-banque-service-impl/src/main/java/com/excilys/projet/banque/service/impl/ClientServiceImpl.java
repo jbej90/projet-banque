@@ -16,7 +16,6 @@ import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.exception.NoClientsException;
-import com.excilys.projet.banque.service.api.exception.UnknownClientException;
 import com.excilys.projet.banque.service.api.exception.UnknownLoginException;
 
 @Service("clientService")
@@ -31,10 +30,11 @@ public class ClientServiceImpl implements ClientService {
 	private AuthDAO authDao;
 
 	@Override
-	public Client recupererClient(int idClient) throws UnknownClientException {
+	public Client recupererClient(int idClient){
 		Client client = clientDao.findById(idClient);
-		if (client == null)
-			throw new UnknownClientException();
+		
+		Assert.notNull(client, "Le client n'existe pas.");
+		
 		return client;
 	}
 
@@ -58,7 +58,7 @@ public class ClientServiceImpl implements ClientService {
 	}
 
 	@Override
-	public List<Compte> recupererListeComptes(int idClient) throws UnknownClientException {
+	public List<Compte> recupererListeComptes(int idClient) {
 		List<Compte> lesComptes = new ArrayList<Compte>();
 		lesComptes = compteDao.findAllByIdClient(idClient);
 		return lesComptes;

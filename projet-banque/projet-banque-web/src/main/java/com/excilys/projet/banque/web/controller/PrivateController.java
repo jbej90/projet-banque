@@ -31,7 +31,6 @@ import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exception.InsufficientBalanceException;
 import com.excilys.projet.banque.service.api.exception.SimilarAccountsException;
-import com.excilys.projet.banque.service.api.exception.UnknownClientException;
 import com.excilys.projet.banque.web.utils.MessageStack;
 import com.excilys.projet.banque.web.utils.ToolItem;
 import com.excilys.projet.banque.web.utils.ToolbarManager;
@@ -400,8 +399,6 @@ public class PrivateController {
 		}
 		//TODO @Damien: définir les actions associées à la réception des exceptions
 		catch (NullPointerException e) {
-			e.printStackTrace();
-		} catch (UnknownClientException e) {
 			e.printStackTrace();
 		}
 		return client;

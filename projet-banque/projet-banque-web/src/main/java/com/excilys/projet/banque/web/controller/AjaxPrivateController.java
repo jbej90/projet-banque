@@ -30,7 +30,6 @@ import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.model.Type;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.OperationService;
-import com.excilys.projet.banque.service.api.exception.UnknownClientException;
 import com.excilys.projet.banque.web.ajax.AjaxCompte;
 import com.excilys.projet.banque.web.ajax.AjaxOperations;
 import com.excilys.projet.banque.web.utils.WebUtils;
@@ -174,8 +173,6 @@ public class AjaxPrivateController {
 		}
 		//TODO @Damien: définir les actions associées à la réception des exceptions
 		catch (NullPointerException e) {
-			e.printStackTrace();
-		} catch (UnknownClientException e) {
 			e.printStackTrace();
 		}
 		return client;
