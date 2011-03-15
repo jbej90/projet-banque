@@ -14,13 +14,13 @@ public class SoapClient {
 
 	public static void main(String args[]) {
 		String login = "op", password = "op";
-		int idCompteSource = 1, idCompteDestionation = 2;
+		int idCompteSource = 1, idCompteDestination = 2;
 		float montant = 10f;
 		if (args.length == 5) {
 			login = args[0];
 			password = args[1];
 			idCompteSource = Integer.parseInt(args[2]);
-			idCompteDestionation = Integer.parseInt(args[3]);
+			idCompteDestination = Integer.parseInt(args[3]);
 			montant = Float.parseFloat(args[4]);
 		}
 
@@ -29,7 +29,7 @@ public class SoapClient {
 		BindingProvider provider = (BindingProvider) iwServiceClient;
 		provider.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, login);
 		provider.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, password);
-		iwServiceClient.passerOperation(idCompteSource, idCompteDestionation, montant);
+		System.out.println(iwServiceClient.passerOperation(idCompteSource, idCompteDestination, montant));
 	}
 
 }

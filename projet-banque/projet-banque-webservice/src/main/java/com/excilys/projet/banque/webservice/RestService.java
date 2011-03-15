@@ -79,8 +79,8 @@ public class RestService implements IWService {
 	}
 
 	@Override
-	public boolean passerOperation(int idCompteEmetteur, int idCompteDestinataire, float montant) {
-		return false;
+	public String passerOperation(int idCompteEmetteur, int idCompteDestinataire, float montant) {
+		return "";
 	}
 
 	public void setCompteService(CompteService compteService) {
