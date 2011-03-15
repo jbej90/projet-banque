@@ -2,7 +2,6 @@ package com.excilys.projet.banque.web.utils;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.PatternMatchUtils;
@@ -31,18 +30,8 @@ public class MenuManager {
 		items = new LinkedList<MenuItem>();
 	}
 
-	public MenuManager(List<Map<String, String>> items) {
-		init(items);
-	}
-
-	public void init(List<Map<String, String>> items) {
-		this.items = new LinkedList<MenuItem>();
-
-		// Parcours la liste de map passé par spring depuis la conf XMl, et créé une liste de MenuItem
-		int id = 0;
-		for (Map<String, String> item : items) {
-			this.items.add(new MenuItem(id++, item.get("title"), item.get("url"), item.get("pattern")));
-		}
+	public MenuManager(List<MenuItem> items) {
+		this.items = items;
 	}
 
 	public void setUri(String uri) {

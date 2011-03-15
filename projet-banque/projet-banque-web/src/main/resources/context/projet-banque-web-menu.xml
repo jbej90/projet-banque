@@ -14,17 +14,16 @@
 	<bean id="menuManager" class="com.excilys.projet.banque.web.utils.MenuManager">
 		<constructor-arg name="items">
 			<list>
-				<map>
-					<entry key="title" value="Mes résumés" />
-					<entry key="url" value="/private/home.htm" />
-					<entry key="pattern" value="/private/home.htm;/private/compte*.htm" />
-				</map>
-				
-				<map>
-					<entry key="title" value="Mes virements" />
-					<entry key="url" value="/private/virement.htm" />
-					<entry key="pattern" value="/private/virement*.htm" />
-				</map>
+				<bean class="com.excilys.projet.banque.web.utils.MenuItem">
+					<property name="title" value="Mes résumés" />
+					<property name="url" value="/private/home.htm" />
+					<property name="pattern" value="/private/home.htm;/private/compte*.htm" />
+				</bean>
+				<bean class="com.excilys.projet.banque.web.utils.MenuItem">
+					<property name="title" value="Mes virements" />
+					<property name="url" value="/private/virement.htm" />
+					<property name="pattern" value="/private/virement*.htm" />
+				</bean>
 			</list>
 		</constructor-arg>
 	</bean>

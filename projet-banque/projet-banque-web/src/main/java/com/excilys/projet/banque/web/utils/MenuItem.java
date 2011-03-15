@@ -8,38 +8,28 @@ package com.excilys.projet.banque.web.utils;
  */
 public class MenuItem {
 
-	private int		id;
-	private String	title;
-	private String	url;
-	private String	pattern;
-	private boolean	selected;
+	private String	title		= "";
+	private String	url			= "";
+	private String	pattern		= "";
+	private boolean	selected	= false;
 
 	public MenuItem() {
 	}
 
-	public MenuItem(int id, String title, String url) {
+	public MenuItem(String title, String url) {
 		super();
-		this.id = id;
 		this.title = title;
 		this.url = url;
 	}
 
-	public MenuItem(int id, String title, String url, String pattern) {
-		this(id, title, url);
+	public MenuItem(String title, String url, String pattern) {
+		this(title, url);
 		this.pattern = pattern;
 	}
 
-	public MenuItem(int id, String title, String url, String pattern, boolean selected) {
-		this(id, title, url, pattern);
+	public MenuItem(String title, String url, String pattern, boolean selected) {
+		this(title, url, pattern);
 		this.selected = selected;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getTitle() {
