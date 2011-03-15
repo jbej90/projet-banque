@@ -11,7 +11,8 @@ import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
-import com.excilys.projet.banque.service.api.exceptions.ServiceException;
+import com.excilys.projet.banque.service.api.exception.InsufficientBalanceException;
+import com.excilys.projet.banque.service.api.exception.SimilarAccountsException;
 import com.excilys.projet.banque.webservice.dto.CompteDTO;
 import com.excilys.projet.banque.webservice.dto.OperationDTO;
 
@@ -42,14 +43,14 @@ public class SoapService implements IWService {
 
 	@Override
 	public String passerOperation(int idCompteEmetteur, int idCompteDestinataire, float montant) {
-		Compte compteEmetteur = null;
-		Compte compteDestinataire = null;
+		Compte compteEmetteur = compteService.recupererCompte(idCompteEmetteur);
+		Compte compteDestinataire = compteService.recupererCompte(idCompteDestinataire);
 		try {
-			compteEmetteur = compteService.recupererCompte(idCompteEmetteur);
-			compteDestinataire = compteService.recupererCompte(idCompteDestinataire);
 			compteService.virer(compteEmetteur, compteDestinataire, montant);
-
-		} catch (ServiceException e) {
+		} catch (SimilarAccountsException e) {
+			e.printStackTrace();
+			return "Opération échouée!";
+		} catch (InsufficientBalanceException e) {
 			e.printStackTrace();
 			return "Opération échouée!";
 		}
