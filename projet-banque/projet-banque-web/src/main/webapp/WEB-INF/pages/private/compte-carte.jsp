@@ -35,9 +35,8 @@
 			<tbody>
 				<c:choose>
 					<c:when test="${fn:length(operationscarte) > 0}">
-						<% int i = 0; %>
-						<c:forEach items="${operationscarte}" var="operation">
-							<tr class="line<%=i++ % 2%>">
+						<c:forEach items="${operationscarte}" var="operation" varStatus="status">
+							<tr class="line${status.index % 2}">
 								<td><fmt:formatDate value="${operation.dateOp}" type="date" /></td>
 								<td>${operation.libelle}</td>
 								<td>${operation.type}</td>

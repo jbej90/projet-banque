@@ -90,18 +90,6 @@ public class MessageStack {
 		return tmp;
 	}
 
-//	public List<Message> getMessages() {
-//		List<Message> tmp = new LinkedList<Message>();
-//
-//		Set<String> domaines = messages.keySet();
-//		for (String domaine : domaines) {
-//			tmp.addAll(messages.get(domaine));
-//		}
-//
-//		messages.clear();
-//		return tmp;
-//	}
-
 	public Message getLastMessage(String domaine) {
 		return messages.get(domaine).size() > 0 ? messages.get(domaine).remove(0) : null;
 	}

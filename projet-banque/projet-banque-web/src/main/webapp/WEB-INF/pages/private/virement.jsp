@@ -114,9 +114,8 @@
 				
 				<c:choose>
 					<c:when test="${fn:length(virements) > 0}">
-						<% int i = 0; %>
-						<c:forEach items="${virements}" var="operation">
-							<tr class="line<%=i++ % 2%>">
+						<c:forEach items="${virements}" var="operation" varStatus="status">
+							<tr class="line${status.index % 2}">
 								<td><fmt:formatDate value="${operation.dateOp}" type="both" /></td>
 								<td>${operation.libelle}</td>
 								<td align="right"<c:if test="${operation.montant < 0}"> class="decouvert"</c:if>>${operation.montant}€</td>
@@ -137,9 +136,8 @@
 				
 				<c:choose>
 					<c:when test="${fn:length(virementsencours) > 0}">
-						<% int i = 0; %>
-						<c:forEach items="${virementsencours}" var="operation">
-							<tr class="line<%=i++ % 2%>">
+						<c:forEach items="${virementsencours}" var="operation" varStatus="status">
+							<tr class="line${status.index % 2}">
 								<td><fmt:formatDate value="${operation.dateOp}" type="both" /></td>
 								<td>${operation.libelle}</td>
 								<td align="right"<c:if test="${operation.montant < 0}"> class="decouvert"</c:if>>${operation.montant}€</td>
