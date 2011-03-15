@@ -94,7 +94,7 @@
 			<jsp:param name="domaine" value="filter" />
 		</jsp:include>
 		
-		<table>
+		<table id="operations">
 			<caption>
 				<jsp:include page="/WEB-INF/modules/calendar.jsp" />
 			</caption>

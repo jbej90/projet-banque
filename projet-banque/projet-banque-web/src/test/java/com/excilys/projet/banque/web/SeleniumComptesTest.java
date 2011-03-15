@@ -21,61 +21,56 @@ public class SeleniumComptesTest extends SeleneseTestCase {
 		selenium.start();
 
 		selenium.open("/projet-banque-web/login.htm");
-		selenium.type("username", "test1");
-		selenium.type("password", "test1");
+		selenium.type("username", SeleniumUtil.LOGIN);
+		selenium.type("password", SeleniumUtil.PASS);
 		selenium.click("//input[@value='Valider']");
 		selenium.waitForPageToLoad("30000");
 	}
 
 	@Test
+	/**
+	 * Pouvoir accéder à l'un de ses comptes
+	 */
 	public void testClientProprioCompte() throws Exception {
-		selenium.open("/projet-banque-web/private/compte/1.htm");
+		selenium.open("/projet-banque-web/private/compte/" + SeleniumUtil.COMPTE_1_ID + ".htm");
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Détail de mon compte"));
 	}
 
 	@Test
+	/**
+	 * Ne pas pouvoir acceder à un compte n'appartenant pas au client
+	 */
 	public void testCDR1() throws Exception {
-		selenium.open("/projet-banque-web/login.htm");
-		selenium.type("username", "test1");
-		selenium.type("password", "test1");
-		selenium.click("//input[@value='Valider']");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("link=user1, compte2");
-		selenium.open("/projet-banque-web/private/compte/3.htm");
+		selenium.click("link=" + SeleniumUtil.COMPTE_2_LIBELLE);
+		selenium.open("/projet-banque-web/private/compte/" + SeleniumUtil.FOREIGN_COMPTE_ID + ".htm");
 		selenium.waitForPageToLoad("30000");
 		verifyTrue(selenium.isTextPresent("Compte non valide"));
 		selenium.click("link=Retour à l'accueil");
 		selenium.waitForPageToLoad("30000");
-		selenium.click("link=Déconnexion");
-		selenium.waitForPageToLoad("30000");
 	}
 
 	@Test
+	/**
+	 * Le soldes de mes comptes ne doit pas ête négatif
+	 */
 	public void testCDR2() throws Exception {
-		selenium.open("/projet-banque-web/login.htm");
-		selenium.type("username", "test1");
-		selenium.type("password", "test1");
-		selenium.click("//input[@value='Valider']");
-		selenium.waitForPageToLoad("30000");
-		int nbLigneDeCompte = selenium.getXpathCount("//div[@id='content']/div/table/tbody/tr/td[2]").intValue();
+		int nbLigneDeCompte = selenium.getXpathCount("//table[@id='comptes']/tbody/tr").intValue();
 		boolean negatif = false;
 		for (int i = 1; i <= nbLigneDeCompte; i++) {
-			String s = selenium.getText("//div[@id='content']/div/table/tbody/tr[" + i + "]/td[2]").trim().replace("€", "");
+			String s = selenium.getText("//table[@id='comptes']/tbody/tr[" + i + "]/td[2]").trim().replace("€", "");
 			if (Float.parseFloat(s) < 0) {
 				negatif = true;
 			}
 		}
 		verifyTrue(!negatif);
-		selenium.click("link=Déconnexion");
-		selenium.waitForPageToLoad("30000");
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		// selenium.click("link=Déconnexion");
-		// selenium.waitForPageToLoad("30000");
+		selenium.click("link=Déconnexion");
+		selenium.waitForPageToLoad("30000");
 		selenium.stop();
-
 	}
+
 }

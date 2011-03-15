@@ -12,16 +12,18 @@ public class ToolItem {
 	private String	url;
 	private String	img;
 	private String	alt;
+	private String	action;
 
 	public ToolItem() {
 	}
 
-	public ToolItem(String title, String url, String img, String alt) {
+	public ToolItem(String title, String url, String img, String alt, String action) {
 		super();
 		this.title = title;
 		this.url = url;
 		this.img = img;
 		this.alt = alt;
+		this.action = action;
 	}
 
 	public String getTitle() {
@@ -47,7 +49,7 @@ public class ToolItem {
 	public void setImg(String img) {
 		this.img = img;
 	}
-	
+
 	public String getAlt() {
 		return alt;
 	}
@@ -55,4 +57,13 @@ public class ToolItem {
 	public void setAlt(String alt) {
 		this.alt = alt;
 	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
 }

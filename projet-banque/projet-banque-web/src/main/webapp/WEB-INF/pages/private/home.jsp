@@ -12,7 +12,7 @@
 	<p>Vous trouverez ci-dessous la liste de vos comptes et leur solde courant.</p>
 	<p>Cliquez sur le libellé d'un compte pour voir le détail de ses opérations.</p>
 	
-	<table>
+	<table id="comptes">
 		<thead>
 			<tr>
 				<th width="50%">Libelle</th>

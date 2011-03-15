@@ -81,7 +81,6 @@ public class PrivateController {
 			for (Compte compte : comptes) {
 				operations = operationService.recupererOperationsCompte(compte.getId(), cal.getTime(), null, OperationService.ETATS_EN_COURS);
 				compte.setSoldePrevisionnel(compte.getSolde() + operationService.totalOperations(operations));
-
 			}
 
 			model.addAttribute("client", client);
@@ -130,7 +129,6 @@ public class PrivateController {
 				total = operationService.totalOperations(operations);
 				totalCarte = operationService.totalOperations(operationsCarte);
 
-
 				model.addAttribute("compte", selectedCompte);
 				model.addAttribute("operations", operations);
 				model.addAttribute("operationsCarte", operationsCarte);
@@ -146,8 +144,8 @@ public class PrivateController {
 				// Configuration de la toolbar
 				// TODO : Refacto. Le modèle du menu ne fonctionne pas, puisqu'il nous faut des liens dynamiques :/
 				ToolbarManager toolbarManager = new ToolbarManager();
-				toolbarManager.addTool(new ToolItem("Exporter au format Excel", "/private/compte/"+selectedCompte.getId()+"_"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR)+WebUtils.URL_SUFFIX_XLS, "/images/export_excel.png", "Export excel"));
-				toolbarManager.addTool(new ToolItem("Effectuer un virement", "/private/virement/"+selectedCompte.getId()+WebUtils.URL_SUFFIX_PAGE, "/images/virement.png", "Virement"));
+				toolbarManager.addTool(new ToolItem("Exporter au format Excel", "/private/compte/"+selectedCompte.getId()+"_"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR)+WebUtils.URL_SUFFIX_XLS, "/images/export_excel.png", "Export excel", "export"));
+				toolbarManager.addTool(new ToolItem("Effectuer un virement", "/private/virement/"+selectedCompte.getId()+WebUtils.URL_SUFFIX_PAGE, "/images/virement.png", "Virement", "virement"));
 				model.addAttribute("toolbar", toolbarManager);
 			}
 		}
@@ -181,8 +179,7 @@ public class PrivateController {
 				return "redirect:" + WebUtils.getFormatPageUri("/error/error");
 			}
 			else {
-				List<Operation> operationsCarte;
-				operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
+				List<Operation> operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
 				float totalCarte = operationService.totalOperations(operationsCarte);
 
 				model.addAttribute("compte", selectedCompte);
@@ -227,14 +224,12 @@ public class PrivateController {
 		request.getSession().removeAttribute("compte_dest");
 		request.getSession().removeAttribute("montant");
 
-		List<Operation> virements;
-		List<Operation> virementsEnCours;
-		virements = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT, OperationService.ETATS_EFFECTUE);
-		virementsEnCours = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT,
+		List<Operation> virements = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT, OperationService.ETATS_EFFECTUE);
+		List<Operation> virementsEnCours = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT,
 				OperationService.ETATS_EN_COURS);
+
 		model.addAttribute("virements", virements);
 		model.addAttribute("virementsencours", virementsEnCours);
-			
 
 		return WebUtils.BASE_DIR_PRIVATE + "virement";
 	}
@@ -306,16 +301,16 @@ public class PrivateController {
 		// Si la pile d'erreur est vide, tout s'est bien passé
 		// On valide le traitement
 		if (MessageStack.getInstance(request).getSize(MessageStack.DEFAULT_DOMAIN) == 0) {
-				try {
-					compteService.virer(compte_src, compte_dest, montant);
-					MessageStack.getInstance(request).addInfo("Virement effectué.");
+			try {
+				compteService.virer(compte_src, compte_dest, montant);
+				MessageStack.getInstance(request).addInfo("Virement effectué.");
 
-				//TODO @Damien: définir les actions associées à la réception des exceptions
-				} catch (SimilarAccountsException e) {
-					e.printStackTrace();
-				} catch (InsufficientBalanceException e) {
-					e.printStackTrace();
-				}
+			//TODO @Damien: définir les actions associées à la réception des exceptions
+			} catch (SimilarAccountsException e) {
+				e.printStackTrace();
+			} catch (InsufficientBalanceException e) {
+				e.printStackTrace();
+			}
 		}
 
 		// Si la pile d'erreur n'est pas vide, on stock les valeurs entrées pour les restituer
@@ -362,7 +357,6 @@ public class PrivateController {
 		List<Operation> operationsCarte = new LinkedList<Operation>();
 
 		operations = operationService.recupererOperationsCompteNonCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
-
 		operationsCarte = operationService.recupererOperationsCompteCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
 		float total = operationService.totalOperations(operations);
 		float totalCarte = operationService.totalOperations(operationsCarte);
@@ -376,6 +370,7 @@ public class PrivateController {
 		model.addAttribute("soustotal", total);
 		model.addAttribute("soustotalCarte", totalCarte);
 		model.addAttribute("total", (total + totalCarte));
+
 		return "compte";
 	}
 
