@@ -1,20 +1,15 @@
 package com.excilys.projet.banque.dao.impl;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.ExpectedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -25,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.excilys.projet.banque.dao.impl.utils.DataSet;
 import com.excilys.projet.banque.dao.impl.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Carte;
-import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.EtatOperation;
 import com.excilys.projet.banque.model.Operation;
@@ -46,7 +40,7 @@ public class OperationDAOImplTest {
 	private CarteDAOImpl		carteDAOImpl;
 
 	@Test
-	public void saveTest() {
+	public void save() {
 
 		Compte compte = compteDAOImpl.findById(1);
 		Carte carte = carteDAOImpl.findById(1);
@@ -66,9 +60,25 @@ public class OperationDAOImplTest {
 	}
 
 	@Test
-	public void findAllTest() {
-		assertFalse(operationDAOImpl.findAll().isEmpty());
+	@ExpectedException(IllegalArgumentException.class)
+	public void saveOperationNull() {
+		operationDAOImpl.save(null);
+	}
+
+	@Test
+	public void findAll() {
 		assertTrue(operationDAOImpl.findAll().size() == 3);
+	}
+
+	@Test
+	public void findById() {
+		assertNotNull(operationDAOImpl.findById(1));
+	}
+
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findByIdNegatif() {
+		operationDAOImpl.findById(-1);
 	}
 
 //	@Test
@@ -106,11 +116,6 @@ public class OperationDAOImplTest {
 //		assertTrue(carte2.getId() == 1);
 //		assertTrue(operationDAOImpl.findAllByCarte(carte2).size() == 2);
 //	}
-
-	@Test
-	public void findByIdTest() {
-		assertNotNull(operationDAOImpl.findById(0));
-	}
 
 //	@Test
 //	public void findByAllByMoisByCompteTest() {

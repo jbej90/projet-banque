@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.ExpectedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -36,7 +37,7 @@ public class CarteDAOImplTest {
 	private CompteDAOImpl compteDAOImpl;
 
 	@Test
-	public void saveTest() {
+	public void save() {
 		Carte carte = new Carte();
 		carte.setNumCarte("4444111122223333");
 		carte.setType(TypeCarte.IMMEDIAT);
@@ -46,55 +47,50 @@ public class CarteDAOImplTest {
 		assertNotNull(carteDAOImpl.findById(carte.getId()));
 		assertEquals(carte.getId(), carteDAOImpl.findById(carte.getId()).getId());
 	}
-
+	
 	@Test
-	public void findAll() {
-		Carte carte = new Carte();
-		carte.setNumCarte("4445511122223333");
-		carte.setType(TypeCarte.IMMEDIAT);
-		carte.setDateLim(new Date());
-
-		int currentSize = carteDAOImpl.findAll().size();
-
-		carteDAOImpl.save(carte);
-		assertTrue(carteDAOImpl.findAll().size() == currentSize + 1);
+	@ExpectedException(IllegalArgumentException.class)
+	public void saveCarteNull() {
+		carteDAOImpl.save(null);
 	}
 
 	@Test
-	public void findAllByCompte() {
-		Compte compte = compteDAOImpl.findById(1);
-		Carte carte = new Carte();
-		carte.setNumCarte("4444111155223333");
-		carte.setType(TypeCarte.IMMEDIAT);
-		carte.setDateLim(new Date());
-		carte.setCompte(compte);
-		int currentSize = carteDAOImpl.findAllByCompte(compte).size();
-		carteDAOImpl.save(carte);
-		assertTrue(carteDAOImpl.findAllByCompte(compte).size() == currentSize + 1);
+	public void findAll() {
+		assertTrue(carteDAOImpl.findAll().size()==3);
+	}
+
+	@Test
+	public void findAllByIdCompte() {
+		assertTrue(carteDAOImpl.findAllByIdCompte(1).size() == 2);
+	}
+	
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findAllByIdCompteNegatif() {
+		carteDAOImpl.findAllByIdCompte(-1);
 	}
 
 	@Test
 	public void findAllByType() {
-		Carte carte = new Carte();
-		carte.setNumCarte("4444111122223533");
-		carte.setType(TypeCarte.IMMEDIAT);
-		carte.setDateLim(new Date());
-
-		int currentSize = carteDAOImpl.findAllByType(TypeCarte.IMMEDIAT).size();
-		carteDAOImpl.save(carte);
-		assertTrue(carteDAOImpl.findAllByType(TypeCarte.IMMEDIAT).size() == currentSize + 1);
+		assertTrue(carteDAOImpl.findAllByType(TypeCarte.IMMEDIAT).size() == 1);
+		assertTrue(carteDAOImpl.findAllByType(TypeCarte.DIFFERE).size() == 2);
+	}
+	
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findAllByTypeNull() {
+		carteDAOImpl.findAllByType(null);
 	}
 
 	@Test
 	public void findById() {
-		Carte carte = new Carte();
-		carte.setId(1);
-		carte.setNumCarte("4444331122223333");
-		carte.setType(TypeCarte.IMMEDIAT);
-		carte.setDateLim(new Date());
+		assertTrue(carteDAOImpl.findById(1).getId()==1);
+	}
 
-		carteDAOImpl.save(carte);
-		carteDAOImpl.findById(1).equals(carte);
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findByIdNegatif() {
+		carteDAOImpl.findById(-1);
 	}
 
 }

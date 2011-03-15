@@ -15,6 +15,6 @@ public interface CompteDAO {
 
 	Compte findById(int idCompte);
 
-	List<Compte> findAllByClient(Client client);
+	List<Compte> findAllByIdClient(int idClient);
 
 }

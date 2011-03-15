@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.ExpectedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,7 +17,6 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.projet.banque.dao.api.exceptions.UnknownCompteException;
 import com.excilys.projet.banque.dao.impl.utils.DataSet;
 import com.excilys.projet.banque.dao.impl.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Client;
@@ -35,7 +35,7 @@ public class CompteDAOImplTest {
 	private ClientDAOImpl clientDAOImpl;
 
 	@Test
-	public void saveTest() throws UnknownCompteException {
+	public void save() {
 		Client client = new Client();
 		client.setNom("test");
 		client.setPrenom("test");
@@ -49,52 +49,52 @@ public class CompteDAOImplTest {
 		compteDAOImpl.save(compte);
 		assertNotNull(compteDAOImpl.findById(compte.getId()));
 	}
-
+	
 	@Test
-	public void findAllTest() {
-		Client client = new Client();
-		client.setNom("test");
-		client.setPrenom("test");
-		client.setAdresse("test");
-		client.setDateLastConnection(new Date());
-		clientDAOImpl.save(client);
-
-		Compte compte = new Compte();
-		compte.setClient(client);
-		compte.setLibelle("compte");
-		compte.setSolde(0);
-
-		int currentSize = compteDAOImpl.findAll().size();
-		compteDAOImpl.save(compte);
-		assertTrue(compteDAOImpl.findAll().size() == currentSize + 1);
+	@ExpectedException(IllegalArgumentException.class)
+	public void saveCompteNull() {
+		compteDAOImpl.save(null);
 	}
 
 	@Test
-	public void findAllByClientTest() {
-		Client client = new Client();
-		client.setNom("dupont");
-		client.setPrenom("martin");
-		client.setAdresse("chez lui");
-		client.setDateLastConnection(new Date());
-		clientDAOImpl.save(client);
+	public void findAll() {
+		assertTrue(compteDAOImpl.findAll().size()==2);
+	}
 
-		Compte compte = new Compte();
-		compte.setClient(client);
-		compte.setLibelle("compte");
-		compte.setSolde(100);
-		compteDAOImpl.save(compte);
-
-		assertTrue(100f == compteDAOImpl.findAllByClient(client).get(0).getSolde());
-
+	@Test
+	public void findAllByIdClient() {
+		assertTrue(compteDAOImpl.findAllByIdClient(1).size()==1);
 	}
 	
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findAllByIdClientNegatif() {
+		compteDAOImpl.findAllByIdClient(-1);
+	}
 	
 	@Test
-	public void updateTest() {
+	public void findById() {
+		assertTrue(compteDAOImpl.findById(1).getId()==1);
+	}
+	
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findByIdNegatif() {
+		compteDAOImpl.findById(-1);
+	}
+
+	@Test
+	public void update() {
 		Compte compte=compteDAOImpl.findById(1);
 		float ancienSolde = compte.getSolde();
 		compte.setSolde(20f);
 		compteDAOImpl.update(compte);
 		assertTrue(compteDAOImpl.findById(1).getSolde() == (ancienSolde+20f));
+	}
+	
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void updateCompteNull() {
+		compteDAOImpl.update(null);
 	}
 }

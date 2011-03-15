@@ -30,7 +30,7 @@ import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.model.Type;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.OperationService;
-import com.excilys.projet.banque.service.api.exceptions.ServiceException;
+import com.excilys.projet.banque.service.api.exception.UnknownClientException;
 import com.excilys.projet.banque.web.ajax.AjaxCompte;
 import com.excilys.projet.banque.web.ajax.AjaxOperations;
 import com.excilys.projet.banque.web.utils.WebUtils;
@@ -127,28 +127,30 @@ public class AjaxPrivateController {
 			cal = getMonthYearFilter(month, year);
 
 			// Récupération des opérations du mois sélectionné
-			List<Operation> ops = operationService.recupererOperationsCompteNonCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
-			List<Operation> opsCarte = operationService.recupererOperationsCompteCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
+			List<Operation> ops;
+			try {
+				ops = operationService.recupererOperationsCompteNonCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
+				List<Operation> opsCarte = operationService.recupererOperationsCompteCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
 
-			float sousTotal = operationService.totalOperations(ops);
-			float sousTotalCarte = operationService.totalOperations(opsCarte);
+				float sousTotal = operationService.totalOperations(ops);
+				float sousTotalCarte = operationService.totalOperations(opsCarte);
 
-			AjaxOperations operations = new AjaxOperations(ops, sousTotalCarte, sousTotal);
+				AjaxOperations operations = new AjaxOperations(ops, sousTotalCarte, sousTotal);
 
-			// Conversion du résultat en JSON
-			MappingJacksonHttpMessageConverter jsonConverter = new MappingJacksonHttpMessageConverter();
-			MediaType jsonMimeType = MediaType.APPLICATION_JSON;
-			if (jsonConverter.canWrite(operations.getClass(), jsonMimeType)) {
-				try {
-					jsonConverter.write(operations, jsonMimeType, new ServletServerHttpResponse(response));
+
+				// Conversion du résultat en JSON
+				MappingJacksonHttpMessageConverter jsonConverter = new MappingJacksonHttpMessageConverter();
+				MediaType jsonMimeType = MediaType.APPLICATION_JSON;
+				if (jsonConverter.canWrite(operations.getClass(), jsonMimeType)) {
+						jsonConverter.write(operations, jsonMimeType, new ServletServerHttpResponse(response));
 				}
-				catch (IOException e1) {
-					e1.printStackTrace();
-				}
-				catch (HttpMessageNotWritableException e2) {
-					e2.printStackTrace();
-				}
+				
+			} catch (HttpMessageNotWritableException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+
 		}
 	}
 
@@ -170,10 +172,10 @@ public class AjaxPrivateController {
 			Integer idClient = (Integer) request.getSession().getAttribute("idClient");
 			client = clientService.recupererClient(idClient);
 		}
-		catch (ServiceException e) {
-			e.printStackTrace();
-		}
+		//TODO @Damien: définir les actions associées à la réception des exceptions
 		catch (NullPointerException e) {
+			e.printStackTrace();
+		} catch (UnknownClientException e) {
 			e.printStackTrace();
 		}
 		return client;

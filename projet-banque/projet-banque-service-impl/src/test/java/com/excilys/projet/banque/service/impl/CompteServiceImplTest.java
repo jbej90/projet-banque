@@ -1,11 +1,11 @@
 package com.excilys.projet.banque.service.impl;
 
+import static junit.framework.Assert.assertTrue;
+
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.ExpectedException;
@@ -22,9 +22,9 @@ import com.excilys.projet.banque.dao.impl.utils.DataSet;
 import com.excilys.projet.banque.dao.impl.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.CompteService;
-import com.excilys.projet.banque.service.api.exceptions.ServiceException;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
+import com.excilys.projet.banque.service.api.exception.InsufficientBalanceException;
+import com.excilys.projet.banque.service.api.exception.NoAccountsException;
+import com.excilys.projet.banque.service.api.exception.SimilarAccountsException;
 
 @DataSet("classpath:context/projet-banque-service-impl-dataSet.xml")
 @ContextConfiguration({ "classpath*:context/applicationContext.xml" })
@@ -41,37 +41,37 @@ public class CompteServiceImplTest {
 	private CompteDAOImpl	compteDAO;
 
 	@Test
-	public void recupererCompteTest() throws ServiceException {
+	public void recupererCompte() {
 		Compte compte = compteService.recupererCompte(1);
 		assertTrue(compte.getId() == 1);
 	}
 
 	@Test
-	@ExpectedException(ServiceException.class)
-	public void recupererCompteTestException() throws ServiceException {
+	@ExpectedException(IllegalArgumentException.class)
+	public void recupererCompteWithIdInexistant() {
 		compteService.recupererCompte(15);
 	}
 
 	@Test
-	public void recupererComptesTest() throws ServiceException {
+	public void recupererComptes() throws NoAccountsException {
 		assertTrue(compteService.recupererComptes().size() == 3);
 	}
 
 	@Test
-	public void totalComptesTest() throws ServiceException {
-		List<Compte> lesCompte = compteDAO.findAllByClient(clientDAO.findById(1));
+	public void totalComptes() {
+		List<Compte> lesCompte = compteDAO.findAllByIdClient(1);
 		assertTrue(compteService.totalComptes(lesCompte) == 4830f);
 	}
 
 	@Test
-	public void totalComptesTestListNull() {
+	public void totalComptesWithListNull() {
 		List<Compte> lesCompte = null;
 		assertTrue(compteService.totalComptes(lesCompte) == 0);
 	}
 
 	@Test
-	public void verifierAvantVirementTest() throws ServiceException {
-		List<Compte> lesCompte = compteDAO.findAllByClient(clientDAO.findById(1));
+	public void verifierAvantVirement() throws SimilarAccountsException, InsufficientBalanceException {
+		List<Compte> lesCompte = compteDAO.findAllByIdClient(1);
 		// Solde MAx 3330
 		Compte compteEmetteur = lesCompte.get(0);
 		Compte compteDestinataire = lesCompte.get(1);
@@ -80,9 +80,9 @@ public class CompteServiceImplTest {
 	}
 
 	@Test
-	@ExpectedException(ServiceException.class)
-	public void verifierAvantVirementTestCompteIdentique() throws ServiceException {
-		List<Compte> lesCompte = compteDAO.findAllByClient(clientDAO.findById(1));
+	@ExpectedException(SimilarAccountsException.class)
+	public void verifierAvantVirementWithComptesIdentiques() throws SimilarAccountsException, InsufficientBalanceException {
+		List<Compte> lesCompte = compteDAO.findAllByIdClient(1);
 		// Solde MAx 3330
 		Compte compteEmetteur = lesCompte.get(0);
 		Compte compteDestinataire = lesCompte.get(0);
@@ -90,9 +90,9 @@ public class CompteServiceImplTest {
 	}
 
 	@Test
-	@ExpectedException(ServiceException.class)
-	public void verifierAvantVirementTestCompteDestinataireNull() throws ServiceException {
-		List<Compte> lesCompte = compteDAO.findAllByClient(clientDAO.findById(1));
+	@ExpectedException(IllegalArgumentException.class)
+	public void verifierAvantVirementWithCompteDestinataireNull() throws SimilarAccountsException, InsufficientBalanceException {
+		List<Compte> lesCompte = compteDAO.findAllByIdClient(1);
 		// Solde MAx 3330
 		Compte compteEmetteur = lesCompte.get(0);
 		Compte compteDestinataire = null;
@@ -100,9 +100,9 @@ public class CompteServiceImplTest {
 	}
 
 	@Test
-	@ExpectedException(ServiceException.class)
-	public void verifierAvantVirementTestCompteEmetteurNull() throws ServiceException {
-		List<Compte> lesCompte = compteDAO.findAllByClient(clientDAO.findById(1));
+	@ExpectedException(IllegalArgumentException.class)
+	public void verifierAvantVirementWithCompteEmetteurNull() throws SimilarAccountsException, InsufficientBalanceException {
+		List<Compte> lesCompte = compteDAO.findAllByIdClient(1);
 		// Solde MAx 3330
 		Compte compteEmetteur = null;
 		Compte compteDestinataire = lesCompte.get(0);
@@ -110,10 +110,10 @@ public class CompteServiceImplTest {
 	}
 
 	@Test
-	@ExpectedException(ServiceException.class)
+	@ExpectedException(InsufficientBalanceException.class)
 	// Implique que le compte serait en dessous de Zero, hors on ne veut pas
-	public void verifierAvantVirementTestMantantTropEleve() throws ServiceException {
-		List<Compte> lesCompte = compteDAO.findAllByClient(clientDAO.findById(1));
+	public void verifierAvantVirementWithMontantTropEleve() throws SimilarAccountsException, InsufficientBalanceException {
+		List<Compte> lesCompte = compteDAO.findAllByIdClient(1);
 		// Solde MAx 3330
 		Compte compteEmetteur = lesCompte.get(0);
 		Compte compteDestinataire = lesCompte.get(1);
@@ -121,9 +121,9 @@ public class CompteServiceImplTest {
 	}
 
 	@Test
-	@ExpectedException(ServiceException.class)
-	public void verifierAvantVirementTestMontantNegatif() throws ServiceException {
-		List<Compte> lesCompte = compteDAO.findAllByClient(clientDAO.findById(1));
+	@ExpectedException(IllegalArgumentException.class)
+	public void verifierAvantVirementWithMontantNegatif() throws SimilarAccountsException, InsufficientBalanceException {
+		List<Compte> lesCompte = compteDAO.findAllByIdClient(1);
 		// Solde MAx 3330
 		Compte compteEmetteur = lesCompte.get(0);
 		Compte compteDestinataire = lesCompte.get(1);
