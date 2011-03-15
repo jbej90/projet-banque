@@ -4,7 +4,7 @@ package com.excilys.projet.banque.web.utils;
  * Classe utilisée pour stocker un message dans la pile avec toutes les informations qui lui sont liées (type, message)
  * 
  * @author excilys
- *
+ * 
  */
 public class Message {
 

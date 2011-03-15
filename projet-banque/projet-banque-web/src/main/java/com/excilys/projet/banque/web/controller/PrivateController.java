@@ -299,7 +299,7 @@ public class PrivateController {
 
 		// Si la pile d'erreur est vide, tout s'est bien passé
 		// On valide le traitement
-		if (MessageStack.getInstance(request).getSize() == 0) {
+		if (MessageStack.getInstance(request).getSize(MessageStack.DEFAULT_DOMAIN) == 0) {
 			try {
 				compteService.virer(compte_src, compte_dest, montant);
 				MessageStack.getInstance(request).addInfo("Virement effectué.");
@@ -437,7 +437,7 @@ public class PrivateController {
 				cal = getMonthYearFilter(month, year);
 			}
 			catch (NumberFormatException e) {
-				MessageStack.getInstance(request).addError("Format de date incorrect");
+				MessageStack.getInstance(request).addError("Format de date incorrect", "filter");
 			}
 		}
 		// Si la requete contient le parametre du calendrier jQuery
@@ -451,7 +451,7 @@ public class PrivateController {
 				cal = getMonthYearFilter(cal);
 			}
 			catch (ParseException e) {
-				MessageStack.getInstance(request).addError("Format de date incorrect");
+				MessageStack.getInstance(request).addError("Format de date incorrect", "filter");
 			}
 		}
 
@@ -469,7 +469,10 @@ public class PrivateController {
 		}
 
 		// Bride l'historique à 3 ans coulantes (de mois à mois) en arrière
-		if (year < cal.get(Calendar.YEAR) - 3 || (year == cal.get(Calendar.YEAR)-3 && month < cal.get(Calendar.MONTH)) || year > cal.get(Calendar.YEAR)) {
+		if (year < cal.get(Calendar.YEAR) - 3 ||
+			(year == cal.get(Calendar.YEAR)-3 && month < cal.get(Calendar.MONTH)) || 
+			(year == cal.get(Calendar.YEAR) && month > cal.get(Calendar.MONTH)) || 
+			year > cal.get(Calendar.YEAR)) {
 			throw new NumberFormatException("Année hors limite");
 		}
 

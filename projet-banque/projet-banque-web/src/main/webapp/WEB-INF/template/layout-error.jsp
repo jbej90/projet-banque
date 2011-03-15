@@ -35,7 +35,7 @@
 		
 			<div id="body">
 				<div id="content">
-					<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
+					<jsp:include page="/WEB-INF/modules/messages.jsp" />
 				</div>
 			</div>
 			
