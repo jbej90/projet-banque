@@ -19,7 +19,7 @@ import org.springframework.web.servlet.view.document.AbstractExcelView;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.Operation;
 
-public class ExcelCompteView extends AbstractExcelView {
+public class ExcelCompteViewPOIColor extends AbstractExcelView {
 
 	@SuppressWarnings("unchecked")
 	@Override

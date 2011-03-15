@@ -375,6 +375,13 @@ public class PrivateController {
 
 		return "compte";
 	}
+	
+	@RequestMapping(value = "compte/{idCompte}_{month}-{year}_color" + WebUtils.URL_SUFFIX_XLS, method = { RequestMethod.GET, RequestMethod.POST })
+	public String downloadCompteExcelColor(@PathVariable int idCompte, @PathVariable int month, @PathVariable int year, HttpServletRequest request, HttpServletResponse response,
+			ModelMap model) throws IOException {
+		downloadCompteExcel(idCompte, month, year, request, response, model);
+		return "compteColor";
+	}
 
 	// =====================================================================================================================
 	// ~ Generic Methods ===================================================================================================
