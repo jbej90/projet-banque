@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.ExpectedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -32,7 +33,7 @@ public class ClientDAOImplTest {
 	private ClientDAOImpl clientDAOImpl;
 
 	@Test
-	public void saveTest() {
+	public void save() {
 		Client client = new Client();
 		client.setNom("test");
 		client.setPrenom("test");
@@ -42,33 +43,62 @@ public class ClientDAOImplTest {
 		assertNotNull(clientDAOImpl.findById(client.getId()));
 		assertEquals(client.getId(), clientDAOImpl.findById(client.getId()).getId());
 	}
+	
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void saveClientNull() {
+		clientDAOImpl.save(null);
+	}
 
 	@Test
-	public void findAllTest() {
+	public void findAll() {
+		assertTrue(clientDAOImpl.findAll().size() == 3);
+	}
 
-		Client client = new Client();
-		client.setNom("test");
-		client.setPrenom("test");
-		client.setAdresse("test");
-		client.setDateLastConnection(new Date());
-		int currentSize = clientDAOImpl.findAll().size();
-		clientDAOImpl.save(client);
-		assertTrue(clientDAOImpl.findAll().size() == currentSize + 1);
+	@Test
+	public void findById() {
+		assertEquals("Toi", clientDAOImpl.findById(1).getNom());
+	}
 
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findByIdNegatif() {
+		clientDAOImpl.findById(-1);
+	}
+
+	@Test
+	public void findByLogin() {
+		assertEquals("Moi" ,clientDAOImpl.findByLogin("log1").getNom());
+	}
+	
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findByLoginNull() {
+		clientDAOImpl.findByLogin(null);
+	}
+	
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findByLoginVide() {
+		clientDAOImpl.findByLogin("");
 	}
 
 	@Test
 	public void findByNom() {
-		Client client = new Client();
-		client.setNom("Dupuis");
-		client.setPrenom("Jean");
-		client.setAdresse("Paris");
-		client.setDateLastConnection(new Date());
-		clientDAOImpl.save(client);
+		for (Client client : clientDAOImpl.findByNom("Toi"))
+			assertEquals("Toi", client.getNom());
+	}
 
-		for (Client dupuis : clientDAOImpl.findByNom("Dupuis"))
-			assertEquals("Dupuis", dupuis.getNom());
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findByNomVide() {
+		clientDAOImpl.findByNom("");
+	}
 
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findByNomNull() {
+		clientDAOImpl.findByNom(null);
 	}
 
 }

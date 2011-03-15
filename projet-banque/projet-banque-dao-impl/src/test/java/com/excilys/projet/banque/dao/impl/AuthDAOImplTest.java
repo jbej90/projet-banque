@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.ExpectedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -37,7 +38,7 @@ public class AuthDAOImplTest {
 	}
 
 	@Test
-	public void saveTest() {
+	public void save() {
 		Auth auth = new Auth();
 		auth.setLogin("login");
 		auth.setPassword("test");
@@ -47,45 +48,53 @@ public class AuthDAOImplTest {
 		int currentSize = authDAOImpl.findAll().size();
 		authDAOImpl.save(auth);
 		assertTrue(authDAOImpl.findAll().size() == currentSize + 1);
-
 	}
 
 	@Test
-	public void findByIdTest() {
-		Auth auth = new Auth();
-		auth.setLogin("login");
-		auth.setPassword("fraise");
-		auth.setEnabled(1);
-		Client client = clientDAOImpl.findById(1);
-		auth.setClient(client);
-		authDAOImpl.save(auth);
-		assertTrue("Echec du equals", auth.equals(authDAOImpl.findById(3)));
+	@ExpectedException(IllegalArgumentException.class) 
+	public void saveAuthNull() {
+		authDAOImpl.save(null);
 	}
 
 	@Test
-	public void findByLoginTest() {
-		Auth auth = new Auth();
-		auth.setLogin("loginSimple");
-		auth.setPassword("fraise");
-		auth.setEnabled(1);
-		Client client = clientDAOImpl.findById(0);
-		auth.setClient(client);
-		authDAOImpl.save(auth);
-		Auth authRecup = authDAOImpl.findByLogin("loginSimple");
-		assertTrue("Echec du equals", auth.equals(authRecup));
+	public void findById() {
+		assertTrue(authDAOImpl.findById(1).getId()==1);
+		assertTrue(authDAOImpl.findById(1).getLogin().equals("log2"));
 	}
 
 	@Test
-	public void findAuthByClientTest() {
-		Auth auth = new Auth();
-		auth.setLogin("login");
-		auth.setPassword("fraise");
-		auth.setEnabled(1);
-		Client client = clientDAOImpl.findById(2);
-		auth.setClient(client);
-		authDAOImpl.save(auth);
-		Auth authRecup = authDAOImpl.findAuthByIdClient(client.getId());
-		assertTrue("Echec du equals", auth.equals(authRecup));
-
+	@ExpectedException(IllegalArgumentException.class) 
+	public void findByIdNegatif() {
+		authDAOImpl.findById(-1);
 	}
+
+	@Test
+	public void findByLogin() {
+		assertTrue(authDAOImpl.findByLogin("log1").getId()==2);
+	}
+
+	@Test
+	@ExpectedException(IllegalArgumentException.class) 
+	public void findByLoginVide() {
+		authDAOImpl.findByLogin("");
+	}
+	
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findByLoginNull() {
+		authDAOImpl.findByLogin(null);
+	}
+
+	@Test
+	public void findAuthByIdClient() {
+		assertTrue(authDAOImpl.findAuthByIdClient(3).getId()==2);
+	}
+
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void findAuthByIdClientNegatif() {
+		authDAOImpl.findAuthByIdClient(-1);
+	}
+	
+	
 }

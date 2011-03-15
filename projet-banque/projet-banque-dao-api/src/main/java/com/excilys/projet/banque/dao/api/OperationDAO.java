@@ -3,7 +3,6 @@ package com.excilys.projet.banque.dao.api;
 import java.util.Date;
 import java.util.List;
 
-import com.excilys.projet.banque.dao.api.exceptions.DAOException;
 import com.excilys.projet.banque.model.EtatOperation;
 import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.model.Type;
@@ -18,9 +17,9 @@ public interface OperationDAO {
 
 	List<Operation> findAll();
 	
-	List<Operation> findAllByCompte(int idCompte, Type[] types, EtatOperation[] etats, Date dateDebut, Date dateFin) throws DAOException;
+	List<Operation> findAllByIdCompte(int idCompte, Type[] types, EtatOperation[] etats, Date dateDebut, Date dateFin);
 	
-	List<Operation> findAllByClient(int idClient, Type[] types, EtatOperation[] etats, Date dateDebut, Date dateFin) throws DAOException;
+	List<Operation> findAllByIdClient(int idClient, Type[] types, EtatOperation[] etats, Date dateDebut, Date dateFin);
 	
 //	List<Operation> findAllByCompte(Compte compte);
 //

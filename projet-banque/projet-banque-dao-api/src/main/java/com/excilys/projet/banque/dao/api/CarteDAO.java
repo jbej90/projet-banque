@@ -10,7 +10,7 @@ public interface CarteDAO {
 
 	List<Carte> findAll();
 
-	List<Carte> findAllByCompte(Compte compte);
+	List<Carte> findAllByIdCompte(int idCompte);
 	
 	List<Carte> findAllByType(TypeCarte type);
 	

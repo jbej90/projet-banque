@@ -13,7 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import com.excilys.projet.banque.service.api.ClientService;
-import com.excilys.projet.banque.service.api.exceptions.ServiceException;
+import com.excilys.projet.banque.service.api.exception.UnknownLoginException;
 
 /**
  * Classe de gestion des succès d'authentification. Cette classe est liée à Spring security via le fichier de contexte.
@@ -45,13 +45,16 @@ public class RoleAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
 			else if (authority.getAuthority().equals(ROLE_USER)) {
 				// Récupère son identifiant client, et le stock en session
 				try {
-					int idClient = clientService.recupererClientId(authentication.getName());
-					request.getSession().setAttribute("idClient", idClient);
+					int idClient;
+					try {
+						idClient = clientService.recupererClientId(authentication.getName());
+						request.getSession().setAttribute("idClient", idClient);
+						//TODO @Damien: définir les actions associées à la réception des exceptions
+					} catch (UnknownLoginException e) {
+						e.printStackTrace();
+					}
 				}
 				catch (NumberFormatException e) {
-					e.printStackTrace();
-				}
-				catch (ServiceException e) {
 					e.printStackTrace();
 				}
 

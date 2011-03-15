@@ -6,13 +6,16 @@ import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.projet.banque.dao.api.CompteDAO;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
-import com.excilys.projet.banque.service.api.exceptions.ServiceException;
+import com.excilys.projet.banque.service.api.exception.InsufficientBalanceException;
+import com.excilys.projet.banque.service.api.exception.NoAccountsException;
+import com.excilys.projet.banque.service.api.exception.SimilarAccountsException;
 
 @Service("compteService")
 @Transactional(readOnly=true)
@@ -31,19 +34,19 @@ public class CompteServiceImpl implements CompteService {
 	}
 
 	@Override
-	public Compte recupererCompte(int id) throws ServiceException {
+	public Compte recupererCompte(int id) {
 		Compte compte = compteDao.findById(id);
-		if (compte == null) {
-			throw new ServiceException("Le compte n'existe pas.");
-		}
+		
+		Assert.notNull(compte, "Le compte n'existe pas.");
+		
 		return compte;
 	}
 
 	@Override
-	public List<Compte> recupererComptes() throws ServiceException {
+	public List<Compte> recupererComptes() throws NoAccountsException {
 		List<Compte> comptes = compteDao.findAll();
 		if (comptes.isEmpty())
-			throw new ServiceException("Aucun compte.");
+			throw new NoAccountsException();
 		return comptes;
 	}
 
@@ -68,7 +71,7 @@ public class CompteServiceImpl implements CompteService {
 
 	@Override
 	@Transactional(readOnly=false)
-	public void virer(Compte source, Compte destination, float montant) throws ServiceException {
+	public void virer(Compte source, Compte destination, float montant) throws SimilarAccountsException, InsufficientBalanceException {
 		// Effectue les controles de validité des données
 		verifierAvantVirement(source, destination, montant);
 
@@ -84,15 +87,15 @@ public class CompteServiceImpl implements CompteService {
 	}
 
 	@Override
-	public void verifierAvantVirement(Compte compteEmetteur, Compte compteDestinataire, float montant) throws ServiceException {
-		if (compteEmetteur == null || compteDestinataire == null)
-			throw new ServiceException("Compte inexistant.");
+	public void verifierAvantVirement(Compte compteEmetteur, Compte compteDestinataire, float montant) throws SimilarAccountsException, InsufficientBalanceException {
+		Assert.notNull(compteEmetteur, "Le compte émetteur ne peut être null.");
+		Assert.notNull(compteDestinataire, "Le compte destinataire ne peut être null.");
+		Assert.isTrue(montant>0, "Le montant ne peut être inférieur à 0.");
+		
 		if (compteEmetteur.equals(compteDestinataire))
-			throw new ServiceException("Compte emetteur et destinataire identiques.");
+			throw new SimilarAccountsException();
 		if (!(compteEmetteur.getSolde() >= montant))
-			throw new ServiceException("Solde du compte insuffisant.");
-		if (montant <= 0)
-			throw new ServiceException("Le montant du virement ne peut pas être nul ou négatif.");
+			throw new InsufficientBalanceException();
 	}
 
 	public void setCompteDao(CompteDAO compteDao) {

@@ -22,7 +22,8 @@ import com.excilys.projet.banque.dao.impl.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
-import com.excilys.projet.banque.service.api.exceptions.ServiceException;
+import com.excilys.projet.banque.service.api.exception.NoClientsException;
+import com.excilys.projet.banque.service.api.exception.UnknownLoginException;
 
 @DataSet("classpath:context/projet-banque-service-impl-dataSet.xml")
 @ContextConfiguration({ "classpath*:context/applicationContext.xml" })
@@ -37,7 +38,13 @@ public class ClientServiceImplTest {
 	private ClientDAOImpl clientDAO;
 
 	@Test
-	public void recupererListeComptesTest() {
+	@ExpectedException(IllegalArgumentException.class)
+	public void recupererListeComptesWithClientNull() {
+		clientService.recupererListeComptes(null);
+	}
+	
+	@Test
+	public void recupererListeComptes() {
 
 		Client client = clientDAO.findById(1);
 		List<Compte> lesComptes = clientService.recupererListeComptes(client);
@@ -48,29 +55,33 @@ public class ClientServiceImplTest {
 	}
 
 	@Test
-	public void recupererClientIdTest() throws ServiceException {
-		Client leClient = clientDAO.findByUsername("log2");
+	public void recupererClientId() throws UnknownLoginException{
+		Client leClient = clientDAO.findByLogin("log2");
 		assertTrue(clientService.recupererClientId("log2") == leClient.getId());
 	}
 
 	@Test
-	@ExpectedException(ServiceException.class)
-	public void recupererClientIdTestException() throws ServiceException {
+	@ExpectedException(UnknownLoginException.class)
+	public void recupererClientIdWithLoginInconnu() throws UnknownLoginException {
 		clientService.recupererClientId("aaa");
 	}
 
 	@Test
-	public void recupererClientsTest() throws ServiceException {
+	@ExpectedException(IllegalArgumentException.class)
+	public void recupererClientIdWithLoginNull() throws UnknownLoginException {
+		clientService.recupererClientId(null);
+	}
+
+	@Test
+	@ExpectedException(IllegalArgumentException.class)
+	public void recupererClientIdWithLoginVide() throws UnknownLoginException {
+		clientService.recupererClientId("");
+	}
+
+	@Test
+	public void recupererClients() throws NoClientsException {
 		List<Client> lesClient = clientService.recupererClients();
 		assertTrue(lesClient.size() == 3);
 	}
-
-	// @Test
-	// @ExpectedException(ServiceException.class)
-	// public void recupererListeComptesTest() {
-	//
-	// clientService.recupererListeComptes(5);
-	//
-	// }
 
 }

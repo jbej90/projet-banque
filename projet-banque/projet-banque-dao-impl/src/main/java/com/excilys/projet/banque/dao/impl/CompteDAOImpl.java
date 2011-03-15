@@ -6,9 +6,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import com.excilys.projet.banque.dao.api.CompteDAO;
-import com.excilys.projet.banque.model.Client;
 import com.excilys.projet.banque.model.Compte;
 
 @Repository("compteDao")
@@ -28,6 +28,8 @@ public class CompteDAOImpl extends HibernateDaoSupport implements CompteDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Compte findById(int idCompte) {
+		Assert.isTrue(idCompte>0, "L'id du Compte ne peut être inférieur ou égal à 0.");
+		
 		List<Compte> lesCompte = getHibernateTemplate().find("From Compte where id=?", idCompte);
 		if (lesCompte.size()==0){
 			return null;
@@ -37,18 +39,24 @@ public class CompteDAOImpl extends HibernateDaoSupport implements CompteDAO {
 
 	@Override
 	public void save(Compte compte) {
+		Assert.notNull(compte, "Le compte ne peut être null.");
+		
 		getHibernateTemplate().save(compte);
 	}
 	
 	@Override
 	public void update(Compte compte) {
+		Assert.notNull(compte, "Le compte ne peut être null.");
+		
 		getHibernateTemplate().update(compte);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Compte> findAllByClient(Client client) {
-		return getHibernateTemplate().find("From Compte where client.id=?", client.getId());
+	public List<Compte> findAllByIdClient(int idClient) {
+		Assert.isTrue(idClient>0, "L'id du Client ne peut être inférieur ou égal à 0.");
+		
+		return getHibernateTemplate().find("From Compte where client.id=?", idClient);
 	}
 
 }

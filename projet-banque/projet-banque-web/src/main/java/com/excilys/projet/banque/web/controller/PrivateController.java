@@ -29,7 +29,9 @@ import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
-import com.excilys.projet.banque.service.api.exceptions.ServiceException;
+import com.excilys.projet.banque.service.api.exception.InsufficientBalanceException;
+import com.excilys.projet.banque.service.api.exception.SimilarAccountsException;
+import com.excilys.projet.banque.service.api.exception.UnknownClientException;
 import com.excilys.projet.banque.web.utils.MessageStack;
 import com.excilys.projet.banque.web.utils.ToolItem;
 import com.excilys.projet.banque.web.utils.ToolbarManager;
@@ -80,6 +82,7 @@ public class PrivateController {
 			for (Compte compte : comptes) {
 				operations = operationService.recupererOperationsCompte(compte.getId(), cal.getTime(), null, OperationService.ETATS_EN_COURS);
 				compte.setSoldePrevisionnel(compte.getSolde() + operationService.totalOperations(operations));
+
 			}
 
 			model.addAttribute("client", client);
@@ -127,6 +130,7 @@ public class PrivateController {
 				operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
 				total = operationService.totalOperations(operations);
 				totalCarte = operationService.totalOperations(operationsCarte);
+
 
 				model.addAttribute("compte", selectedCompte);
 				model.addAttribute("operations", operations);
@@ -178,7 +182,8 @@ public class PrivateController {
 				return "redirect:" + WebUtils.getFormatPageUri("/error/error");
 			}
 			else {
-				List<Operation> operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
+				List<Operation> operationsCarte;
+				operationsCarte = operationService.recupererOperationsCompteCarte(selectedCompte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
 				float totalCarte = operationService.totalOperations(operationsCarte);
 
 				model.addAttribute("compte", selectedCompte);
@@ -223,12 +228,14 @@ public class PrivateController {
 		request.getSession().removeAttribute("compte_dest");
 		request.getSession().removeAttribute("montant");
 
-		List<Operation> virements = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT, OperationService.ETATS_EFFECTUE);
-		List<Operation> virementsEnCours = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT,
+		List<Operation> virements;
+		List<Operation> virementsEnCours;
+		virements = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT, OperationService.ETATS_EFFECTUE);
+		virementsEnCours = operationService.recupererOperationsClient(client.getId(), cal.getTime(), OperationService.TYPES_VIREMENT,
 				OperationService.ETATS_EN_COURS);
-
 		model.addAttribute("virements", virements);
 		model.addAttribute("virementsencours", virementsEnCours);
+			
 
 		return WebUtils.BASE_DIR_PRIVATE + "virement";
 	}
@@ -300,13 +307,16 @@ public class PrivateController {
 		// Si la pile d'erreur est vide, tout s'est bien passé
 		// On valide le traitement
 		if (MessageStack.getInstance(request).getSize(MessageStack.DEFAULT_DOMAIN) == 0) {
-			try {
-				compteService.virer(compte_src, compte_dest, montant);
-				MessageStack.getInstance(request).addInfo("Virement effectué.");
-			}
-			catch (ServiceException e) {
-				MessageStack.getInstance(request).addError(e.getMessage());
-			}
+				try {
+					compteService.virer(compte_src, compte_dest, montant);
+					MessageStack.getInstance(request).addInfo("Virement effectué.");
+
+				//TODO @Damien: définir les actions associées à la réception des exceptions
+				} catch (SimilarAccountsException e) {
+					e.printStackTrace();
+				} catch (InsufficientBalanceException e) {
+					e.printStackTrace();
+				}
 		}
 
 		// Si la pile d'erreur n'est pas vide, on stock les valeurs entrées pour les restituer
@@ -353,6 +363,7 @@ public class PrivateController {
 		List<Operation> operationsCarte = new LinkedList<Operation>();
 
 		operations = operationService.recupererOperationsCompteNonCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
+
 		operationsCarte = operationService.recupererOperationsCompteCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
 		float total = operationService.totalOperations(operations);
 		float totalCarte = operationService.totalOperations(operationsCarte);
@@ -366,7 +377,6 @@ public class PrivateController {
 		model.addAttribute("soustotal", total);
 		model.addAttribute("soustotalCarte", totalCarte);
 		model.addAttribute("total", (total + totalCarte));
-
 		return "compte";
 	}
 
@@ -388,10 +398,10 @@ public class PrivateController {
 			Integer idClient = (Integer) request.getSession().getAttribute("idClient");
 			client = clientService.recupererClient(idClient);
 		}
-		catch (ServiceException e) {
-			e.printStackTrace();
-		}
+		//TODO @Damien: définir les actions associées à la réception des exceptions
 		catch (NullPointerException e) {
+			e.printStackTrace();
+		} catch (UnknownClientException e) {
 			e.printStackTrace();
 		}
 		return client;
