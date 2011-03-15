@@ -10,15 +10,17 @@
 	
 	<h3>Opérations du compte "${compte.libelle}" (solde courant : <span<c:if test="${compte.solde < 0}"> class="decouvert"</c:if>>${compte.solde}€</span>)</h3>
 	
-	<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
-	
 	<form id="form" action="<c:url value="/private/compte/${compte.id}.htm"></c:url>" method="post">
 		<p>Ci-dessous, la liste des opérations de ce compte pour le mois sélectionné.</p>
 		<p>Les opérations par carte sont regroupées en une seule ligne dans le sous-total.</p>
 		
+		<jsp:include page="/WEB-INF/modules/messages.jsp">
+			<jsp:param name="domaine" value="filter" />
+		</jsp:include>
+	
 		<table>
 			<caption>
-				<jsp:include page="/WEB-INF/template/module-calendar.jsp" />
+				<jsp:include page="/WEB-INF/modules/calendar.jsp" />
 			</caption>
 			
 			<thead>

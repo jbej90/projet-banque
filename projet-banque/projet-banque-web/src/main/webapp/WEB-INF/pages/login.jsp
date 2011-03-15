@@ -10,7 +10,7 @@
 
 <div class="box width-400">
 	<form method="post" action="<c:url value="/login.do"/>">
-		<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
+		<jsp:include page="/WEB-INF/modules/messages.jsp" />
 		
 		<div class="row">
 			<label for="username">Identifiant :</label>

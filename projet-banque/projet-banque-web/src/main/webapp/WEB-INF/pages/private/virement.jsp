@@ -44,7 +44,7 @@
 	<p>Sélectionnez votre compte source et le compte destination et indiquez le montant à transféfer.</p>
 	
 	<form method="post" action="<c:url value="/private/virement.do"/>">
-		<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
+		<jsp:include page="/WEB-INF/modules/messages.jsp" />
 		
 		<div class="row">
 			<label for="compte_src">Source :</label>
@@ -90,9 +90,13 @@
 	<form id="form" action="<c:url value="/private/virement.htm"></c:url>" method="post">
 		<p>Ce tableau présente la liste de vos virements du mois sélectionné.</p>
 		
+		<jsp:include page="/WEB-INF/modules/messages.jsp">
+			<jsp:param name="domaine" value="filter" />
+		</jsp:include>
+		
 		<table>
 			<caption>
-				<jsp:include page="/WEB-INF/template/module-calendar.jsp" />
+				<jsp:include page="/WEB-INF/modules/calendar.jsp" />
 			</caption>
 			
 			<thead>

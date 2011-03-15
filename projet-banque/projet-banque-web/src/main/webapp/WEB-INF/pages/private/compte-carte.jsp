@@ -10,14 +10,16 @@
 	
 	<h3>Opérations par carte du compte "<a href="<c:url value="/private/compte/${compte.id}.htm"/>">${compte.libelle}</a>"</h3>
 	
-	<jsp:include page="/WEB-INF/pages/utils/messages.jsp" />
-	
 	<form id="form" action="<c:url value="/private/compte/${compte.id}/operations/carte.htm"></c:url>" method="post">
 		<p>Ci-dessous, la liste des opérations par carte de ce compte pour le mois sélectionné.</p>
 		
+		<jsp:include page="/WEB-INF/modules/messages.jsp">
+			<jsp:param name="domaine" value="filter" />
+		</jsp:include>
+		
 		<table>
 			<caption>
-				<jsp:include page="/WEB-INF/template/module-calendar.jsp" />
+				<jsp:include page="/WEB-INF/modules/calendar.jsp" />
 			</caption>
 			
 			<thead>
