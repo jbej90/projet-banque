@@ -1,13 +1,11 @@
 package com.excilys.projet.banque.web.view;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
@@ -15,7 +13,7 @@ import org.springframework.web.servlet.view.document.AbstractExcelView;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.Operation;
 
-public class ExcelCompteView2 extends AbstractExcelView {
+public class ExcelCompteViewPOI extends AbstractExcelView {
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -33,8 +31,6 @@ public class ExcelCompteView2 extends AbstractExcelView {
 		// Go to the first sheet
 		// getSheetAt: only if wb is created from an existing document
 		sheet = workbook.getSheetAt(0);
-		// sheet = workbook.createSheet(compte.getLibelle());
-		// sheet.setDefaultColumnWidth(12);
 		
 		getCell(sheet, 0, 0).setCellValue("Détail de mon compte ("+mois+" "+annee+")");
 		getCell(sheet, 2, 2).setCellValue(compte.getLibelle());

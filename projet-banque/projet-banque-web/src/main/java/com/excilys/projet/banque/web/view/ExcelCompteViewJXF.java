@@ -22,7 +22,7 @@ import org.springframework.web.servlet.view.document.AbstractJExcelView;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.Operation;
 
-public class ExcelCompteView3 extends AbstractJExcelView {
+public class ExcelCompteViewJXF extends AbstractJExcelView {
 
 	@SuppressWarnings("unchecked")
 	@Override
