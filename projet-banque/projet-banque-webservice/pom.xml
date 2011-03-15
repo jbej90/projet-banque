@@ -97,7 +97,7 @@
 			<plugin>
 				<groupId>eviware</groupId>
 				<artifactId>maven-soapui-plugin</artifactId>
-				<version>3.0</version>
+				<version>3.6.1</version>
 				<configuration>
 					<projectFile>${basedir}/src/test/resources/test-soapui-project.xml</projectFile>
 					<printReport>true</printReport>
