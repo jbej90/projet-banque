@@ -46,7 +46,7 @@ public class ClientServiceImpl implements ClientService {
 		Auth auth = authDao.findByLogin(login);
 		if (auth == null)
 			throw new UnknownLoginException();
-		return auth.getId();
+		return auth.getClient().getId();
 	}
 
 	@Override
