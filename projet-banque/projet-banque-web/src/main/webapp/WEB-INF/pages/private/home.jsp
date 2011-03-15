@@ -22,9 +22,8 @@
 		</thead>
 		
 		<tbody>
-			<% int i=0; %>
-			<c:forEach items="${comptes}" var="compte">
-				<tr class="line<%= i++ % 2 %>">
+			<c:forEach items="${comptes}" var="compte" varStatus="status">
+				<tr class="line${status.index % 2}">
 					<td><a href="<c:url value="/private/compte/${compte.id}.htm"/>">${compte.libelle}</a></td>
 					<td align="right"<c:if test="${compte.solde < 0}"> class="decouvert"</c:if>><fmt:formatNumber maxFractionDigits="2">${compte.solde}</fmt:formatNumber>€</td>
 					<td align="right"<c:if test="${compte.soldePrevisionnel < 0}"> class="decouvert"</c:if>><fmt:formatNumber maxFractionDigits="2">${compte.soldePrevisionnel}</fmt:formatNumber>€</td>
