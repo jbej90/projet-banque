@@ -41,21 +41,19 @@ public class SoapService implements IWService {
 	}
 
 	@Override
-	public boolean passerOperation(int idCompteEmetteur, int idCompteDestinataire, float montant) {
+	public String passerOperation(int idCompteEmetteur, int idCompteDestinataire, float montant) {
 		Compte compteEmetteur = null;
 		Compte compteDestinataire = null;
 		try {
 			compteEmetteur = compteService.recupererCompte(idCompteEmetteur);
 			compteDestinataire = compteService.recupererCompte(idCompteDestinataire);
 			compteService.virer(compteEmetteur, compteDestinataire, montant);
-			// operationService.effectuerVirementInterne(compteEmetteur,
-			// compteDestinataire, montant);
 
 		} catch (ServiceException e) {
 			e.printStackTrace();
-			return false;
+			return "Opération échouée!";
 		}
-		return true;
+		return "Opération réussie!";
 	}
 
 	@Override

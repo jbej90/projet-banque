@@ -17,7 +17,7 @@ public interface IWService {
 
 	List<OperationDTO> consultationOperations(@WebParam(name = "idClient") int idClient, @WebParam(name = "idCompte") int idCompte);
 
-	boolean passerOperation(@WebParam(name = "idCompteEmetteur") int idCompteEmetteur, @WebParam(name = "idCompteDestinataire") int idCompteDestinataire,
+	String passerOperation(@WebParam(name = "idCompteEmetteur") int idCompteEmetteur, @WebParam(name = "idCompteDestinataire") int idCompteDestinataire,
 			@WebParam(name = "montant") float montant);
 
 }
