@@ -28,10 +28,10 @@ public class CompteDAOImpl extends HibernateDaoSupport implements CompteDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Compte findById(int idCompte) {
-		Assert.isTrue(idCompte>0, "L'id du Compte ne peut être inférieur ou égal à 0.");
-		
+		Assert.isTrue(idCompte > 0, "L'id du Compte ne peut être inférieur ou égal à 0.");
+
 		List<Compte> lesCompte = getHibernateTemplate().find("From Compte where id=?", idCompte);
-		if (lesCompte.size()==0){
+		if (lesCompte.size() == 0) {
 			return null;
 		}
 		return lesCompte.get(0);
@@ -40,23 +40,25 @@ public class CompteDAOImpl extends HibernateDaoSupport implements CompteDAO {
 	@Override
 	public void save(Compte compte) {
 		Assert.notNull(compte, "Le compte ne peut être null.");
-		
+
 		getHibernateTemplate().save(compte);
 	}
-	
+
 	@Override
 	public void update(Compte compte) {
 		Assert.notNull(compte, "Le compte ne peut être null.");
-		
+
 		getHibernateTemplate().update(compte);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Compte> findAllByIdClient(int idClient) {
-		Assert.isTrue(idClient>0, "L'id du Client ne peut être inférieur ou égal à 0.");
-		
-		return getHibernateTemplate().find("From Compte where client.id=?", idClient);
+		Assert.isTrue(idClient > 0, "L'id du Client ne peut être inférieur ou égal à 0.");
+		return getHibernateTemplate().find("From Compte  where client.id=?", idClient);
+		// return
+		// getHibernateTemplate().find("From Compte left join fetch cp.client where cl.id=?",
+		// idClient);
 	}
 
 }

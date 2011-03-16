@@ -48,6 +48,7 @@
 				<ref bean="typeCarteConverter" />
 				<ref bean="etatOperationConverter" />
 				<ref bean="operationConverter" />
+				<ref bean="authConverter"/>
 			</list>
 		</property>
 	</bean>

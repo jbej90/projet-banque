@@ -1,6 +1,7 @@
 package com.excilys.projet.banque.webservice.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -47,10 +48,23 @@ public class ClientDTO {
 	@XmlElement(nillable = true)
 	protected List<CompteDTO> comptes;
 	@XmlSchemaType(name = "dateTime")
-	protected XMLGregorianCalendar dateLastConnection;
+	protected Date dateLastConnection;
 	protected Integer id;
 	protected String nom;
 	protected String prenom;
+
+	public ClientDTO() {
+	}
+
+	public ClientDTO(String adresse, AuthDTO auth, List<CompteDTO> comptes, Date dateLastConnection, Integer id, String nom, String prenom) {
+		this.adresse = adresse;
+		this.auth = auth;
+		this.comptes = comptes;
+		this.dateLastConnection = dateLastConnection;
+		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+	}
 
 	/**
 	 * Gets the value of the adresse property.
@@ -130,7 +144,7 @@ public class ClientDTO {
 	 * @return possible object is {@link XMLGregorianCalendar }
 	 * 
 	 */
-	public XMLGregorianCalendar getDateLastConnection() {
+	public Date getDateLastConnection() {
 		return dateLastConnection;
 	}
 
@@ -141,7 +155,7 @@ public class ClientDTO {
 	 *            allowed object is {@link XMLGregorianCalendar }
 	 * 
 	 */
-	public void setDateLastConnection(XMLGregorianCalendar value) {
+	public void setDateLastConnection(Date value) {
 		this.dateLastConnection = value;
 	}
 

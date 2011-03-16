@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -103,7 +104,7 @@ public class Client implements Serializable {
 		this.dateLastConnection = dateLastConnection;
 	}
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "client_fk")
 	@OrderBy("libelle")
 	public Set<Compte> getComptes() {

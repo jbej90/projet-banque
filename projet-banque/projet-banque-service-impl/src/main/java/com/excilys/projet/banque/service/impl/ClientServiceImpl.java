@@ -1,6 +1,5 @@
 package com.excilys.projet.banque.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import com.excilys.projet.banque.service.api.exception.NoClientsException;
 import com.excilys.projet.banque.service.api.exception.UnknownLoginException;
 
 @Service("clientService")
-@Transactional(readOnly=true)
+@Transactional(readOnly = true)
 public class ClientServiceImpl implements ClientService {
 
 	@Autowired
@@ -30,19 +29,19 @@ public class ClientServiceImpl implements ClientService {
 	private AuthDAO authDao;
 
 	@Override
-	public Client recupererClient(int idClient){
+	public Client recupererClient(int idClient) {
 		Client client = clientDao.findById(idClient);
-		
+
 		Assert.notNull(client, "Le client n'existe pas.");
-		
+
 		return client;
 	}
 
 	@Override
 	public int recupererClientId(String login) throws UnknownLoginException {
-		Assert.notNull(login, "Le login ne peut être null.");	
-		Assert.hasText(login, "Le login ne peut être une chaîne vide.");	
-		
+		Assert.notNull(login, "Le login ne peut être null.");
+		Assert.hasText(login, "Le login ne peut être une chaîne vide.");
+
 		Auth auth = authDao.findByLogin(login);
 		if (auth == null)
 			throw new UnknownLoginException();
@@ -59,15 +58,13 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public List<Compte> recupererListeComptes(int idClient) {
-		List<Compte> lesComptes = new ArrayList<Compte>();
-		lesComptes = compteDao.findAllByIdClient(idClient);
-		return lesComptes;
+		return compteDao.findAllByIdClient(idClient);
 	}
 
 	@Override
 	public List<Compte> recupererListeComptes(Client client) {
-		Assert.notNull(client, "Le client ne peut être null.");	
-		
+		Assert.notNull(client, "Le client ne peut être null.");
+
 		return compteDao.findAllByIdClient(client.getId());
 	}
 

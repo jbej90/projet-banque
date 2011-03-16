@@ -1,5 +1,6 @@
 package com.excilys.projet.banque.webservice;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -12,11 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
+import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.webservice.dto.CompteDTO;
 import com.excilys.projet.banque.webservice.dto.OperationDTO;
+import com.excilys.projet.banque.webservice.dto.converter.CompteToCompteDTO;
 
 @Path("/")
 @Component("restService")
@@ -30,6 +33,8 @@ public class RestService implements IWService {
 	private ClientService clientService;
 	@Autowired
 	private ConversionService converter;
+	@Autowired
+	private CompteToCompteDTO compteConverter;
 
 	public RestService() {
 	}
@@ -96,9 +101,22 @@ public class RestService implements IWService {
 	}
 
 	@Override
-	public List<CompteDTO> consultationComptes(int idClient) {
-		// TODO Auto-generated method stub
-		return null;
+	@Path("/consultation/{idClient}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<CompteDTO> consultationComptes(@PathParam("idClient") int idClient) {
+		List<CompteDTO> listComptes = new ArrayList<CompteDTO>();
+		for (Compte compte : clientService.recupererListeComptes(idClient)) {
+			listComptes.add(compteConverter.convert(compte));
+		}
+		return listComptes;
+	}
+
+	@Path("/consultation")
+	@GET
+	@Produces("application/json")
+	public String consultation() {
+		return "test";
 	}
 
 }

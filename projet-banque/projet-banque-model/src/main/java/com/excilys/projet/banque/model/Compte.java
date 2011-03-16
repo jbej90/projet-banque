@@ -62,7 +62,7 @@ public class Compte implements Comparable<Compte>, Serializable {
 		this.libelle = libelle;
 	}
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "client_fk")
 	public Client getClient() {
 		return client;
@@ -90,7 +90,7 @@ public class Compte implements Comparable<Compte>, Serializable {
 		this.soldePrevisionnel = soldePrevisionnel;
 	}
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name = "compte_fk")
 	public Set<Carte> getCarte() {
 		return carte;
