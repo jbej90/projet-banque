@@ -20,7 +20,6 @@ import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.Operation;
 
 public class ExcelCompteViewPOIColor extends AbstractExcelView {
-
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -29,8 +28,7 @@ public class ExcelCompteViewPOIColor extends AbstractExcelView {
 		// creating a custom palette for the workbook
 		HSSFPalette palette = workbook.getCustomPalette();
 		palette.setColorAtIndex(HSSFColor.BLUE_GREY.index, (byte) 249, (byte) 249, (byte) 249);
-		palette.setColorAtIndex(HSSFColor.GREEN.index, (byte) 255, (byte) 255, (byte) 255);
-		palette.setColorAtIndex(HSSFColor.GREY_40_PERCENT.index, (byte) 187, (byte) 187, (byte) 187);
+		palette.setColorAtIndex(HSSFColor.GREY_40_PERCENT.index, (byte) 240, (byte) 240, (byte) 240);
 
 		Compte compte = (Compte) model.get("compte");
 		List<Operation> operations = (List<Operation>) model.get("operations");
@@ -45,8 +43,6 @@ public class ExcelCompteViewPOIColor extends AbstractExcelView {
 		// Go to the first sheet
 		// getSheetAt: only if wb is created from an existing document
 		sheet = workbook.getSheetAt(0);
-		// sheet = workbook.createSheet(compte.getLibelle());
-		// sheet.setDefaultColumnWidth(12);
 
 		getCell(sheet, 2, 2).setCellValue(compte.getLibelle());
 		getCell(sheet, 3, 2).setCellValue(compte.getSolde());
@@ -61,15 +57,17 @@ public class ExcelCompteViewPOIColor extends AbstractExcelView {
 
 			if (operation.getMontant() < 0) {
 				getCellOperation(row, 3).setCellValue(operation.getMontant());
+				getCellOperation(row, 4).setCellValue("");
 			}
 			else {
+				getCellOperation(row, 3).setCellValue("");
 				getCellOperation(row, 4).setCellValue(operation.getMontant());
 			}
 
 			i++;
 		}
 	}
-
+	
 	protected HSSFCell getCellOperation(HSSFRow row, int col) {
 		HSSFCell cell = row.createCell(col);
 		HSSFCellStyle style = row.getSheet().getWorkbook().createCellStyle();
@@ -78,9 +76,9 @@ public class ExcelCompteViewPOIColor extends AbstractExcelView {
 			style.setFillForegroundColor(HSSFColor.BLUE_GREY.index);
 		}
 		else {
-			style.setFillForegroundColor(HSSFColor.GREEN.index);
+			style.setFillForegroundColor(HSSFColor.WHITE.index);
 		}
-		style.setFillPattern(CellStyle.BIG_SPOTS);
+		style.setFillPattern(CellStyle.SOLID_FOREGROUND);
 		
 		cell.setCellStyle(style);
 		
