@@ -22,7 +22,7 @@
 		
 		<script type="text/javascript">
 			$.datepicker.setDefaults({
-				minDate: '-3Y', 
+				minDate: '-3Y',
 				maxDate: 0,
 				showAnim: 'fold',
 				showOn: 'button',

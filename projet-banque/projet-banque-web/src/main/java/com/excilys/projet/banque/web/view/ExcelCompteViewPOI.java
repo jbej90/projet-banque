@@ -59,24 +59,24 @@ public class ExcelCompteViewPOI extends AbstractExcelView {
 
 			i++;
 		}
+		int end = i;
 
 		// TODO: Les styles étant récupérés par référence, si on ajout du gras sur une cellule, il se retrouvera sur toutes les cellules de même style
-
 		getCell(sheet, i, 0).setCellValue("Opérations");
-		// getCell(sheet, i, 0).getCellStyle().setFont(fontBold);
-		getCell(sheet, i, soustotal < 0 ? 3 : 4).setCellValue(soustotal);
-		// getCell(sheet, i, soustotal < 0 ? 3 : 4).getCellStyle().setFont(fontBold);
+//		if (soustotal < 0) {
+			getCell(sheet, i, 3).setCellFormula("SUM(D7"+":D"+end+")");
+//		} else {
+			getCell(sheet, i, 4).setCellFormula("SUM(E7"+":E"+end+")");
+//		}
 
 		i++;
 		getCell(sheet, i, 0).setCellValue("Opérations par carte");
-		// getCell(sheet, i, 0).getCellStyle().setFont(fontBold);
 		getCell(sheet, i, soustotalCarte < 0 ? 3 : 4).setCellValue(soustotalCarte);
-		// getCell(sheet, i, soustotalCarte < 0 ? 3 : 4).getCellStyle().setFont(fontBold);
 
 		i++;
 		getCell(sheet, i, 0).setCellValue("Total");
-		// getCell(sheet, i, 0).getCellStyle().setFont(fontBold);
-		getCell(sheet, i, total < 0 ? 3 : 4).setCellValue(total);
-		// getCell(sheet, i, total < 0 ? 3 : 4).getCellStyle().setFont(fontBold);
+//		getCell(sheet, i, total < 0 ? 3 : 4).setCellValue(total);
+		getCell(sheet, i, 3).setCellFormula("D"+(end+1)+" + D"+(end+2));
+		getCell(sheet, i, 4).setCellFormula("E"+(end+1)+" + E"+(end+2));
 	}
 }
