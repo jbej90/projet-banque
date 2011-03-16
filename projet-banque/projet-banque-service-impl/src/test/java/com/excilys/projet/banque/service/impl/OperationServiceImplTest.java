@@ -19,13 +19,13 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.projet.banque.dao.impl.CompteDAOImpl;
-import com.excilys.projet.banque.dao.impl.utils.DataSet;
-import com.excilys.projet.banque.dao.impl.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.model.EtatOperation;
 import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.model.Type;
 import com.excilys.projet.banque.service.api.OperationService;
+import com.excilys.utils.spring.test.dbunit.DataSet;
+import com.excilys.utils.spring.test.dbunit.DataSetTestExecutionListener;
 
 @DataSet("classpath:context/projet-banque-service-impl-dataSet.xml")
 @ContextConfiguration({ "classpath*:context/applicationContext.xml" })

@@ -42,6 +42,10 @@
 			<layout>default</layout>
 			<url>http://no-commons-logging.zapto.org/mvn2</url>
 		</repository>
+		<repository>
+			<id>excilys-public</id>
+			<url>http://repository.excilys.com/content/groups/public</url>
+		</repository>
 	</repositories>
 
 	<properties>
@@ -71,6 +75,7 @@
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<cxf.version>2.3.3</cxf.version>
+		<spring-test-dbunit.version>1.0.0</spring-test-dbunit.version>
 	</properties>
 
 	<dependencyManagement>
@@ -297,6 +302,11 @@
 				<groupId>hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
 				<version>${hsqldb.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.excilys.utils</groupId>
+				<artifactId>spring-test-dbunit</artifactId>
+				<version>${spring-test-dbunit.version}</version>
 			</dependency>
 
 			<!-- Utilitaires -->
