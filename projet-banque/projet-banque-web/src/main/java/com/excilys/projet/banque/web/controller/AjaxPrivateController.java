@@ -16,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +31,7 @@ import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.web.ajax.AjaxCompte;
 import com.excilys.projet.banque.web.ajax.AjaxOperations;
+import com.excilys.projet.banque.web.utils.DateUtils;
 import com.excilys.projet.banque.web.utils.WebUtils;
 
 /**
@@ -60,11 +60,9 @@ public class AjaxPrivateController {
 	 *            : compte à exclure
 	 * @return Liste de comptes du client courant sans celui à exclure
 	 */
-	@Secured({ "ROLE_USER" })
 	@RequestMapping(value = "comptes" + WebUtils.URL_SUFFIX_PAGE, method = RequestMethod.GET)
 	public @ResponseBody
-	void getComptes(@RequestParam(value = "exclude", required = false, defaultValue = "-1") int exclude, HttpServletRequest request,
-			HttpServletResponse response) {
+	void getComptes(@RequestParam(value = "exclude", required = false, defaultValue = "-1") int exclude, HttpServletRequest request, HttpServletResponse response) {
 		Set<AjaxCompte> listComptes = new TreeSet<AjaxCompte>();
 		Client client = getActualClient(request);
 
@@ -101,13 +99,11 @@ public class AjaxPrivateController {
 	 *            : compte à exclure
 	 * @return Liste des opérations d'un des comptes du client courant
 	 */
-	@Secured({ "ROLE_USER" })
 	@RequestMapping(value = "compte/{compte}" + WebUtils.URL_SUFFIX_PAGE, method = RequestMethod.GET)
 	public @ResponseBody
-	void getOperationsComptes(@PathVariable("compte") int idCompte,
-			@RequestParam(value = "year", required = false, defaultValue = "-1") int year, @RequestParam(value = "month", required = false, defaultValue = "-1") int month,
-			HttpServletRequest request, HttpServletResponse response) {
-		Calendar cal = Calendar.getInstance(Locale.FRANCE);
+	void getOperationsComptes(@PathVariable("compte") int idCompte, @RequestParam(value = "year", required = false, defaultValue = "-1") int year,
+			@RequestParam(value = "month", required = false, defaultValue = "-1") int month, HttpServletRequest request, HttpServletResponse response) {
+		Calendar cal;
 
 		Compte compte = null;
 		Client client = getActualClient(request);
@@ -123,7 +119,12 @@ public class AjaxPrivateController {
 			typesCarte.add(Type.OP_CARTE_IMM);
 
 			// Récupération du mois à afficher (avec ou sans filtrage)
-			cal = getMonthYearFilter(month, year);
+			try {
+				cal = DateUtils.getMonthYearFilter(month, year);
+			}
+			catch (NumberFormatException e) {
+				cal = Calendar.getInstance(Locale.FRANCE);
+			}
 
 			// Récupération des opérations du mois sélectionné
 			List<Operation> ops;
@@ -136,17 +137,18 @@ public class AjaxPrivateController {
 
 				AjaxOperations operations = new AjaxOperations(ops, sousTotalCarte, sousTotal);
 
-
 				// Conversion du résultat en JSON
 				MappingJacksonHttpMessageConverter jsonConverter = new MappingJacksonHttpMessageConverter();
 				MediaType jsonMimeType = MediaType.APPLICATION_JSON;
 				if (jsonConverter.canWrite(operations.getClass(), jsonMimeType)) {
-						jsonConverter.write(operations, jsonMimeType, new ServletServerHttpResponse(response));
+					jsonConverter.write(operations, jsonMimeType, new ServletServerHttpResponse(response));
 				}
-				
-			} catch (HttpMessageNotWritableException e) {
+
+			}
+			catch (HttpMessageNotWritableException e) {
 				e.printStackTrace();
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 
@@ -171,38 +173,10 @@ public class AjaxPrivateController {
 			Integer idClient = (Integer) request.getSession().getAttribute("idClient");
 			client = clientService.recupererClient(idClient);
 		}
-		//TODO @Damien: définir les actions associées à la réception des exceptions
+		// TODO @Damien: définir les actions associées à la réception des exceptions
 		catch (NullPointerException e) {
 			e.printStackTrace();
 		}
 		return client;
-	}
-
-	/**
-	 * Récupère une instance de Calendar. La date configurée est celle du 1er du mois sélectionné dans le formulaire de filtrage. La méthode utilise donc les valeurs month et year.
-	 * Si aucun filtrage n'a été demandé (ie: valeurs inexistantes) ou que les données sont incorrectes, la date actuelle est retournée.
-	 * 
-	 * @param request
-	 *            : utilisée pour le possible message d'erreur
-	 * @param month
-	 *            : mois à utiliser pour le filtrage
-	 * @param year
-	 *            : année à utiliser pour le filtrage
-	 * @return une instance de Calendar correspondant à la date de filtrage; la date actuelle sinon
-	 */
-	private Calendar getMonthYearFilter(int month, int year) {
-		Calendar cal = Calendar.getInstance(Locale.FRANCE);
-
-		if (month >= 0 && month < 12 && year >= cal.get(Calendar.YEAR) - 3 && year <= cal.get(Calendar.YEAR)) {
-			try {
-				cal.set(Calendar.DATE, 1);
-				cal.set(Calendar.MONTH, month);
-				cal.set(Calendar.YEAR, year);
-			}
-			catch (NumberFormatException e) {
-			}
-		}
-
-		return cal;
 	}
 }

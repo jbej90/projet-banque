@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.excilys.projet.banque.web.utils.SecurityUtils;
 import com.excilys.projet.banque.web.utils.WebUtils;
 
 @Controller
@@ -16,13 +17,13 @@ public class IndexController {
 	 */
 	@RequestMapping("index" + WebUtils.URL_SUFFIX_PAGE)
 	public String redirectByrole(HttpSession session, HttpServletRequest request) {
-		if (request.isUserInRole("ROLE_ADMIN")) {
-			return "redirect:"+WebUtils.getFormatPageUri("/admin/index");
+		if (request.isUserInRole(SecurityUtils.ROLE_ADMIN)) {
+			return "redirect:" + WebUtils.getFormatPageUri("/admin/index");
 		}
-		else if (request.isUserInRole("ROLE_USER")) {
-			return "redirect:"+WebUtils.getFormatPageUri("/private/home");
+		else if (request.isUserInRole(SecurityUtils.ROLE_USER)) {
+			return "redirect:" + WebUtils.getFormatPageUri("/private/home");
 		}
 
-		return "redirect:"+WebUtils.getFormatPageUri("/login");
+		return "redirect:" + WebUtils.getFormatPageUri("/login");
 	}
 }

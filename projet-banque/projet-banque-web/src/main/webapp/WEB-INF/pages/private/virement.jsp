@@ -101,7 +101,7 @@
 			
 			<thead>
 				<tr>
-					<th width="30%">Date<input type="hidden" id="datepicker" name="datepicker" /></th>
+					<th width="30%">Date</th>
 					<th width="50%">Libelle</th>
 					<th width="20%">Montant</th>
 				</tr>

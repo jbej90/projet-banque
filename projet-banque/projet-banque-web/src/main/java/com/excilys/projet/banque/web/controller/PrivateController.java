@@ -31,6 +31,7 @@ import com.excilys.projet.banque.service.api.CompteService;
 import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exception.InsufficientBalanceException;
 import com.excilys.projet.banque.service.api.exception.SimilarAccountsException;
+import com.excilys.projet.banque.web.utils.DateUtils;
 import com.excilys.projet.banque.web.utils.MessageStack;
 import com.excilys.projet.banque.web.utils.ToolItem;
 import com.excilys.projet.banque.web.utils.ToolbarManager;
@@ -336,7 +337,7 @@ public class PrivateController {
 	public String downloadCompteExcel(@PathVariable int idCompte, @PathVariable int month, @PathVariable int year, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws IOException {
 		// Essaye de parser la date pour le filtre d'opérations
-		Calendar cal = getMonthYearFilter(month, year);
+		Calendar cal = DateUtils.getMonthYearFilter(month, year);
 
 		// Récupère le client actuel
 		Client client = getActualClient(request);
@@ -442,7 +443,7 @@ public class PrivateController {
 				int month = Integer.parseInt(request.getParameter("filter_month"));
 				int year = Integer.parseInt(request.getParameter("filter_year"));
 
-				cal = getMonthYearFilter(month, year);
+				cal = DateUtils.getMonthYearFilter(month, year);
 			}
 			catch (NumberFormatException e) {
 				MessageStack.getInstance(request).addError("Format de date incorrect", "filter");
@@ -456,37 +457,12 @@ public class PrivateController {
 				cal.setTime(date);
 				
 				// Vérifie la validité de la date
-				cal = getMonthYearFilter(cal);
+				cal = DateUtils.getMonthYearFilter(cal);
 			}
 			catch (ParseException e) {
 				MessageStack.getInstance(request).addError("Format de date incorrect", "filter");
 			}
 		}
-
-		return cal;
-	}
-
-	private Calendar getMonthYearFilter(Calendar cal) {
-		return getMonthYearFilter(cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
-	}
-	private Calendar getMonthYearFilter(int month, int year) {
-		Calendar cal = Calendar.getInstance(Locale.FRANCE);
-
-		if (month < 0 || month > 11) {
-			throw new NumberFormatException("Mois hors limite");
-		}
-
-		// Bride l'historique à 3 ans coulantes (de mois à mois) en arrière
-		if (year < cal.get(Calendar.YEAR) - 3 ||
-			(year == cal.get(Calendar.YEAR)-3 && month < cal.get(Calendar.MONTH)) || 
-			(year == cal.get(Calendar.YEAR) && month > cal.get(Calendar.MONTH)) || 
-			year > cal.get(Calendar.YEAR)) {
-			throw new NumberFormatException("Année hors limite");
-		}
-
-		cal.set(Calendar.DATE, 1);
-		cal.set(Calendar.MONTH, month);
-		cal.set(Calendar.YEAR, year);
 
 		return cal;
 	}
