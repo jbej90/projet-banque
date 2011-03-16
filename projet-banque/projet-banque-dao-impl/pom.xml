@@ -64,6 +64,7 @@
 		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -76,6 +77,11 @@
 		<dependency>
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.excilys.utils</groupId>
+			<artifactId>spring-test-dbunit</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Utils -->

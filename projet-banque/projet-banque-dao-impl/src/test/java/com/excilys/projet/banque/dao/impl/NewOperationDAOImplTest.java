@@ -15,10 +15,10 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.projet.banque.dao.impl.utils.DataSet;
-import com.excilys.projet.banque.dao.impl.utils.DataSetTestExecutionListener;
 import com.excilys.projet.banque.model.EtatOperation;
 import com.excilys.projet.banque.model.Type;
+import com.excilys.utils.spring.test.dbunit.DataSet;
+import com.excilys.utils.spring.test.dbunit.DataSetTestExecutionListener;
 
 @DataSet("classpath:context/dataSet.xml")
 @ContextConfiguration({ "classpath:context/applicationContext.xml" })

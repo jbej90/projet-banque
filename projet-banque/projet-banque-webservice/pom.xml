@@ -100,7 +100,7 @@
 				<artifactId>maven-soapui-plugin</artifactId>
 				<version>3.6.1</version>
 				<configuration>
-					<projectFile>${basedir}/src/test/resources/test-soapui-project.xml</projectFile>
+					<projectFile>${basedir}/src/test/resources/projetBanqueWS-Test-SOAP-REST.xml</projectFile>
 					<printReport>true</printReport>
 				</configuration>
 				<executions>
