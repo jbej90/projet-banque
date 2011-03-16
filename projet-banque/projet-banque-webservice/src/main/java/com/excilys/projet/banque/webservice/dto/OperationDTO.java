@@ -59,7 +59,6 @@ public class OperationDTO {
 	 */
 
 	public OperationDTO(CarteDTO carte, CompteDTO compte, Date dateOp, EtatOperationDTO etat, Integer id, String libelle, float montant, TypeDTO type) {
-		super();
 		this.carte = carte;
 		this.compte = compte;
 		this.dateOp = dateOp;
