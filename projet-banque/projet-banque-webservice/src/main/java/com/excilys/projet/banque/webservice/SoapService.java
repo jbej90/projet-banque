@@ -20,13 +20,13 @@ import com.excilys.projet.banque.webservice.dto.OperationDTO;
 public class SoapService implements IWService {
 
 	@Autowired
-	private CompteService compteService;
+	private CompteService		compteService;
 	@Autowired
-	private OperationService operationService;
+	private OperationService	operationService;
 	@Autowired
-	private ClientService clientService;
+	private ClientService		clientService;
 	@Autowired
-	private ConversionService converter;
+	private ConversionService	converter;
 
 	public SoapService() {
 	}
@@ -47,10 +47,12 @@ public class SoapService implements IWService {
 		Compte compteDestinataire = compteService.recupererCompte(idCompteDestinataire);
 		try {
 			compteService.virer(compteEmetteur, compteDestinataire, montant);
-		} catch (SimilarAccountsException e) {
+		}
+		catch (SimilarAccountsException e) {
 			e.printStackTrace();
 			return "Opération échouée!";
-		} catch (InsufficientBalanceException e) {
+		}
+		catch (InsufficientBalanceException e) {
 			e.printStackTrace();
 			return "Opération échouée!";
 		}

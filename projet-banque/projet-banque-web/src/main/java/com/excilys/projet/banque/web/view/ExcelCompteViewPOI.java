@@ -6,6 +6,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import jxl.read.biff.BOFRecord;
+
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
@@ -19,6 +22,7 @@ public class ExcelCompteViewPOI extends AbstractExcelView {
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, HSSFWorkbook workbook, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HSSFSheet sheet;
+		HSSFFont fontBold;
 
 		int annee = (Integer) model.get("annee");
 		String mois = (String) model.get("mois");
@@ -31,8 +35,12 @@ public class ExcelCompteViewPOI extends AbstractExcelView {
 		// Go to the first sheet
 		// getSheetAt: only if wb is created from an existing document
 		sheet = workbook.getSheetAt(0);
-		
-		getCell(sheet, 0, 0).setCellValue("Détail de mon compte ("+mois+" "+annee+")");
+
+		// Get the default font and add bold
+		fontBold = workbook.createFont();
+		fontBold.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+
+		getCell(sheet, 0, 0).setCellValue("Détail de mon compte (" + mois + " " + annee + ")");
 		getCell(sheet, 2, 2).setCellValue(compte.getLibelle());
 		getCell(sheet, 3, 2).setCellValue(compte.getSolde());
 
@@ -51,16 +59,24 @@ public class ExcelCompteViewPOI extends AbstractExcelView {
 
 			i++;
 		}
-		
+
+		// TODO: Les styles étant récupérés par référence, si on ajout du gras sur une cellule, il se retrouvera sur toutes les cellules de même style
+
 		getCell(sheet, i, 0).setCellValue("Opérations");
+		// getCell(sheet, i, 0).getCellStyle().setFont(fontBold);
 		getCell(sheet, i, soustotal < 0 ? 3 : 4).setCellValue(soustotal);
+		// getCell(sheet, i, soustotal < 0 ? 3 : 4).getCellStyle().setFont(fontBold);
 
 		i++;
 		getCell(sheet, i, 0).setCellValue("Opérations par carte");
+		// getCell(sheet, i, 0).getCellStyle().setFont(fontBold);
 		getCell(sheet, i, soustotalCarte < 0 ? 3 : 4).setCellValue(soustotalCarte);
+		// getCell(sheet, i, soustotalCarte < 0 ? 3 : 4).getCellStyle().setFont(fontBold);
 
 		i++;
 		getCell(sheet, i, 0).setCellValue("Total");
+		// getCell(sheet, i, 0).getCellStyle().setFont(fontBold);
 		getCell(sheet, i, total < 0 ? 3 : 4).setCellValue(total);
+		// getCell(sheet, i, total < 0 ? 3 : 4).getCellStyle().setFont(fontBold);
 	}
 }
