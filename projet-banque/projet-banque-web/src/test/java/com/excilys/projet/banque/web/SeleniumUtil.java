@@ -2,8 +2,10 @@ package com.excilys.projet.banque.web;
 
 public class SeleniumUtil {
 
-	public static final String URLHOST = "192.168.10.43";
-	public static final String URL = "http://192.168.10.62:8080/";
+	public static final String URLHOST = "localhost";
+	public static final String URL = "http://localhost:8080/";
+//	public static final String URLHOST = "192.168.10.43";
+//	public static final String URL = "http://192.168.10.62:8080/";
 		
 	public static final String	MENU_RESUMES		= "Mes résumés";
 	public static final String	MENU_VIREMENTS		= "Mes virements";

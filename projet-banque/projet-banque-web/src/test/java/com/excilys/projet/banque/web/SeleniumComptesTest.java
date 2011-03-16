@@ -59,7 +59,7 @@ public class SeleniumComptesTest extends SeleneseTestCase {
 		boolean negatif = false;
 		for (int i = 1; i <= nbLigneDeCompte; i++) {
 			String s = selenium.getText("//table[@id='comptes']/tbody/tr[" + i + "]/td[2]").trim().replace("€", "");
-			if (Float.parseFloat(s) < 0) {
+			if (s != null || Float.parseFloat(s) < 0) {
 				negatif = true;
 			}
 		}
