@@ -3,6 +3,7 @@ package com.excilys.projet.banque.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -16,17 +17,19 @@ import com.excilys.projet.banque.model.Compte;
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.exception.NoClientsException;
 import com.excilys.projet.banque.service.api.exception.UnknownLoginException;
+import com.excilys.projet.banque.service.api.utils.SecurityUtils;
 
 @Service("clientService")
 @Transactional(readOnly = true)
+@Secured({ SecurityUtils.ROLE_USER, SecurityUtils.ROLE_ADMIN, SecurityUtils.ROLE_OPERATOR })
 public class ClientServiceImpl implements ClientService {
 
 	@Autowired
-	private CompteDAO compteDao;
+	private CompteDAO	compteDao;
 	@Autowired
-	private ClientDAO clientDao;
+	private ClientDAO	clientDao;
 	@Autowired
-	private AuthDAO authDao;
+	private AuthDAO		authDao;
 
 	@Override
 	public Client recupererClient(int idClient) {

@@ -11,7 +11,10 @@
 						http://www.springframework.org/schema/security/spring-security.xsd
 				        http://www.springframework.org/schema/util 
 				        http://www.springframework.org/schema/util/spring-util.xsd">
-				        
+
+	<!-- Active l'utilisation des annotations @Secured sur les classes/méthodes -->
+	<global-method-security secured-annotations="enabled" />
+	
 	<http>
 		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
 		<intercept-url pattern="/private/**" access="ROLE_USER" />

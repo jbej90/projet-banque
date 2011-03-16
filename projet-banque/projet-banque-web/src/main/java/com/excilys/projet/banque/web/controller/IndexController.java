@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.excilys.projet.banque.web.utils.SecurityUtils;
+import com.excilys.projet.banque.service.api.utils.SecurityUtils;
 import com.excilys.projet.banque.web.utils.WebUtils;
 
 @Controller

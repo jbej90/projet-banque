@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 
 import com.excilys.projet.banque.service.api.ClientService;
 import com.excilys.projet.banque.service.api.exception.UnknownLoginException;
-import com.excilys.projet.banque.web.utils.SecurityUtils;
+import com.excilys.projet.banque.service.api.utils.SecurityUtils;
 import com.excilys.projet.banque.web.utils.WebUtils;
 
 /**

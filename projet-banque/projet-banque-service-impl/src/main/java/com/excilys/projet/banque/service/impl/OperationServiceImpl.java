@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,13 +17,15 @@ import com.excilys.projet.banque.model.EtatOperation;
 import com.excilys.projet.banque.model.Operation;
 import com.excilys.projet.banque.model.Type;
 import com.excilys.projet.banque.service.api.OperationService;
+import com.excilys.projet.banque.service.api.utils.SecurityUtils;
 
 @Service("operationService")
-@Transactional(readOnly=true)
+@Transactional(readOnly = true)
+@Secured({ SecurityUtils.ROLE_USER, SecurityUtils.ROLE_ADMIN, SecurityUtils.ROLE_OPERATOR })
 public class OperationServiceImpl implements OperationService {
 
 	@Autowired
-	private OperationDAO operationDao;
+	private OperationDAO	operationDao;
 
 	public OperationServiceImpl() {
 	}
@@ -34,9 +37,9 @@ public class OperationServiceImpl implements OperationService {
 	@Override
 	public Operation recupererOperation(int id) {
 		Operation op = operationDao.findById(id);
-		
+
 		Assert.notNull(op, "L'opération n'existe pas.");
-		
+
 		return op;
 	}
 
@@ -46,24 +49,21 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
-	public List<Operation> recupererOperationsClient(int idClient, Date date,
-			Type[] types) {
+	public List<Operation> recupererOperationsClient(int idClient, Date date, Type[] types) {
 		return recupererOperationsClient(idClient, date, types, null);
 	}
 
 	@Override
-	public List<Operation> recupererOperationsClient(int idClient, Date date,
-			Type[] types, EtatOperation[] etats) {
-		
+	public List<Operation> recupererOperationsClient(int idClient, Date date, Type[] types, EtatOperation[] etats) {
+
 		DateTime dateDebut = CalculDateMois.calculDateTimeDebutMois(date);
 		DateTime dateFin = CalculDateMois.calculDateTimeFinMois(date);
 
 		verifierDates(dateDebut, dateFin);
-		
-		return operationDao.findAllByIdClient(idClient, types, etats,
-				dateDebut.toDate(), dateFin.toDate());
+
+		return operationDao.findAllByIdClient(idClient, types, etats, dateDebut.toDate(), dateFin.toDate());
 	}
-	
+
 	private void verifierDates(DateTime dateDebut, DateTime dateFin) {
 		Assert.notNull(dateDebut, "La date de début ne peut être null.");
 		Assert.notNull(dateFin, "La date de fin ne peut être null.");
@@ -71,14 +71,12 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
-	public List<Operation> recupererOperationsClientCarte(int idClient,
-			Date date, EtatOperation[] etats) {
+	public List<Operation> recupererOperationsClientCarte(int idClient, Date date, EtatOperation[] etats) {
 		return recupererOperationsClient(idClient, date, TYPES_CARTE, etats);
 	}
 
 	@Override
-	public List<Operation> recupererOperationsClientNonCarte(int idClient,
-			Date date, EtatOperation[] etats) {
+	public List<Operation> recupererOperationsClientNonCarte(int idClient, Date date, EtatOperation[] etats) {
 		return recupererOperationsClient(idClient, date, TYPES_NON_CARTE, etats);
 	}
 
@@ -88,35 +86,30 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
-	public List<Operation> recupererOperationsCompte(int idCompte, Date date,
-			Type[] types) {
+	public List<Operation> recupererOperationsCompte(int idCompte, Date date, Type[] types) {
 		return recupererOperationsCompte(idCompte, date, types, null);
 	}
 
 	@Override
-	public List<Operation> recupererOperationsCompte(int idCompte, Date date,
-			Type[] types, EtatOperation[] etats) {
-		
+	public List<Operation> recupererOperationsCompte(int idCompte, Date date, Type[] types, EtatOperation[] etats) {
+
 		Assert.notNull(date, "La date ne peut être null.");
 
 		DateTime dateDebut = CalculDateMois.calculDateTimeDebutMois(date);
 		DateTime dateFin = CalculDateMois.calculDateTimeFinMois(date);
-		
+
 		verifierDates(dateDebut, dateFin);
-		
-		return operationDao.findAllByIdCompte(idCompte, types, etats,
-				dateDebut.toDate(), dateFin.toDate());
+
+		return operationDao.findAllByIdCompte(idCompte, types, etats, dateDebut.toDate(), dateFin.toDate());
 	}
 
 	@Override
-	public List<Operation> recupererOperationsCompteCarte(int idCompte,
-			Date date, EtatOperation[] etats) {
+	public List<Operation> recupererOperationsCompteCarte(int idCompte, Date date, EtatOperation[] etats) {
 		return recupererOperationsCompte(idCompte, date, TYPES_CARTE, etats);
 	}
 
 	@Override
-	public List<Operation> recupererOperationsCompteNonCarte(int idCompte,
-			Date date, EtatOperation[] etats) {
+	public List<Operation> recupererOperationsCompteNonCarte(int idCompte, Date date, EtatOperation[] etats) {
 		return recupererOperationsCompte(idCompte, date, TYPES_NON_CARTE, etats);
 	}
 
@@ -125,7 +118,8 @@ public class OperationServiceImpl implements OperationService {
 		float somme = 0;
 		if (operations == null) {
 			somme = 0;
-		} else {
+		}
+		else {
 			for (Operation o : operations)
 				somme += o.getMontant();
 		}
@@ -137,15 +131,14 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
-	@Transactional(readOnly=false)
-	public void effectuerVirementInterne(Compte compteEmetteur,
-			Compte compteDestinataire, float montant) {
-		
+	@Transactional(readOnly = false)
+	public void effectuerVirementInterne(Compte compteEmetteur, Compte compteDestinataire, float montant) {
+
 		Assert.notNull(compteEmetteur, "Le compte émetteur ne peut être null.");
 		Assert.notNull(compteDestinataire, "Le compte destinataire ne peut être null.");
 		Assert.isTrue(!compteDestinataire.equals(compteEmetteur), "Impossible d'effectuer un virement vers le même compte.");
-		Assert.isTrue(montant>0, "Le montant du virement ne peut être inférieur ou égal à 0.");
-		
+		Assert.isTrue(montant > 0, "Le montant du virement ne peut être inférieur ou égal à 0.");
+
 		Date dateOp = new Date();
 
 		Operation operationSource = new Operation();
@@ -154,8 +147,7 @@ public class OperationServiceImpl implements OperationService {
 		operationSource.setType(Type.VIREMENT_INT);
 		operationSource.setDateOp(dateOp);
 		operationSource.setEtat(EtatOperation.EFFECTUE);
-		operationSource.setLibelle("virement compte " + compteEmetteur.getId()
-				+ " -> " + compteDestinataire.getId());
+		operationSource.setLibelle("virement compte " + compteEmetteur.getId() + " -> " + compteDestinataire.getId());
 
 		Operation operationDest = new Operation();
 		operationDest.setCompte(compteDestinataire);
@@ -163,8 +155,7 @@ public class OperationServiceImpl implements OperationService {
 		operationDest.setType(Type.VIREMENT_INT);
 		operationDest.setDateOp(dateOp);
 		operationDest.setEtat(EtatOperation.EFFECTUE);
-		operationDest.setLibelle("virement compte " + compteEmetteur.getId()
-				+ " -> " + compteDestinataire.getId());
+		operationDest.setLibelle("virement compte " + compteEmetteur.getId() + " -> " + compteDestinataire.getId());
 
 		operationDao.save(operationSource);
 		operationDao.save(operationDest);
