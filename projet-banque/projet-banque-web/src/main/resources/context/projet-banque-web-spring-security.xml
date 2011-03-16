@@ -45,7 +45,9 @@
 
 		<!-- Connexion administrateur -->
 		<authentication-provider>
-			<password-encoder hash="sha" />
+			<password-encoder hash="sha">
+				 <salt-source user-property="username" />
+			</password-encoder>
 
 			<jdbc-user-service id="admin" data-source-ref="dataSource"
 				users-by-username-query="SELECT login AS username, password, enabled FROM admin WHERE login = ?"
