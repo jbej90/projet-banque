@@ -100,7 +100,7 @@ public class PrivateController {
 	public String showCompte(@PathVariable int id, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		Client client = getActualClient(request);
 		Compte selectedCompte = null;
-		
+
 		System.out.println(client);
 
 		// Essaye de parser la date pour le filtre d'opérations
@@ -143,12 +143,14 @@ public class PrivateController {
 				model.addAttribute("moiscourant", cal.get(Calendar.MONTH));
 				model.addAttribute("anneecourante", calNow.get(Calendar.YEAR));
 				model.addAttribute("anneeselectionnee", cal.get(Calendar.YEAR));
-				
+
 				// Configuration de la toolbar
 				// TODO : Refacto. Le modèle du menu ne fonctionne pas, puisqu'il nous faut des liens dynamiques :/
 				ToolbarManager toolbarManager = new ToolbarManager();
-				toolbarManager.addTool(new ToolItem("Exporter au format Excel", "/private/compte/"+selectedCompte.getId()+"_"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.YEAR)+WebUtils.URL_SUFFIX_XLS, "/images/export_excel.png", "Export excel", "export"));
-				toolbarManager.addTool(new ToolItem("Effectuer un virement", "/private/virement/"+selectedCompte.getId()+WebUtils.URL_SUFFIX_PAGE, "/images/virement.png", "Virement", "virement"));
+				toolbarManager.addTool(new ToolItem("Exporter au format Excel", "/private/compte/" + selectedCompte.getId() + "_" + cal.get(Calendar.MONTH) + "-"
+						+ cal.get(Calendar.YEAR) + WebUtils.URL_SUFFIX_XLS, "/images/export_excel.png", "Export excel", "export"));
+				toolbarManager.addTool(new ToolItem("Effectuer un virement", "/private/virement/" + selectedCompte.getId() + WebUtils.URL_SUFFIX_PAGE, "/images/virement.png",
+						"Virement", "virement"));
 				model.addAttribute("toolbar", toolbarManager);
 			}
 		}
@@ -206,7 +208,12 @@ public class PrivateController {
 		Client client = getActualClient(request);
 
 		// Essaye de parser la date pour le filtre d'opérations
-		Calendar cal = getMonthYearFilter(request);
+		Calendar cal;
+		try {
+			cal = getMonthYearFilter(request);
+		} catch (NumberFormatException e) {
+			cal = Calendar.getInstance(Locale.FRANCE);
+		}
 		Calendar calNow = Calendar.getInstance();
 
 		model.addAttribute("listemois", DateFormatSymbols.getInstance(Locale.FRANCE).getMonths());
@@ -307,12 +314,12 @@ public class PrivateController {
 			try {
 				compteService.virer(compte_src, compte_dest, montant);
 				MessageStack.getInstance(request).addInfo("Virement effectué.");
-
-			//TODO @Damien: définir les actions associées à la réception des exceptions
-			} catch (SimilarAccountsException e) {
-				e.printStackTrace();
-			} catch (InsufficientBalanceException e) {
-				e.printStackTrace();
+			}
+			catch (SimilarAccountsException e) {
+				MessageStack.getInstance(request).addError("Les comptes sources et destinations doivent être différents.");
+			}
+			catch (InsufficientBalanceException e) {
+				MessageStack.getInstance(request).addError("Le solde du compte source est insuffisant.");
 			}
 		}
 
@@ -337,12 +344,20 @@ public class PrivateController {
 	public String downloadCompteExcel(@PathVariable int idCompte, @PathVariable int month, @PathVariable int year, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws IOException {
 		// Essaye de parser la date pour le filtre d'opérations
-		Calendar cal = DateUtils.getMonthYearFilter(month, year);
+		Calendar cal;
+		try {
+			cal = DateUtils.getMonthYearFilter(month, year);
+		}
+		catch (NumberFormatException e) {
+//			MessageStack.getInstance(request).addError("Format de date incorrect");
+			response.sendRedirect(response.encodeRedirectURL("redirect:" + WebUtils.getFormatPageUri("/error/error")));
+			return null;
+		}
 
 		// Récupère le client actuel
 		Client client = getActualClient(request);
 		if (client == null) {
-			MessageStack.getInstance(request).addError("Client introuvable");
+//			MessageStack.getInstance(request).addError("Client introuvable");
 			response.sendRedirect(response.encodeRedirectURL("redirect:" + WebUtils.getFormatPageUri("/error/error")));
 			return null;
 		}
@@ -350,7 +365,7 @@ public class PrivateController {
 		// Récupère le compte du client
 		Compte compte = client.getCompte(idCompte);
 		if (compte == null) {
-			MessageStack.getInstance(request).addError("Compte non valide");
+//			MessageStack.getInstance(request).addError("Compte non valide");
 			response.sendRedirect(response.encodeRedirectURL("redirect:" + WebUtils.getFormatPageUri("/error/error")));
 			return null;
 		}
@@ -363,7 +378,7 @@ public class PrivateController {
 		operationsCarte = operationService.recupererOperationsCompteCarte(compte.getId(), cal.getTime(), OperationService.ETATS_EFFECTUE);
 		float total = operationService.totalOperations(operations);
 		float totalCarte = operationService.totalOperations(operationsCarte);
-		
+
 		String[] mois = DateFormatSymbols.getInstance(Locale.FRANCE).getMonths();
 
 		model.addAttribute("mois", mois[cal.get(Calendar.MONTH)]);
@@ -376,7 +391,7 @@ public class PrivateController {
 
 		return "compte";
 	}
-	
+
 	@RequestMapping(value = "compte/{idCompte}_{month}-{year}_color" + WebUtils.URL_SUFFIX_XLS, method = { RequestMethod.GET, RequestMethod.POST })
 	public String downloadCompteExcelColor(@PathVariable int idCompte, @PathVariable int month, @PathVariable int year, HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) throws IOException {
@@ -436,7 +451,7 @@ public class PrivateController {
 	 */
 	private Calendar getMonthYearFilter(HttpServletRequest request) {
 		Calendar cal = Calendar.getInstance(Locale.FRANCE);
-		
+
 		// Si la requete contient les parametres du formulaire no-script
 		if (request.getParameterMap().containsKey("filter_month") && request.getParameterMap().containsKey("filter_year")) {
 			try {
@@ -455,7 +470,7 @@ public class PrivateController {
 			try {
 				Date date = sdf.parse(request.getParameter("datepicker"));
 				cal.setTime(date);
-				
+
 				// Vérifie la validité de la date
 				cal = DateUtils.getMonthYearFilter(cal);
 			}
