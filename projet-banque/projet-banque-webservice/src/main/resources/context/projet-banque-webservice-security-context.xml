@@ -21,7 +21,7 @@
 <!--		 Connexion utilisateur -->
 		<authentication-provider>
 			<password-encoder hash="sha">
-<!--				 <salt-source system-wide="projet-banque" /> -->
+				 <salt-source user-property="username" />
 			</password-encoder>
 
 			<jdbc-user-service id="auth" data-source-ref="dataSource"
