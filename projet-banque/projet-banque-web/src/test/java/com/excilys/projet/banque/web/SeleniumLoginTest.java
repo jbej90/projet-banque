@@ -15,9 +15,14 @@ import com.thoughtworks.selenium.SeleneseTestCase;
 //TODO CLASSNOTFOUND
 public class SeleniumLoginTest extends SeleneseTestCase {
 
+	
+
+//	private static final String URLHOST = "localhost";
+//	private static final String URL = "http://localhost:8080/";
+	
 	@Before
 	public void setUp() throws Exception {
-		selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");
+		selenium = new DefaultSelenium(SeleniumUtil.URLHOST, 4444, "*firefox", SeleniumUtil.URL);
 		selenium.start();
 	}
 	@Test
@@ -28,6 +33,10 @@ public class SeleniumLoginTest extends SeleneseTestCase {
 		selenium.click("//input[@value='Valider']");
 		selenium.waitForPageToLoad("30000");
 		assertTrue(selenium.isTextPresent("Résumé de mes comptes"));
+//		selenium.setSpeed("1000");
+		selenium.click("link=Déconnexion");
+		selenium.waitForPageToLoad("30000");
+		assertTrue(selenium.isTextPresent("Identification"));
 	}
 	@Test
 	public void testLoginDelog() throws Exception {

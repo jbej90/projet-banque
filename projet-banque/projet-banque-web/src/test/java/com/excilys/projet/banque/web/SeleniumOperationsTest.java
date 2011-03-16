@@ -23,7 +23,7 @@ public class SeleniumOperationsTest extends SeleneseTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");
+		selenium = new DefaultSelenium(SeleniumUtil.URLHOST, 4444, "*firefox", SeleniumUtil.URL);
 		selenium.start();
 
 		selenium.open("/projet-banque-web/login.htm");
