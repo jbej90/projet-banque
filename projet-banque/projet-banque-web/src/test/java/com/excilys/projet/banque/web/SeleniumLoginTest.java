@@ -15,11 +15,6 @@ import com.thoughtworks.selenium.SeleneseTestCase;
 //TODO CLASSNOTFOUND
 public class SeleniumLoginTest extends SeleneseTestCase {
 
-	
-
-//	private static final String URLHOST = "localhost";
-//	private static final String URL = "http://localhost:8080/";
-	
 	@Before
 	public void setUp() throws Exception {
 		selenium = new DefaultSelenium(SeleniumUtil.URLHOST, 4444, "*firefox", SeleniumUtil.URL);

@@ -24,8 +24,6 @@ public class LoginController {
 	 */
 	@RequestMapping("login" + WebUtils.URL_SUFFIX_PAGE)
 	public String showLogin(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-		model.addAttribute("content", "/WEB-INF/pages/login.jsp");
-
 		return WebUtils.BASE_DIR_HOME + "login";
 	}
 }
