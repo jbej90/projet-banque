@@ -6,30 +6,15 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-	<import resource="classpath*:context/applicationContext-dao-impl-hibernate.xml" />
 	<context:annotation-config />
+	
 	<context:component-scan base-package="com.excilys.projet.banque.service.impl" />
 	
-	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<constructor-arg>
-			<ref bean="sessionFactory"/>
-		</constructor-arg>
-	</bean>
-
-	<!-- <bean id="clientService" -->
-	<!-- class="com.excilys.projet.banque.service.impl.ClientServiceImpl"> -->
-	<!-- <property name="clientDao" ref="clientDao" /> -->
-	<!-- <property name="compteDao" ref="compteDao" /> -->
-	<!-- <property name="authDao" ref="authDao" /> -->
-	<!-- </bean> -->
-<!---->
-	<!-- <bean id="compteService" -->
-	<!-- class="com.excilys.projet.banque.service.impl.CompteServiceImpl"> -->
-	<!-- <property name="compteDao" ref="compteDao" /> -->
-	<!-- </bean> -->
-<!---->
-	<!-- <bean id="operationService" -->
-	<!-- class="com.excilys.projet.banque.service.impl.OperationServiceImpl"> -->
-	<!-- <property name="operationDao" ref="operationDao" /> -->
-	<!-- </bean> -->
+<!--	<import resource="classpath*:context/applicationContext-dao-impl-hibernate.xml" />-->
+<!--	-->
+<!--	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">-->
+<!--		<constructor-arg>-->
+<!--			<ref bean="sessionFactory"/>-->
+<!--		</constructor-arg>-->
+<!--	</bean>-->
 </beans>

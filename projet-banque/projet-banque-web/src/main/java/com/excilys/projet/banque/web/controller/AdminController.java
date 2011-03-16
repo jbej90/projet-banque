@@ -4,11 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.web.utils.WebUtils;
 
 /**
@@ -20,6 +22,9 @@ import com.excilys.projet.banque.web.utils.WebUtils;
 @Controller
 @RequestMapping("/" + WebUtils.BASE_DIR_ADMIN)
 public class AdminController {
+	
+	@Autowired
+	private OperationService	operationService;
 
 	/**
 	 * Map l'url de type /admin/index.htm
