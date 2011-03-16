@@ -17,14 +17,15 @@
 
 	<http>
 		<intercept-url pattern="/**" access="ROLE_OPERATOR" />
+
 		<http-basic />
 	</http>
 
 	<authentication-manager>
-<!--		 Connexion utilisateur -->
+		<!-- Connexion utilisateur -->
 		<authentication-provider>
 			<password-encoder hash="sha">
-				 <salt-source user-property="username" />
+				<salt-source user-property="username" />
 			</password-encoder>
 
 			<jdbc-user-service id="auth" data-source-ref="dataSource"
@@ -33,14 +34,13 @@
 				role-prefix="ROLE_" />
 		</authentication-provider>
 	</authentication-manager>
-	
-<!--		 TODO : A déplacer dans un projet "env" -->
-	<beans:bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<beans:property name="driverClassName" value="${datasource.classname}" />
-		<beans:property name="url" value="${datasource.url}" />
-		<beans:property name="username" value="${datasource.username}" />
-		<beans:property name="password" value="${datasource.password}" />
-	</beans:bean>
-	
+
+<!--	<beans:bean id="dataSource"-->
+<!--		class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+<!--		<beans:property name="driverClassName" value="${datasource.classname}" />-->
+<!--		<beans:property name="url" value="${datasource.url}" />-->
+<!--		<beans:property name="username" value="${datasource.username}" />-->
+<!--		<beans:property name="password" value="${datasource.password}" />-->
+<!--	</beans:bean>-->
+
 </beans:beans>

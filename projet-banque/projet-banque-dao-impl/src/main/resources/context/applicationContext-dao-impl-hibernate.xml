@@ -7,14 +7,14 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<context:annotation-config />
+	
 	<context:component-scan base-package="com.excilys.projet.banque" />
 
 
 	<bean name="propertyPlaceholder"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
-			<value>classpath:context/hsqldb.properties
-			</value>
+			<value>classpath:context/hsqldb.properties</value>
 		</property>
 	</bean>
 
@@ -41,47 +41,9 @@
 		</property>
 		<property name="packagesToScan" value="com.excilys.projet.banque.model" />
 	</bean>
-	
-		<bean id="transactionManager"
+
+	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-
-<!---->
-<!---->
-	<!-- <bean id="banqueSessionFactory" -->
-	<!-- class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"> -->
-	<!-- <property name="dataSource" ref="dataSource"></property> -->
-	<!-- <property name="mappingResources"> -->
-	<!-- <list> -->
-	<!-- <value>Compte.hbm.xml</value> -->
-	<!-- <value>Client.hbm.xml</value> -->
-	<!-- <value>Auth.hbm.xml</value> -->
-	<!-- </list> -->
-	<!-- </property> -->
-	<!-- <property name="hibernateProperties"> -->
-	<!-- <props> -->
-	<!-- <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> -->
-	<!-- <prop key="hibernate.show_sql">true</prop> -->
-	<!-- </props> -->
-	<!-- </property> -->
-	<!-- </bean> -->
-
-
-<!--	<bean id="banqueHibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">-->
-<!--		<property name="sessionFactory" ref="banqueSessionFactory" />-->
-<!--	</bean>-->
-<!---->
-<!--	<bean id="clientDao" class="com.excilys.projet.banque.dao.impl.ClientDAOImpl">-->
-<!--		<property name="hibernateTemplate" ref="banqueHibernateTemplate" />-->
-<!--	</bean>-->
-<!---->
-<!--	<bean id="compteDao" class="com.excilys.projet.banque.dao.impl.CompteDAOImpl">-->
-<!--		<property name="hibernateTemplate" ref="banqueHibernateTemplate" />-->
-<!--	</bean>-->
-
-<!--	<bean id="authDao" class="com.excilys.projet.banque.dao.impl.AuthDAOImpl">-->
-<!--		<property name="hibernateTemplate" ref="banqueHibernateTemplate" />-->
-<!--	</bean>-->
 </beans>
