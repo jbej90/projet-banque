@@ -11,11 +11,11 @@
 						http://www.springframework.org/schema/security/spring-security.xsd
 				        http://www.springframework.org/schema/util 
 				        http://www.springframework.org/schema/util/spring-util.xsd">
-
+				        
 	<http>
 		<intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
 		<intercept-url pattern="/private/**" access="ROLE_USER" />
-
+		
 		<intercept-url pattern="/**" filters="none" />
 
 		<form-login login-page="/login.htm" login-processing-url="/login.do"
@@ -24,8 +24,8 @@
 
 		<logout logout-url="/logout.do" logout-success-url="/" />
 
-		<session-management>
-			 <concurrency-control max-sessions="1" expired-url="/login.htm" error-if-maximum-exceeded="true" /> 
+		<session-management invalid-session-url="/login.htm?expired">
+			 <concurrency-control max-sessions="1" expired-url="/login.htm" error-if-maximum-exceeded="true" />
 		</session-management>
 	</http>
 
@@ -34,7 +34,7 @@
 		<!-- Connexion utilisateur -->
 		<authentication-provider>
 			<password-encoder hash="sha">
-				<!-- <salt-source system-wide="projet-banque" /> -->
+				 <salt-source user-property="username" />
 			</password-encoder>
 
 			<jdbc-user-service id="auth" data-source-ref="dataSource"
