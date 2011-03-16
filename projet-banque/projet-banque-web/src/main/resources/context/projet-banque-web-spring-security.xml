@@ -27,7 +27,7 @@
 
 		<logout logout-url="/logout.do" logout-success-url="/" />
 
-		<session-management invalid-session-url="/login.htm?expired">
+		<session-management>
 			 <concurrency-control max-sessions="1" expired-url="/login.htm" error-if-maximum-exceeded="true" />
 		</session-management>
 	</http>

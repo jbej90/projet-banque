@@ -321,7 +321,7 @@ public class PrivateController {
 		request.getSession().setAttribute("compte_dest", compte_dest_id);
 		request.getSession().setAttribute("montant", montant);
 
-		return "redirect:/" + WebUtils.getFormatPageUri("/private/virement");
+		return "redirect:" + WebUtils.getFormatPageUri("/private/virement");
 	}
 
 	// =====================================================================================================================
