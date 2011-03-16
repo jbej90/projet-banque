@@ -41,14 +41,8 @@
 		class="org.springframework.context.support.ConversionServiceFactoryBean">
 		<property name="converters">
 			<list>
-				<ref bean="carteConverter" />
-				<ref bean="clientConverter" />
 				<ref bean="compteConverter" />
-				<ref bean="typeConverter" />
-				<ref bean="typeCarteConverter" />
-				<ref bean="etatOperationConverter" />
-				<ref bean="operationConverter" />
-				<ref bean="authConverter"/>
+				<ref bean="listeComptesConverter"/>
 			</list>
 		</property>
 	</bean>

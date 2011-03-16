@@ -276,7 +276,72 @@
          <montant>1</montant>
       </web:passerOperation>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.banque.projet.excilys.com/IWService/passerOperation"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite name="SoapServiceServiceSoapBinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="passerOperation TestCase" searchProperties="true" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" id="1fcd50d4-e5c6-4933-b962-9da690604197"><con:settings><con:setting id="HttpSettings@socket_timeout">5000</con:setting></con:settings><con:testStep type="request" name="passerOperation"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SoapServiceServiceSoapBinding</con:interface><con:operation>passerOperation</con:operation><con:request name="passerOperation"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/projet-banque-webservice/ss</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.banque.projet.excilys.com/">
+</soapenv:Envelope>]]></con:request><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://webservice.banque.projet.excilys.com/IWService/passerOperation"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:interface xsi:type="con:RestService" wadlVersion="http://wadl.dev.java.net/2009/02" name="test" type="rest" basePath="/projet-banque-webservice/rs" definitionUrl="http://localhost:8080/projet-banque-webservice/rs?_wadl&amp;_type=xml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8080/projet-banque-webservice/rs?_wadl&amp;_type=xml"><con:part><con:url>http://localhost:8080/projet-banque-webservice/rs?_wadl&amp;_type=xml</con:url><con:content><![CDATA[<application xmlns="http://wadl.dev.java.net/2009/02" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <grammars>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified">
+      <xs:element name="comptesDTO" type="comptes"/>
+      <xs:complexType name="comptes">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="comptes">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="compte" type="compte"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="compte">
+        <xs:sequence>
+          <xs:element name="id" nillable="true" type="xs:int"/>
+          <xs:element minOccurs="0" name="libelle" type="xs:string"/>
+          <xs:element name="solde" type="xs:float"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </grammars>
+  <resources base="http://localhost:8080/projet-banque-webservice/rs">
+    <resource path="/">
+      <method name="GET">
+        <response>
+          <representation mediaType="application/octet-stream">
+            <param name="result" style="plain" type="xs:string"/>
+          </representation>
+        </response>
+      </method>
+      <resource path="compte/{idClient}/{idCompte}">
+        <param name="idClient" style="template" type="xs:int"/>
+        <param name="idCompte" style="template" type="xs:int"/>
+        <method name="GET">
+          <request/>
+          <response>
+            <representation mediaType="application/json"/>
+          </response>
+        </method>
+      </resource>
+      <resource path="comptes/{idClient}">
+        <param name="idClient" style="template" type="xs:int"/>
+        <method name="GET">
+          <request/>
+          <response>
+            <representation mediaType="application/json">
+              <param name="result" style="plain" type="xs:string"/>
+            </representation>
+          </response>
+        </method>
+      </resource>
+      <resource path="consultation/{idClient}">
+        <param name="idClient" style="template" type="xs:int"/>
+        <method name="GET">
+          <request/>
+          <response>
+            <representation mediaType="application/json"/>
+          </response>
+        </method>
+      </resource>
+    </resource>
+  </resources>
+</application>]]></con:content><con:type>http://wadl.dev.java.net/2009/02</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080</con:endpoint></con:endpoints><con:resource name="/" path="/"><con:settings/><con:parameters/><con:resource name="compte/{idClient}/{idCompte}" path="compte/{idClient}/{idCompte}"><con:settings/><con:parameters><con:parameter><con:name>idClient</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:int</con:type><con:default xsi:nil="true"/></con:parameter><con:parameter><con:name>idCompte</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:int</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://localhost:8080</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="comptes/{idClient}" path="comptes/{idClient}"><con:settings/><con:parameters><con:parameter><con:name>idClient</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:int</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://localhost:8080</con:endpoint><con:parameters/></con:request></con:method></con:resource><con:resource name="consultation/{idClient}" path="consultation/{idClient}"><con:settings/><con:parameters><con:parameter><con:name>idClient</con:name><con:value xsi:nil="true"/><con:style>TEMPLATE</con:style><con:type xmlns:xs="http://www.w3.org/2001/XMLSchema">xs:int</con:type><con:default xsi:nil="true"/></con:parameter></con:parameters><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/json</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1" mediaType="application/xml"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://localhost:8080</con:endpoint><con:request/><con:credentials><con:username>op</con:username><con:password>op</con:password></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><entry key="idClient" value="1" xmlns="http://eviware.com/soapui/config"/></con:parameters></con:request></con:method></con:resource><con:method name="GET" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE" id=""><con:mediaType>application/octet-stream</con:mediaType><con:params/><con:element xsi:nil="true"/><con:description xsi:nil="true"/></con:representation><con:request name="Request 1"><con:settings/><con:endpoint>http://localhost:8080</con:endpoint><con:parameters/></con:request></con:method></con:resource></con:interface><con:testSuite name="SoapServiceServiceSoapBinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="passerOperation TestCase" searchProperties="true" timeout="0" wsrmEnabled="false" wsrmVersion="1.0" wsrmAckTo="" amfAuthorisation="false" amfEndpoint="" amfLogin="" amfPassword="" id="1fcd50d4-e5c6-4933-b962-9da690604197"><con:settings><con:setting id="HttpSettings@socket_timeout">5000</con:setting></con:settings><con:testStep type="request" name="passerOperation"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>SoapServiceServiceSoapBinding</con:interface><con:operation>passerOperation</con:operation><con:request name="passerOperation"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/projet-banque-webservice/ss</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:web="http://webservice.banque.projet.excilys.com/">
    <soapenv:Header/>
    <soapenv:Body>
       <web:passerOperation>

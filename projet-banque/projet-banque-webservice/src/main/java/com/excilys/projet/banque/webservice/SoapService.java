@@ -1,7 +1,5 @@
 package com.excilys.projet.banque.webservice;
 
-import java.util.List;
-
 import javax.jws.WebService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,7 @@ import com.excilys.projet.banque.service.api.OperationService;
 import com.excilys.projet.banque.service.api.exception.InsufficientBalanceException;
 import com.excilys.projet.banque.service.api.exception.SimilarAccountsException;
 import com.excilys.projet.banque.webservice.dto.CompteDTO;
-import com.excilys.projet.banque.webservice.dto.OperationDTO;
+import com.excilys.projet.banque.webservice.dto.ComptesDTO;
 
 @WebService(endpointInterface = "com.excilys.projet.banque.webservice.IWService")
 public class SoapService implements IWService {
@@ -32,12 +30,7 @@ public class SoapService implements IWService {
 	}
 
 	@Override
-	public List<CompteDTO> consultationComptes(int idClient) {
-		return null;
-	}
-
-	@Override
-	public List<OperationDTO> consultationOperations(int idCompte, int idClient) {
+	public ComptesDTO consultationComptes(int idClient) {
 		return null;
 	}
 

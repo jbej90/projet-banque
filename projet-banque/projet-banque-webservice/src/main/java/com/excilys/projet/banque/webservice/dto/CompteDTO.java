@@ -102,4 +102,9 @@ public class CompteDTO {
 		this.solde = value;
 	}
 
+	@Override
+	public String toString() {
+		return "CompteDTO [id=" + id + ", libelle=" + libelle + ", solde=" + solde + "]";
+	}
+	
 }
