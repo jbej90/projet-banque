@@ -1,11 +1,5 @@
 package com.excilys.projet.banque.web;
 
-import java.text.DateFormatSymbols;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +11,7 @@ public class SeleniumVirementTest extends SeleneseTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		selenium = new DefaultSelenium("localhost", 4444, "*firefox", "http://localhost:8080/");
+		selenium = new DefaultSelenium(SeleniumUtil.URLHOST, 4444, "*firefox", SeleniumUtil.URL);
 		selenium.start();
 		
 		selenium.open("/projet-banque-web/login.htm");
