@@ -1,0 +1,133 @@
+# Introduction #
+
+Le projet Web est l'une des applications finales du projet bancaire et s'appuie sur plusieurs technos pour obtenir le résultat attendu. Les principales étant Spring et ses modules (security, MVC). Mais aussi les Servlet, les EL/JSTL, Tiles, POI, Jackson, et enfin Selenium pour les tests.
+La première partie de cette page présentera succinctement ces différents outils. Les interactions entre eux seront détaillées dans un deuxième temps.
+
+
+# Présentation des technos #
+
+
+## Spring ##
+
+Utilisé pour l'injection de dépendances
+
+
+### Spring-Security ###
+
+Utilisé pour la sécurisation de l'application
+
+
+### Spring-MVC ###
+
+Introduit une structure MVC dans l'application.
+
+Nécessite un (ou plusieurs) dispatcher déclarés dans le _web.xml_. Le nom donné au dispatcher indique le nom du fichier xml à charger pour la configuration de celui-ci. Le fichier sera alors `/WEB-INF/<nom_dispatcher>-servlet.xml`.
+
+Chacun de ces fichier définit le package à scanner à la recherche des controllers ainsi que le moteur de rendu (view resolver) à utiliser.
+
+Chaque méthode d'un controller sera mappée à une URI via l'annotation `@RequestMapping` et indiquera quelle page utiliser pour l'affichage, via la valeur qui sera renvoyée. Dans l'exemple suivant, les requêtes GET sur _/private/home.htm_ seront mappées à cette méthode qui demandera l'utilisation de la page _home.jsp_.
+
+```
+@RequestMapping(value = "/private/home.htm", method = RequestMethod.GET)
+public String showHome(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+	// ...
+	
+	return "home.jsp";
+}
+```
+
+
+## Servlet/JSP ##
+
+## EL/JSTL ##
+
+### JSTL ###
+
+Les JSTL permettent de manipuler dynamiquement des données dans les pages JSP sans utiliser de scriptlet (code déclaré par _<% ... %>_). Pour les utiliser il faut déclarer les taglibs correspondantes en début de page JSP.
+
+Ci-dessous, quelques exemples de taglib utiles :
+  * `<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>`
+  * `<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>`
+  * `<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>`
+
+Grâce à cela, on sera en mesure d'effectuer des boucles, de formater des données, etc...
+Voici un exemple de formatage d'un nombre pour ne garder que 2 chiffres après la virgule :
+
+`<fmt:formatNumber maxFractionDigits="2">50.123456</fmt:formatNumber>`
+
+### EL ###
+
+Les EL permettent de manipuler simplement les données transmises par les controllers via une instance de ModelMap. Par exemple, dans le code suivant le controller transmet un nombre qui sera affiché dans la page JSP.
+
+_**Controller**_
+```
+model.addAttribute("nombre", 10);
+```
+
+_**Page JSP**_
+```
+Le nombre stocké est ${nombre}.
+```
+
+## Tiles ##
+
+Tiles est un moteur de template qui vient se greffer dans le processus de génération de pages de Spring-MVC. L'objectif est de pouvoir factoriser les parties communes des pages web (header, footer, structure de base, ...).
+
+Ce moteur fonctionne sur le principe de définition d'un template de base et plusieurs "sous-templates" qui hérites et spécifie le template de base. Par exemple, on aura le template de base appelé _banqueTemplate_ et le template pour la page d'accueil appelé _private/home_. La configuration se fait dans un fichier XML et le code correspondant sera le suivant :
+
+```
+<definition name="banqueTemplate" template="/WEB-INF/template/layout.jsp">
+	<put-attribute name="title" value="" />
+	<put-attribute name="sub-header" value="/WEB-INF/template/part-sub-header.jsp" />
+	<put-attribute name="menu" value="/WEB-INF/template/part-menu.jsp" />
+	<put-attribute name="content" value="" />
+</definition>
+
+<definition name="private/home" extends="banqueTemplate">
+	<put-attribute name="title" value="Résumé de mes comptes" />
+	<put-attribute name="content" value="/WEB-INF/pages/private/home.jsp" />
+</definition>
+```
+
+Le fonctionnement de base de Spring-MVC doit donc être légèrement modifié afin que la valeur de retour des controllers ne corresponde plus à une page JSP, mais à l'identifiant du template à utiliser.
+
+Et enfin, pour que le système soit fonctionnel il est nécessaire de charger la classe TilesConfigurer dans le classpath. Pour cela on déclarera le bean correspondant dans le fichier de configuration de Spring MVC (`/WEB-INF/<nom_dispatcher>-servlet.xml`) de la manière suivante :
+
+```
+<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+	<property name="definitions">
+		<list>
+			<value>/WEB-INF/template/template.xml</value>
+			<value>/WEB-INF/template/template-error.xml</value>
+		</list>
+	</property>
+</bean>
+```
+
+On notera qu'il est possible de charger plusieurs définition de template selon les besoins.
+
+## POI ##
+
+POI est une librairie utilisée pour la génération de fichier Microsoft Office. Dans notre cas, elle est utilisée pour la génération de feuille Excel contenant le détail des opérations d'un compte.
+
+L'utilisation de celle-ci se fait via la définition d'un nouveau dispatcher nommé _spring-xls_ et mappant les URI qui finissent par _.xls_. Le fichier de configuration Spring MVC `/WEB-INF/spring-xls-servlet.xml` utilise un moteur de rendu différent de celui de base et se basant sur le fichier `xls.properties`. Ce dernier permet d'effectuer un mapping entre la valeur retournée par les controller et la classe de génération Excel à utiliser. Un fichier Excel modèle peut également être spécifié.
+
+Dans l'exemple suivant, on considère qu'on a un controller mappant l'URI _/private/compte/{id}.xls_ et renvoyant la chaine "compte". Le fichier de mapping sera lors :
+```
+compte.(class)=com.excilys.projet.banque.web.view.ExcelCompteView
+compte.url=/WEB-INF/views/compte.xls
+```
+
+Et enfin, la classe `ExcelCompteView` doit étendre `AbstractExcelView` et surcharger la méthode `buildExcelDocument` qui sera appelée automatiquement. C'est donc ici que la génération du fichier sera faite.
+
+## Jackson ##
+
+Jackson est utilisé pour la sérialisation de données en JSON. Cette librairie est donc utilisé pour les retours des appels Ajax.
+
+Actuellement, le mode de fonctionnement de Spring MVC est modifié d'une façon  encore différente. En effet, les controllers ne renvoyent plus de chaine permettant de mapper la bonne vue, mais appellent la méthode sérialisation de Jackson qui envoyer directement le résultat dans l'instance de `HttpServletResponse`.
+
+A terme, ce système devra être modifié pour tendre vers l'approche choisie pour la génération de fichier Excel. A savoir, déclarer un nouveau dispatcher interceptant les URI en `*.ajax` avec une configuration relativement proche de celle du dispatcher de base.
+
+## Selenium ##
+
+A venir...
